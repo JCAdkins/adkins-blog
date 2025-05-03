@@ -36,6 +36,8 @@ model User {
   email      String   @unique
   password   String
   username   String   @unique
+  first_name String
+  last_name  String 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   role       String   @default("user") // Can be "admin", "user", etc.

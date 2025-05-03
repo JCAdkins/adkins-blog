@@ -1,5 +1,5 @@
 canvas {
-  background: white;
+  background: red;
   background: radial-gradient(#fff, #ddd);
   /* background: radial-gradient(hsl(40, 80%, 60%), hsl(0, 50%, 40%)); */
   /* filter: blur(1px) contrast(5); */
@@ -29,7 +29,7 @@ canvas {
 
       span {
         margin-right: 5px;
-        border: solid 1px #777;
+        border: solid 1px #090606;
         cursor: pointer;
         border-radius: 2px;
 

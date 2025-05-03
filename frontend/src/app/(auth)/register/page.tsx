@@ -6,7 +6,7 @@ import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { AuthForm } from "@/components/forms/auth-form";
-import { SubmitButton } from "@/components/submit-button";
+import { SubmitButton } from "@/components/buttons/submit-button";
 
 import { register, type RegisterActionState } from "../actions";
 
@@ -20,7 +20,7 @@ export default function Page() {
     register,
     {
       status: "idle",
-    }
+    },
   );
   // 0oijoij
   useEffect(() => {
@@ -34,21 +34,20 @@ export default function Page() {
       const toastee = (
         <div className="flex flex-col items-center">
           <ul className="list-disc space-y-2 pl-3">
-            {state.error?.map((err, ind) => (
-              <li key={ind}>{err}</li>
-            ))}
+            {state.error?.map((err, ind) => <li key={ind}>{err}</li>)}
           </ul>
         </div>
       );
       toast.error("Failed validating your submission!", {
         description: toastee,
       });
-      // toast.error(toastee);
     } else if (state.status === "success") {
       toast.success("Account created successfully");
       setIsSuccessful(true);
       router.refresh();
     }
+    console.log(state.status);
+    toast.error("error");
   }, [state, router]);
 
   const handleSubmit = (formData: FormData) => {
@@ -57,21 +56,21 @@ export default function Page() {
   };
 
   return (
-    <div className="flex h-dvh w-full items-start pt-12 md:pt-0 md:items-center justify-center bg-background">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl gap-12 flex flex-col">
+    <div className="bg-login-bg flex h-dvh w-full items-start justify-center pt-12 md:items-center md:pt-0">
+      <div className="flex w-full max-w-md flex-col gap-12 overflow-hidden rounded-2xl">
         <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">Sign Up</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">
+          <h3 className="text-xl font-semibold dark:text-amber-900">Sign Up</h3>
+          <p className="text-sm text-white dark:text-amber-200">
             Create an account with your email and password
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
           <SubmitButton isSuccessful={isSuccessful}>Sign Up</SubmitButton>
-          <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
+          <p className="mt-4 text-center text-sm text-white dark:text-amber-200">
             {"Already have an account? "}
             <Link
               href="/login"
-              className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+              className="font-semibold text-white hover:underline dark:text-white"
             >
               Sign in
             </Link>

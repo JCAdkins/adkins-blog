@@ -10,12 +10,7 @@ interface ExtendedUser extends User {
   role: string; // Add the 'role' field to the user
 }
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -29,15 +24,15 @@ export const {
           ? await getUserByEmail(email)
           : await getUserByUsername(username);
 
-        if (users.length === 0) return null;
+        if (!users) return null;
         // biome-ignore lint: Forbidden non-null assertion.
-        const passwordsMatch = await compare(password, users[0].password!);
+        const passwordsMatch = await compare(password, users.password!);
         if (!passwordsMatch) return null;
 
         // Add role to the user object returned after successful login
         return {
-          ...users[0],
-          role: users[0].role, // Ensure the role is included
+          ...users,
+          role: users.role, // Ensure the role is included
         } as ExtendedUser;
       },
     }),

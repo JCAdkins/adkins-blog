@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import MainHeader from "@/components/MainHeader";
+import { Toaster } from "sonner";
 
 const open_sans = Open_Sans({
   variable: "--font-open-sans",
@@ -65,6 +66,7 @@ export default async function RootLayout({
         >
           {/* <Toaster richColors position="top-center" /> */}
           <MainHeader />
+          <Toaster richColors position="top-center" />
           {children}
         </ThemeProvider>
       </body>

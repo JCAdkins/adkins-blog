@@ -31,6 +31,7 @@ const authRegisterFormSchema = z.object({
     }),
   first_name: z.string().optional(),
   last_name: z.string().optional(),
+  role: z.string(),
 });
 
 export interface LoginActionState {
@@ -46,6 +47,7 @@ export const login = async (
       email: formData.get("email"),
       password: formData.get("password"),
     });
+    console.log("hi");
 
     await signIn("credentials", {
       email: validatedData.email,
@@ -86,16 +88,19 @@ export const register = async (
       password: formData.get("password"),
       first_name: formData.get("first_name"),
       last_name: formData.get("last_name"),
+      role: "user",
       //created_at & last_login timestamps are already being generated for us
     });
 
     let user = await getUserByEmail(userData.email);
     if (user) return { status: "email_in_use" };
 
-    [user] = await getUserByUsername(userData.username);
+    user = await getUserByUsername(userData.username);
     if (user) return { status: "username_taken" };
+    console.log("><><> double here");
 
     await createUser(userData);
+    console.log("after create user");
     await signIn("credentials", {
       email: userData.email,
       password: userData.password,

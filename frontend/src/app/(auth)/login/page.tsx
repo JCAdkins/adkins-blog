@@ -40,21 +40,21 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-background flex h-dvh w-full items-start justify-center pt-12 md:items-center md:pt-0">
+    <div className="bg-login-bg flex h-dvh w-full items-start justify-center pt-12 md:items-center md:pt-0">
       <div className="flex w-full max-w-md flex-col gap-12 overflow-hidden rounded-2xl">
         <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">Sign In</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">
+          <h3 className="text-xl font-semibold text-amber-900">Sign In</h3>
+          <p className="text-sm text-amber-200 dark:text-amber-200">
             Use your email and password to sign in
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
           <SubmitButton isSuccessful={isSuccessful}>Sign in</SubmitButton>
-          <p className="mt-4 text-center text-sm text-gray-600 dark:text-zinc-400">
+          <p className="mt-4 text-center text-sm text-white dark:text-amber-200">
             {"Don't have an account? "}
             <Link
               href="/register"
-              className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+              className="font-semibold text-gray-800 hover:underline dark:text-white"
             >
               Sign up
             </Link>

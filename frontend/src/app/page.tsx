@@ -19,7 +19,8 @@ interface BlogPost {
 
 export default async function Home() {
   // Fetch the featured blog posts directly in the component
-  const response = await fetch(`${process.env.BASE_URL}/api/blog/featured`);
+  const response = await fetch(`${process.env.BASE_URL}/blog/featured`);
+  console.log("res: ", response);
   const featuredPosts: BlogPost[] = await response.json();
 
   return (
