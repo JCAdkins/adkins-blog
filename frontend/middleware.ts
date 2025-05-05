@@ -1,9 +1,20 @@
-import NextAuth from "next-auth";
+// middleware.ts
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-import { authConfig } from "@/app/(auth)/auth.config";
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req });
+  const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
 
-export default NextAuth(authConfig).auth;
+  const isAdmin = token?.role === "admin";
+
+  if (isAdminRoute && !isAdmin) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: ["/", "/:id", "/api/:path*", "/login", "/register", "/admin/:path*"],
+  matcher: ["/admin/:path*"],
 };

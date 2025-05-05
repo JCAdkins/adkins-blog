@@ -30,7 +30,7 @@ const Page = () => {
       toast.error("Please enter valid inputs!");
     } else if (state.status === "success") {
       setIsSuccessful(true);
-      router.refresh();
+      router.push("/");
     }
   }, [state.status, router]);
 

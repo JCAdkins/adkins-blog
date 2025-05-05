@@ -10,13 +10,14 @@ dotenv.config();
 
 const app = express();
 const port = 3000;
+const router = express.Router();
 
 // Middleware
 app.use(express.json());
 app.use(fileUpload()); // This middleware handles file uploads
 
 // Routes
-app.use("/api/", immichRoutes); // Mount the image routes
+app.use("/api", immichRoutes); // Mount the image routes
 
 // Route to create blog post
 app.use("/api/blog", createBlogPost);

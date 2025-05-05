@@ -47,13 +47,17 @@ export const login = async (
       email: formData.get("email"),
       password: formData.get("password"),
     });
-    console.log("hi");
 
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email: validatedData.email,
       password: validatedData.password,
       redirect: false,
     });
+
+    console.log("result: ", result);
+    if (result?.error) {
+      return { status: "failed" };
+    }
 
     return { status: "success" };
   } catch (error) {
@@ -97,11 +101,10 @@ export const register = async (
 
     user = await getUserByUsername(userData.username);
     if (user) return { status: "username_taken" };
-    console.log("><><> double here");
 
-    await createUser(userData);
-    console.log("after create user");
-    await signIn("credentials", {
+    user = await createUser(userData);
+    console.log("user after create: ", user);
+    user = await signIn("credentials", {
       email: userData.email,
       password: userData.password,
       redirect: false,
@@ -109,13 +112,11 @@ export const register = async (
     return { status: "success" };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      // console.log("error: ");
       const err = error.errors.map((err) => {
         return (
           '"' + capitalizeFirstLetter(`${err.path.join(".")}" - ${err.message}`)
         );
       });
-      // console.log(err);
       return { status: "invalid_data", error: err };
     }
 

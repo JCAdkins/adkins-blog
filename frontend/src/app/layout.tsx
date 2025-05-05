@@ -66,7 +66,7 @@ export default async function RootLayout({
         >
           {/* <Toaster richColors position="top-center" /> */}
           <MainHeader />
-          <Toaster richColors position="top-center" />
+          <Toaster richColors position="bottom-center" />
           {children}
         </ThemeProvider>
       </body>

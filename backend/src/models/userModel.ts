@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { db } from "../lib/prisma.ts"; // adjust based on your DB client
 // import { Prisma, User } from "@prisma/client"; // or your custom type
 import User, { Prisma } from "@prisma/client";
@@ -46,8 +47,13 @@ export const createUserInDb = async (userData: NewUser): Promise<NewUser> => {
 export const findUserInDb = async (args: {
   where: Prisma.UserWhereUniqueInput;
 }) => {
-  console.log("args: ", args);
   const user = await db.user.findUnique(args);
-  console.log("user: ", user);
   return user;
+};
+
+export const verifyPassword = async (
+  plainPassword: string,
+  hashedPassword: string
+) => {
+  return bcrypt.compare(plainPassword, hashedPassword);
 };

@@ -18,11 +18,11 @@ export async function createUser(userData: {
   name?: string;
 }): Promise<User> {
   console.log(
-    `${process.env.BASE_URL || ""}/users: `,
+    `${process.env.BASE_URL || ""}/users/register`,
     JSON.stringify(userData),
   );
   try {
-    const res = await fetch(`${process.env.BASE_URL || ""}/users: `, {
+    const res = await fetch(`${process.env.BASE_URL || ""}/users/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
@@ -48,7 +48,7 @@ export async function createUser(userData: {
 
 export async function getUserByEmail(email: string): Promise<User | null> {
   const res = await fetch(
-    `${process.env.BASE_URL || ""}/users/${encodeURIComponent(email)}`,
+    `${process.env.BASE_URL || ""}/users/email/${encodeURIComponent(email)}`,
   );
   if (!res.ok) return null;
   return await res.json();
@@ -57,13 +57,9 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 export async function getUserByUsername(
   username: string,
 ): Promise<User | null> {
-  console.log(
-    `${process.env.BASE_URL || ""}/users/${encodeURIComponent(username)}`,
-  );
   const res = await fetch(
-    `${process.env.BASE_URL || ""}/users/${encodeURIComponent(username)}`,
+    `${process.env.BASE_URL || ""}/users/username/${encodeURIComponent(username)}`,
   );
-  console.log("res: ", res.json());
   if (!res.ok) return null;
   return await res.json();
 }
