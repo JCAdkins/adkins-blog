@@ -2,8 +2,9 @@ import { Open_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
-import MainHeader from "@/components/MainHeader";
+import MainHeader from "@/components/main-header";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
 
 const open_sans = Open_Sans({
   variable: "--font-open-sans",
@@ -64,10 +65,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <Toaster richColors position="top-center" /> */}
-          <MainHeader />
-          <Toaster richColors position="bottom-center" />
-          {children}
+          <SessionProvider>
+            {/* <Toaster richColors position="top-center" /> */}
+            <MainHeader />
+            <Toaster richColors position="bottom-center" />
+            {children}
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

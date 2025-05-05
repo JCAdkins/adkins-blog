@@ -54,7 +54,6 @@ export const login = async (
       redirect: false,
     });
 
-    console.log("result: ", result);
     if (result?.error) {
       return { status: "failed" };
     }

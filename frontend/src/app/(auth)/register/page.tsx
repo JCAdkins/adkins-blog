@@ -44,11 +44,12 @@ export default function Page() {
     } else if (state.status === "success") {
       toast.success("Account created successfully");
       setIsSuccessful(true);
+      router.refresh();
       router.push("/");
     }
     console.log(state.status);
     toast.error("error");
-  }, [state, router]);
+  }, [state.status, router]);
 
   const handleSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
