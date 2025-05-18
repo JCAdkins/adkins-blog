@@ -1,26 +1,11 @@
 import Break from "@/components/ui/break";
-import { Card } from "@/components/ui/card";
-import Link from "next/link";
-
-interface Image {
-  id: number;
-  url: string;
-  blogPostId: string;
-}
-
-// Define types for the fetched blog post data
-interface BlogPost {
-  id: string;
-  title: string;
-  description: string;
-  images: Image[];
-  featured: boolean;
-}
+import BlogCard from "@/components/cards/blog-card";
+import { getFeaturedBlogs } from "@/lib/db/queries";
+import { Blog } from "next-auth";
 
 export default async function Home() {
   // Fetch the featured blog posts directly in the component
-  const response = await fetch(`${process.env.BASE_URL}/blog/featured`);
-  const featuredPosts: BlogPost[] = await response.json();
+  const featuredPosts: Blog[] | null = await getFeaturedBlogs();
 
   return (
     <div className="grid min-h-screen grid-rows-[1fr_20px] items-start justify-items-center gap-16 p-4 font-[family-name:var(--font-geist-sans)] sm:p-12">
@@ -43,24 +28,7 @@ export default async function Home() {
         </div>
         <Break className="border-red-300 px-16" />
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredPosts.map((post) => {
-            return (
-              <Card key={post.id} className="text-black">
-                <Link href={`/posts/${post.id}`} className="block">
-                  <img
-                    src={
-                      post.images[0].url ||
-                      "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
-                    } // Fallback image if no image available
-                    alt={post.title}
-                    className="mb-4 h-32 w-full rounded object-cover"
-                  />
-                  <h2 className="text-lg font-bold">{post.title}</h2>
-                  <p className="text-sm text-gray-600">{post.description}</p>
-                </Link>
-              </Card>
-            );
-          })}
+          {featuredPosts?.map((post) => <BlogCard blog={post} />)}
         </div>
       </main>
       <footer className="row-start- flex flex-wrap items-center justify-center gap-[24px]">

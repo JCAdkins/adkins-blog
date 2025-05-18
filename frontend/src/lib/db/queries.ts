@@ -1,5 +1,7 @@
 // lib/db/queries.ts
 
+import { Blog } from "next-auth";
+
 type User = {
   role: string;
   password: string;
@@ -62,4 +64,26 @@ export async function getUserByUsername(
   );
   if (!res.ok) return null;
   return await res.json();
+}
+
+export async function getFeaturedBlogs(): Promise<Blog[] | null> {
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/blog/featured`);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching featured blogs:", error);
+    return null;
+  }
+}
+
+export async function getAllBlogs(): Promise<Blog[] | null> {
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/blog`);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching featured blogs:", error);
+    return null;
+  }
 }

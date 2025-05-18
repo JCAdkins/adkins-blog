@@ -35,15 +35,17 @@ export const authConfig = {
       const isOnAdmin = nextUrl.pathname.startsWith("/admin");
       const isOnRegister = nextUrl.pathname.startsWith("/register");
       const isOnLogin = nextUrl.pathname.startsWith("/login");
+      console.log("herez");
 
       if (isLoggedIn && (isOnLogin || isOnRegister))
-        return Response.redirect(new URL("/arcade", nextUrl));
+        return Response.redirect(new URL("/", nextUrl));
 
       if (isOnAdmin && !isAdmin) {
-        return Response.redirect(new URL("/login", nextUrl));
+        return Response.redirect(new URL("/", nextUrl));
       }
 
-      if (isOnAdmin) console.log("I'm om admin");
+      if (isOnAdmin && !isLoggedIn)
+        return Response.redirect(new URL("/login", nextUrl));
 
       return true;
     },

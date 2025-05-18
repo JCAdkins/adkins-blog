@@ -92,7 +92,6 @@ export const register = async (
       first_name: formData.get("first_name"),
       last_name: formData.get("last_name"),
       role: "user",
-      //created_at & last_login timestamps are already being generated for us
     });
 
     let user = await getUserByEmail(userData.email);

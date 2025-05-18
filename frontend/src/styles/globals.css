@@ -19,6 +19,7 @@ html.dark {
 
 @theme {
   --color-header: #ffd3c4;
+  --color-sidebar: #e8b8a7;
   --color-header-text: #f2e2d8;
   --color-login: #e09f89;
   --color-login-hover: #c2826d;

@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "./ui/header";
-import LoginButton from "./buttons/login-button";
-import { UserMenu } from "./user-menu";
+import Header from "../ui/header";
+import LoginButton from "../buttons/login-button";
+import { UserMenu } from "../menus/user-menu";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
@@ -14,7 +14,7 @@ export default function MainHeader() {
     { href: "/contact", label: "Contact" },
   ];
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     console.log("session: ", session);
@@ -25,11 +25,7 @@ export default function MainHeader() {
       links={links}
       leftContent={<h1 className="text-xl font-bold">Adkins Ninja Blog</h1>}
       rightContent={
-        session?.user ? (
-          <UserMenu username={session.user.username ?? "Some name"} />
-        ) : (
-          <LoginButton />
-        )
+        session?.user ? <UserMenu user={session.user} /> : <LoginButton />
       }
       className="bg-header text-black"
     />

@@ -1,8 +1,8 @@
 import { Open_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { Metadata } from "next";
-import { ThemeProvider } from "@/components/theme-provider";
-import MainHeader from "@/components/main-header";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import MainHeader from "@/components/headers/main-header";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 
