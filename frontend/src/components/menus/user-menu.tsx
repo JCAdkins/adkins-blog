@@ -16,7 +16,7 @@ export function UserMenu({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="cursor-pointer rounded-full bg-amber-500 px-3 py-1 text-sm font-medium hover:bg-amber-700">
+        <button className="bg-login hover:bg-login-hover cursor-pointer rounded-full px-3 py-1 text-sm font-medium">
           {user.username}
         </button>
       </DropdownMenuTrigger>

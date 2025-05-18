@@ -28,7 +28,7 @@ export default async function Home() {
         </div>
         <Break className="border-red-300 px-16" />
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredPosts?.map((post) => <BlogCard blog={post} />)}
+          {featuredPosts?.map((post) => <BlogCard key={post.id} blog={post} />)}
         </div>
       </main>
       <footer className="row-start- flex flex-wrap items-center justify-center gap-[24px]">

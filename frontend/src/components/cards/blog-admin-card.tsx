@@ -12,24 +12,24 @@ interface BlogCardProps {
 export default function BlogAdminCard({ blog }: BlogCardProps) {
   return (
     <Card
-      className="text-black"
+      className="bg-login text-black"
       key={blog.id}
       header={blog.title}
       footer={
         <div className="flex w-full justify-between">
-          <p className="text-sm text-gray-700">
+          <p className="text-sm">
             Created at {formatDateToMMDDYYYY(blog.createdAt)}
           </p>
           <Link
             href={`/admin/posts/${blog.id}`}
-            className="text-blue-500 hover:underline"
+            className="text-blue-700 hover:underline"
           >
             Edit
           </Link>
         </div>
       }
     >
-      <div className="flex-col text-gray-500">
+      <div className="flex-col">
         <img
           src={
             blog.images?.[0]?.url ||
