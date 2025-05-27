@@ -87,3 +87,25 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
     return null;
   }
 }
+
+export async function createNewBlog(blogData: FormData): Promise<Blog | null> {
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/blog`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: blogData,
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Fetch failed:", errText);
+      throw new Error("Failed to create blog");
+    }
+
+    window.location.href = "http://localhost:3001/admin";
+    return await response.json();
+  } catch (err) {
+    console.error("Fetch error:", err);
+    throw err;
+  }
+}

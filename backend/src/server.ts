@@ -1,23 +1,67 @@
+// import express from "express";
+// import dotenv from "dotenv";
+// import fileUpload from "express-fileupload"; // Install this to handle file uploads
+// import immichRoutes from "./routes/immich-routes.ts";
+// import createBlogPost from "./routes/blog-posts.ts";
+// import userRoutes from "./routes/user-routes.ts";
+
+// // Initialize environment variables
+// dotenv.config();
+
+// const app = express();
+// const port = 3000;
+// const router = express.Router();
+
+// // Middleware
+// app.use(express.json());
+// app.use(fileUpload()); // This middleware handles file uploads
+
+// // Routes
+// app.use("/api", immichRoutes); // Mount the image routes
+
+// // Route to create blog post
+// app.use("/api/blog", createBlogPost);
+
+// // Routes for users
+// app.use("/api/users", userRoutes);
+
+// // Start server
+// app.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });
+
 import express from "express";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 import dotenv from "dotenv";
-import fileUpload from "express-fileupload"; // Install this to handle file uploads
-import immichRoutes from "./routes/immich-routes.ts";
 import createBlogPost from "./routes/blog-posts.ts";
 import userRoutes from "./routes/user-routes.ts";
+import postNewImage from "./controllers/immichController.ts";
+// import postNewImage from "./controllers/immichController.ts";
 
-// Initialize environment variables
 dotenv.config();
-
 const app = express();
-const port = 3000;
-const router = express.Router();
+const PORT = process.env.PORT || 3000;
+const upload = multer({ dest: "uploads/" });
 
-// Middleware
+// --- Route Definition: Correctly type `req` for the Multer middleware chain ---
+// The `req` object passed to Multer's middleware and then to your controller
+// will have the `file` property. So, we should type it as `CustomRequest` here.
+app.post(
+  "/api/upload",
+
+  upload.array("images"), // Multer middleware processes the file
+  postNewImage
+);
+
+// IMPORTANT: Place general body parsers *before* your routes,
+// but be aware they will *not* parse multipart/form-data.
+// Multer handles multipart/form-data exclusively.
+// If you only have file uploads, you might not even need these.
+// If you have other API endpoints expecting JSON, keep these.
 app.use(express.json());
-app.use(fileUpload()); // This middleware handles file uploads
-
-// Routes
-app.use("/api", immichRoutes); // Mount the image routes
+app.use(express.urlencoded({ extended: true }));
 
 // Route to create blog post
 app.use("/api/blog", createBlogPost);
@@ -25,7 +69,9 @@ app.use("/api/blog", createBlogPost);
 // Routes for users
 app.use("/api/users", userRoutes);
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+export default app; // If you are importing this app into another file (e.g., for testing)
