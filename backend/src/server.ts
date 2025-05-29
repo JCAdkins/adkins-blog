@@ -32,18 +32,24 @@
 
 import express from "express";
 import multer from "multer";
-import path from "path";
-import fs from "fs";
 import dotenv from "dotenv";
-import createBlogPost from "./routes/blog-posts.ts";
+import cors from "cors";
 import userRoutes from "./routes/user-routes.ts";
 import postNewImage from "./controllers/immichController.ts";
+import blogRoutes from "./routes/blog-routes.ts";
 // import postNewImage from "./controllers/immichController.ts";
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const upload = multer({ dest: "uploads/" });
+
+app.use(
+  cors({
+    origin: "http://localhost:3001", // your Next.js frontend
+    credentials: true,
+  })
+);
 
 // --- Route Definition: Correctly type `req` for the Multer middleware chain ---
 // The `req` object passed to Multer's middleware and then to your controller
@@ -64,7 +70,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Route to create blog post
-app.use("/api/blog", createBlogPost);
+app.use("/api/blog", blogRoutes);
 
 // Routes for users
 app.use("/api/users", userRoutes);

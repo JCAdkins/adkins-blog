@@ -1,21 +1,33 @@
 import { PrismaClient } from "@prisma/client";
-import type { BlogPostInput } from "../types/types.ts";
+import type { BlogPostInput, ImmichImage } from "../types/types.ts";
 
 const prisma = new PrismaClient();
 
 export async function getAllBlogPosts() {
   return await prisma.blogPost.findMany({
     include: {
-      images: true, // Include associated images
+      blogPostImages: {
+        include: {
+          image: true, // Include the associated image through the join table
+        },
+      },
     },
   });
 }
 
-// Get all featured blog posts
 export const getFeaturedBlogs = async () => {
   return await prisma.blogPost.findMany({
-    where: { featured: true },
-    include: { images: true },
+    where: {
+      featured: "true", // If 'featured' is a string (e.g., "true" instead of boolean)
+    },
+    include: {
+      // Include related images through the BlogPostImage model
+      blogPostImages: {
+        include: {
+          image: true, // Assuming your BlogPostImage model has a relation to the Image model
+        },
+      },
+    },
   });
 };
 
@@ -27,25 +39,70 @@ export const getBlogPostById = async (id: string) => {
   });
 };
 
-// Create a new blog post
-export const createBlogPost = async (data: BlogPostInput) => {
-  return await prisma.blogPost.create({
+// // Create a new blog post
+// export const createBlogPost = async (data: BlogPostInput) => {
+//   console.log("Uploading blog post to database...");
+
+//   console.log("data: ", data);
+//   console.log("imageData: ");
+
+//   return await prisma.blogPost.create({
+//     data: {
+//       title: data.title,
+//       description: data.description,
+//       content: data.content,
+//       featured: data.featured,
+//       images: {
+//         create: data.images, // ✅
+//       },
+//     },
+//   });
+// };
+
+export async function createBlogPost(input: BlogPostInput) {
+  const { title, description, content, featured, images } = input;
+
+  const blogPost = await prisma.blogPost.create({
     data: {
-      title: data.title,
-      description: data.description,
-      content: data.content,
-      featured: data.featured,
-      images: {
-        create: data.images?.map((img) => ({
-          url: img.url, // Only provide the URL, let Prisma handle ID and blogPostId
+      title,
+      description,
+      content,
+      featured,
+      blogPostImages: {
+        create: images?.map((image) => ({
+          image: {
+            connectOrCreate: {
+              where: { id: image.id },
+              create: {
+                id: image.id,
+                status: image.status,
+              },
+            },
+          },
         })),
       },
     },
-    include: { images: true },
+    include: {
+      blogPostImages: {
+        include: {
+          image: true,
+        },
+      },
+    },
   });
-};
+
+  // Optional: flatten the blogPostImages to directly return the linked images
+  return {
+    ...blogPost,
+    images: blogPost.blogPostImages.map((bpImage) => bpImage.image),
+  };
+}
 
 export const updateBlogPost = async (id: string, data: BlogPostInput) => {
+  const imageData = JSON.parse(data.images as unknown as string) as {
+    id: string;
+    status: string;
+  }[];
   // Fetch the existing post with associated images
   const existingPost = await prisma.blogPost.findUnique({
     where: { id },
@@ -57,11 +114,11 @@ export const updateBlogPost = async (id: string, data: BlogPostInput) => {
   }
 
   // Prepare new image URLs from the request body
-  const newImageUrls = data.images?.map((img) => img.url) || [];
+  const newImageUrls = data.images?.map((img) => img.id) || [];
 
   // Step 1: Remove old images that are no longer in the request body
   const imagesToDelete = existingPost.images.filter(
-    (img) => !newImageUrls.includes(img.url)
+    (img) => !newImageUrls.includes(img.id)
   );
 
   // Step 2: Delete the images that are no longer part of the post
@@ -72,12 +129,12 @@ export const updateBlogPost = async (id: string, data: BlogPostInput) => {
   }
 
   // Step 3: Add new images that are not already part of the post
-  const existingImageUrls = existingPost.images.map((img) => img.url);
+  const existingImageUrls = existingPost.images.map((img) => img.id);
   const imagesToAdd = newImageUrls.filter(
-    (url) => !existingImageUrls.includes(url)
+    (url) => !existingImageUrls.includes(url as string)
   );
 
-  // Step 2: Add the new images (if any)
+  // Step 4: Add the new images (if any)
   const updatedPost = await prisma.blogPost.update({
     where: { id },
     data: {
@@ -87,10 +144,9 @@ export const updateBlogPost = async (id: string, data: BlogPostInput) => {
       featured: data.featured,
       images: {
         // Create new image records for the provided image URLs
-        create: imagesToAdd.map((url) => ({ url })),
+        create: imageData,
       },
     },
-    include: { images: true },
   });
 
   return updatedPost;

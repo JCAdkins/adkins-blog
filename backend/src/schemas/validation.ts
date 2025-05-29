@@ -1,18 +1,24 @@
 import { z } from "zod";
 
-export const blogPostSchema = z.object({
-  title: z.string().min(5, "Title must be at least 5 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  content: z.string().min(50, "Content must be at least 50 characters"), // Ensure substantial content
-  images: z
-    .array(
-      z.object({
-        url: z.string().url("Invalid image URL"),
-      })
-    )
-    .optional(),
-  featured: z.boolean().default(false),
+// Define the schema for a single Immich image
+const ImmichImageSchema = z.object({
+  id: z.string().uuid(), // assuming it's a UUID
+  status: z.string(), // optionally validate against enum if fixed values
 });
+
+export type ImmichImage = z.infer<typeof ImmichImageSchema>;
+
+// Define the full BlogPostInput schema
+export const BlogPostInputSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  content: z.string().min(1, "Content is required"),
+  featured: z.string().min(1, "Content is required"),
+  images: z.array(ImmichImageSchema).optional(), // optional if sometimes missing
+});
+
+// Type inference (optional but recommended)
+export type BlogPostInput = z.infer<typeof BlogPostInputSchema>;
 
 export const userSchema = z.object({
   email: z.string().email("Invalid email address"),

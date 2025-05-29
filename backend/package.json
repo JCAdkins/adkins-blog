@@ -7,7 +7,11 @@
     "start": "ts-node dist/server.js",
     "dev": "ts-node src/server.ts",
     "db:generate": "pnpm prisma migrate dev --name",
-    "db:deploy": "pnpm prisma migrate deploy"
+    "db:deploy": "pnpm prisma migrate deploy",
+    "clear-images": "ts-node prisma/scripts/clearImage.ts",
+    "clear-users": "ts-node prisma/scripts/clearUser.ts",
+    "clear-blog-posts": "ts-node prisma/scripts/clearBlogPost.ts",
+    "clear-blog-post-image": "ts-node prisma/scripts/clearBlogPostImage.ts"
   },
   "type": "module",
   "keywords": [],
@@ -21,6 +25,7 @@
     "@types/node": "^22.13.13",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-fileupload": "^1.5.1",

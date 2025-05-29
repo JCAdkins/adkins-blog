@@ -2,12 +2,12 @@ import axios from "axios";
 import FormData from "form-data";
 import { console } from "inspector";
 
-export default async function uploadAsset(bFile: any, file: File) {
+export default async function uploadAsset(bFile: any, file: any) {
   const API_KEY = process.env.IMMICH_API_KEY; // Replace with your real API key
   const BASE_URL = "http://192.168.0.40:2283/api"; // Replace if needed
   const modifiedTime = new Date().toISOString();
   const createdTime = new Date().toISOString(); // or use stats.birthtime depending on your OS
-  console.log("hi");
+  console.log("Uploading image to Immich.");
   const form = new FormData();
 
   form.append("deviceAssetId", "some device");
@@ -15,9 +15,10 @@ export default async function uploadAsset(bFile: any, file: File) {
   form.append("fileCreatedAt", createdTime);
   form.append("fileModifiedAt", modifiedTime);
   form.append("isFavorite", "false");
-  form.append("assetData", bFile);
-
-  console.log("formData: ", form);
+  form.append("assetData", bFile, {
+    filename: file.originalname,
+    contentType: file.mimetype,
+  });
 
   try {
     const response = await axios.post(`${BASE_URL}/assets`, form, {
@@ -29,8 +30,14 @@ export default async function uploadAsset(bFile: any, file: File) {
       maxBodyLength: Infinity, // Allow large files
     });
     const rData = response.data;
-    console.log(rData);
-    return await rData;
+    if (response.status === 200) {
+      console.log(rData);
+      return await rData;
+    } else {
+      console.log("upload failed");
+      console.log(rData);
+      return await rData;
+    }
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       console.error("Upload failed:", err.response?.data || err.message);

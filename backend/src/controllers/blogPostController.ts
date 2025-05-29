@@ -7,7 +7,7 @@ import {
   updateBlogPost,
   deleteBlogPost,
 } from "../services/blogPostService.ts";
-import { blogPostSchema } from "../schemas/validation.ts";
+import { BlogPostInputSchema } from "../schemas/validation.ts";
 import z, { ZodError } from "zod";
 
 // Get all featured blog posts
@@ -58,8 +58,15 @@ export async function createNewBlogPost(
   req: express.Request,
   res: express.Response
 ) {
+  console.log("creating new blog post..");
   try {
-    const validation = blogPostSchema.safeParse(req.body); // Validate input with Zod
+    console.log("req.body: ", req.body);
+    const validation = BlogPostInputSchema.safeParse(req.body); // Validate input with Zod
+    validation.error?.errors.forEach((err) => {
+      console.log(`Path: ${err.path.join(" > ")}`); // This will show the error path (nested fields)
+      console.log(`Message: ${err.message}`); // This will show the error message for the field
+      // console.log(`Expected Type: ${err.}`); // This shows the expected type for the field
+    });
     if (!validation.success) {
       // If validation fails, send an error response
       return res.status(400).json({
@@ -67,8 +74,9 @@ export async function createNewBlogPost(
         errors: validation.error.errors,
       });
     }
+    console.log("v data: ", validation.data);
     const newPost = await createBlogPost(validation.data);
-    res.status(201).json(newPost);
+    return res.status(201).json(newPost);
   } catch (error) {
     if (error instanceof ZodError) {
       return res
@@ -89,7 +97,7 @@ export async function updateBlogPostController(
   const data = req.body;
 
   // Validate the incoming data using Zod
-  const validation = blogPostSchema.safeParse(data);
+  const validation = BlogPostInputSchema.safeParse(data);
 
   if (!validation.success) {
     // If validation fails, send an error response

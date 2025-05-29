@@ -14,21 +14,30 @@ datasource db {
 }
 
 model BlogPost {
-  id          String   @id @default(uuid())
+  id          String            @id @default(uuid())
   title       String
-  description String   @default("No description provided.")  // Default value
+  description String            @default("No description provided.")
   content     String
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  images      Image[]  // This will be handled via the relation in the Image model
+  featured    String            @default("false")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  blogPostImages BlogPostImage[]
 }
 
 model Image {
-  id         Int      @id @default(autoincrement())
-  url        String
+  id              String           @id // Immich UUID
+  status          String
+  blogPostImages  BlogPostImage[]
+}
+
+model BlogPostImage {
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id])
   blogPostId String
-  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  image      Image    @relation(fields: [imageId], references: [id])
+  imageId    String
+
+  @@id([blogPostId, imageId]) // Composite primary key
 }
 
 model User {

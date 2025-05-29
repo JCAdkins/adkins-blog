@@ -3,14 +3,20 @@ import getImageURLs from "@/lib/services/file-upload";
 import { createNewBlog } from "@/lib/db/queries";
 
 export async function createPost(formData: FormData) {
-  const images = formData.getAll("images") as File[];
-
-  const imageUrls = await getImageURLs(images);
+  const imageUrls = await getImageURLs(formData);
+  console.log("imageUrls: ", imageUrls);
   formData.delete("images");
-  imageUrls.forEach((image) => formData.append("images", image));
+  formData.append("images", JSON.stringify(imageUrls));
   console.log("formData ", formData);
+  const data = {
+    title: formData.get("title") as string,
+    description: formData.get("description") as string,
+    content: formData.get("content") as string,
+    featured: formData.get("featured") as string, // use boolean, not string
+    images: imageUrls,
+  };
 
-  const blog = createNewBlog(formData);
+  return await createNewBlog(data);
 
   // TODO: handle actual upload and DB persistence
 }

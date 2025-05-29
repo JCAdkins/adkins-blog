@@ -30,9 +30,17 @@ declare module "next-auth" {
     updatedAt: string;
   }
 
+  interface NewBlog {
+    title: string;
+    description: string;
+    content: string;
+    featured: string;
+    images?: string[];
+  }
+
   interface Images {
     id: number;
-    url: string;
+    status: string;
     blogPostId: string;
   }
 }

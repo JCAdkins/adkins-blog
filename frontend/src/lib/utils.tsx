@@ -41,6 +41,13 @@ export function formatDateToMMDDYYYY(dateString: string) {
   return `${month}/${day}/${year}`;
 }
 
+export function redirectToAdmin() {
+  if (typeof window !== "undefined") {
+    // This will only run on the client-side
+    window.location.href = "http://localhost:3001/admin";
+  }
+}
+
 export function deepEqual(obj1: any, obj2: any): boolean {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 }

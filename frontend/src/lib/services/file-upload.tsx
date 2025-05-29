@@ -1,28 +1,24 @@
-export default async function getImageURLs(files: File[]): Promise<string[]> {
-  const uploadEndpoint = `${process.env.BASE_URL}/upload`; // Change to your actual upload endpoint
-  const urls: string[] = [];
+export default async function getImageURLs(files: FormData): Promise<string[]> {
+  const uploadEndpoint = `${process.env.BASE_URL}/upload`;
+  console.log("files: ", files);
 
-  for (let i = 0; i < files.length; i++) {
-    try {
-      const formData = new FormData();
-      formData.append("image", files[i]);
-      console.log("fd: ", formData);
-      const res = await fetch(uploadEndpoint, {
-        method: "POST",
-        body: formData,
-      });
+  try {
+    const res = await fetch(uploadEndpoint, {
+      method: "POST",
+      body: files,
+    });
 
-      if (!res.ok) {
-        res.text().then((data) => console.log("err data: ", data));
-        throw new Error(`Failed to upload ${files[i].name}`);
-      }
-
-      const data = await res.json();
-      urls.push(data.url); // Adjust based on your backend's response structure
-    } catch (error) {
-      console.error(`Error uploading ${files[i].name}:`, error);
+    if (!res.ok) {
+      const errorText = await res.text(); // await this to capture server message
+      console.error("Upload failed response:", errorText);
+      throw new Error(`Upload failed with status ${res.status}`);
     }
-  }
 
-  return urls;
+    const data = await res.json();
+    console.log("Upload response:", data);
+    return data; // Ensure your backend returns an array of URLs
+  } catch (error) {
+    console.error("Error uploading files:", error);
+    return [];
+  }
 }

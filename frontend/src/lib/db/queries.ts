@@ -1,16 +1,7 @@
 // lib/db/queries.ts
 
-import { Blog } from "next-auth";
-
-type User = {
-  role: string;
-  password: string;
-  id: string;
-  email: string;
-  username: string;
-  first_name?: string;
-  last_name?: string;
-};
+import { Blog, NewBlog, User } from "next-auth";
+import { redirectToAdmin } from "../utils";
 
 export async function createUser(userData: {
   email: string;
@@ -81,19 +72,31 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(`${process.env.BASE_URL}/blog`);
     if (!response.ok) return null;
-    return await response.json();
+
+    const data = await response.json();
+
+    // Flatten the blogPostImages and include only the relevant data (images)
+    const blogs = data.map((blog: any) => {
+      return {
+        ...blog,
+        images: blog.blogPostImages.map((postImage: any) => postImage.image), // Extract only the image data
+      };
+    });
+    console.log("blogs: ", blogs);
+    return blogs;
   } catch (error) {
-    console.error("Error fetching featured blogs:", error);
+    console.error("Error fetching blogs:", error);
     return null;
   }
 }
 
-export async function createNewBlog(blogData: FormData): Promise<Blog | null> {
+export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   try {
+    console.log("trying to create new blog");
     const response = await fetch(`${process.env.BASE_URL}/blog`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: blogData,
+      body: JSON.stringify(blogData),
     });
 
     if (!response.ok) {
@@ -102,7 +105,7 @@ export async function createNewBlog(blogData: FormData): Promise<Blog | null> {
       throw new Error("Failed to create blog");
     }
 
-    window.location.href = "http://localhost:3001/admin";
+    redirectToAdmin();
     return await response.json();
   } catch (err) {
     console.error("Fetch error:", err);
