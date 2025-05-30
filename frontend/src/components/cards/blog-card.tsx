@@ -13,7 +13,10 @@ export default function BlogCard({
   imageUrl: string | undefined;
 }) {
   return (
-    <Card key={blog.id} className="bg-login text-black">
+    <Card
+      key={blog.id}
+      className="bg-login text-black transition-transform duration-50 hover:scale-[1.02]"
+    >
       <Link href={`/posts/${blog.id}`} className="block">
         <img
           src={

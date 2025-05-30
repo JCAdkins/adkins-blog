@@ -5,6 +5,11 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import MainHeader from "@/components/headers/main-header";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
+import localFont from "next/font/local";
+
+const Nunito = localFont({
+  src: "../fonts/Nunito-VariableFont.ttf",
+});
 
 const open_sans = Open_Sans({
   variable: "--font-open-sans",
@@ -58,7 +63,7 @@ export default async function RootLayout({
           autoCapitalize="words"
         />
       </head>
-      <body className={`antialiased ${open_sans}`}>
+      <body className={`antialiased ${Nunito.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

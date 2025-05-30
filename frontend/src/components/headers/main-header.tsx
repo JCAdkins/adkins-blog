@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import localFont from "next/font/local";
 
 const biancha = localFont({
-  src: "../../fonts/Biancha.otf",
+  src: "../../fonts/Resillia.ttf",
 });
 
 export default function MainHeader() {

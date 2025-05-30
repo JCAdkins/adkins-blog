@@ -41,18 +41,6 @@ export function formatDateToMMDDYYYY(dateString: string) {
   return `${month}/${day}/${year}`;
 }
 
-export function redirectToAdmin() {
-  if (typeof window !== "undefined") {
-    // This will only run on the client-side
-    window.location.href = "http://localhost:3001/admin";
-  }
-}
-
 export function deepEqual(obj1: any, obj2: any): boolean {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
-}
-
-export function getFullUrl(imageId: number | undefined): string {
-  console.log("http://localhost:2283/photos/" + imageId);
-  return "http://localhost:2283/photos/" + imageId;
 }
