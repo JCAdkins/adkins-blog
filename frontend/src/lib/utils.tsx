@@ -51,3 +51,8 @@ export function redirectToAdmin() {
 export function deepEqual(obj1: any, obj2: any): boolean {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 }
+
+export function getFullUrl(imageId: number | undefined): string {
+  console.log("http://localhost:2283/photos/" + imageId);
+  return "http://localhost:2283/photos/" + imageId;
+}

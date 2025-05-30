@@ -2,6 +2,7 @@
 
 import { Blog, NewBlog, User } from "next-auth";
 import { redirectToAdmin } from "../utils";
+import axios from "axios";
 
 export async function createUser(userData: {
   email: string;
@@ -76,17 +77,42 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
     const data = await response.json();
 
     // Flatten the blogPostImages and include only the relevant data (images)
-    const blogs = data.map((blog: any) => {
-      return {
-        ...blog,
-        images: blog.blogPostImages.map((postImage: any) => postImage.image), // Extract only the image data
-      };
-    });
-    console.log("blogs: ", blogs);
-    return blogs;
+    // const blogs = data.map((blog: any) => {
+    //   return {
+    //     ...blog,
+    //     images: blog.blogPostImages.map((postImage: any) => postImage.image), // Extract only the image data
+    //   };
+    // });
+    return data;
   } catch (error) {
     console.error("Error fetching blogs:", error);
     return null;
+  }
+}
+
+export async function getImmichImage(id: number | undefined) {
+  if (!id) return;
+  console.log(`${process.env.BASE_URL}/images`);
+  try {
+    console.log("attempting image download...");
+    const response = await axios.get(`${process.env.BASE_URL}/images`, {
+      responseType: "arraybuffer",
+      headers: {
+        Accept: "application/octet-stream",
+      },
+      params: {
+        id, // sends as ?id=yourId
+      },
+    });
+
+    const contentType = response.headers["content-type"] || "image/png";
+    const base64Image = Buffer.from(response.data, "binary").toString("base64");
+    const dataUrl = `data:${contentType};base64,${base64Image}`;
+    console.log("imageUrl: ", dataUrl);
+    return dataUrl;
+  } catch (err) {
+    console.error("Fetch error:", err);
+    throw err;
   }
 }
 

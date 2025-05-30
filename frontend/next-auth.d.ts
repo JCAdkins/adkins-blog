@@ -25,7 +25,7 @@ declare module "next-auth" {
     description: string;
     content: string;
     featured: boolean;
-    images?: Images[];
+    blogPostImages?: BlogPostImage[];
     createdAt: string;
     updatedAt: string;
   }
@@ -38,9 +38,14 @@ declare module "next-auth" {
     images?: string[];
   }
 
-  interface Images {
+  interface Image {
     id: number;
     status: string;
+  }
+
+  interface BlogPostImage {
     blogPostId: string;
+    id: string;
+    image: Image;
   }
 }

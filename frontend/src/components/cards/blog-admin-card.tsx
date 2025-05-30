@@ -1,15 +1,17 @@
 "use client";
 
 import { Card } from "@/components/ui/card"; // Adjust the import path as needed
-import { formatDateToMMDDYYYY } from "@/lib/utils";
+import { formatDateToMMDDYYYY, getFullUrl } from "@/lib/utils";
 import { Blog } from "next-auth";
 import Link from "next/link";
 
-interface BlogCardProps {
+export default function BlogAdminCard({
+  blog,
+  imageUrl,
+}: {
   blog: Blog;
-}
-
-export default function BlogAdminCard({ blog }: BlogCardProps) {
+  imageUrl: string | undefined;
+}) {
   return (
     <Card
       className="bg-login text-black"
@@ -32,7 +34,7 @@ export default function BlogAdminCard({ blog }: BlogCardProps) {
       <div className="flex-col">
         <img
           src={
-            blog.images?.[0]?.url ||
+            imageUrl ||
             "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
           }
           alt={blog.title}

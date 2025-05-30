@@ -1,7 +1,8 @@
 import Break from "@/components/ui/break";
-import BlogCard from "@/components/cards/blog-card";
 import { getFeaturedBlogs } from "@/lib/db/queries";
 import { Blog } from "next-auth";
+import BlogCardServer from "@/components/cards/blog-card-server";
+import BlogCard from "@/components/cards/blog-card";
 
 export default async function Home() {
   // Fetch the featured blog posts directly in the component
@@ -28,7 +29,9 @@ export default async function Home() {
         </div>
         <Break className="border-red-300 px-16" />
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredPosts?.map((post) => <BlogCard key={post.id} blog={post} />)}
+          {featuredPosts?.map((blog, ind) => (
+            <BlogCardServer key={ind} blog={blog} CardComponent={BlogCard} />
+          ))}
         </div>
       </main>
       <footer className="row-start- flex flex-wrap items-center justify-center gap-[24px]">

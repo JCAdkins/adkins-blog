@@ -1,5 +1,9 @@
-import uploadAsset from "../models/immichModel.ts";
+import { uploadAsset, downloadAsset } from "../models/immichModel.ts";
 
-export default async function postNewImageService(bFile: any, file: any) {
+export async function postNewImageService(bFile: any, file: any) {
   return await uploadAsset(bFile, file);
+}
+
+export async function getImmichImageService(id: string) {
+  return await downloadAsset(id);
 }

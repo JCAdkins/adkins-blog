@@ -5,6 +5,11 @@ import LoginButton from "../buttons/login-button";
 import { UserMenu } from "../menus/user-menu";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import localFont from "next/font/local";
+
+const biancha = localFont({
+  src: "../../fonts/Biancha.otf",
+});
 
 export default function MainHeader() {
   const links = [
@@ -23,7 +28,11 @@ export default function MainHeader() {
   return (
     <Header
       links={links}
-      leftContent={<h1 className="text-xl font-bold">Adkins Ninja Blog</h1>}
+      leftContent={
+        <h1 className={`text-2xl font-extrabold ${biancha.className}`}>
+          Adkins Ninja Blog
+        </h1>
+      }
       rightContent={
         session?.user ? <UserMenu user={session.user} /> : <LoginButton />
       }

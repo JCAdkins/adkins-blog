@@ -20,16 +20,16 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className={`p-4 ${className}`}>
-      <nav className="container mx-auto flex items-center justify-between">
-        <div>{leftContent}</div>
-        <div className="space-x-4">
+      <nav className="container mx-auto grid grid-cols-3 items-center">
+        <div className="flex items-center">{leftContent}</div>
+        <div className="flex justify-center space-x-4">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="hover:underline">
               {link.label}
             </Link>
           ))}
         </div>
-        <div>{rightContent}</div>
+        <div className="flex items-center justify-end">{rightContent}</div>
       </nav>
     </header>
   );

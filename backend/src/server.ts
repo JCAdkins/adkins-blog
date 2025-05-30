@@ -35,7 +35,10 @@ import multer from "multer";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/user-routes.ts";
-import postNewImage from "./controllers/immichController.ts";
+import {
+  getImmichImage,
+  postNewImage,
+} from "./controllers/immichController.ts";
 import blogRoutes from "./routes/blog-routes.ts";
 // import postNewImage from "./controllers/immichController.ts";
 
@@ -60,7 +63,7 @@ app.post(
   upload.array("images"), // Multer middleware processes the file
   postNewImage
 );
-
+app.get("/api/images", getImmichImage);
 // IMPORTANT: Place general body parsers *before* your routes,
 // but be aware they will *not* parse multipart/form-data.
 // Multer handles multipart/form-data exclusively.

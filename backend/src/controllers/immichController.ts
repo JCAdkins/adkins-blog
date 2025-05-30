@@ -1,14 +1,17 @@
 // src/controllers/immichController.ts
 import express from "express"; // Ensure Request, Response are imported
 import fs from "fs"; // Use fs/promises for async/await file operations
-import postNewImageService from "../services/immichService.ts";
+import {
+  postNewImageService,
+  getImmichImageService,
+} from "../services/immichService.ts";
 // You might need to declare the Multer types globally or import them if not already done
 // For simplicity, let's redefine CustomRequest or ensure it's imported from a shared type file
 interface CustomRequest extends express.Request {
   file?: Express.Multer.File;
 }
 
-export default async function postNewImage(
+export async function postNewImage(
   req: CustomRequest, // IMPORTANT: Use CustomRequest here
   res: express.Response
 ) {
@@ -33,5 +36,28 @@ export default async function postNewImage(
   } catch (error) {
     console.error("Error in immichController:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function getImmichImage(
+  req: express.Request,
+  res: express.Response
+) {
+  const immichId = req.query.id as string;
+
+  try {
+    const result = await getImmichImageService(immichId);
+
+    if (result) {
+      // If the result is the binary data, send it as a response
+      res.setHeader("Content-Type", "application/octet-stream");
+      res.send(result); // Send the binary data
+    } else {
+      // If no data is found, send an error response
+      res.status(404).json({ error: "Image not found" });
+    }
+  } catch (error) {
+    console.error("Error in getImmichImage:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }

@@ -1,18 +1,23 @@
-import { Blog } from "next-auth"; // your custom augmentation
-import { Card } from "../ui/card";
+// src/components/cards/BlogCard.tsx (Client Component)
+"use client";
+
 import Link from "next/link";
+import { Card } from "../ui/card";
+import { Blog } from "next-auth";
 
-interface BlogCardProps {
+export default function BlogCard({
+  blog,
+  imageUrl,
+}: {
   blog: Blog;
-}
-
-export default function BlogCard({ blog }: BlogCardProps) {
+  imageUrl: string | undefined;
+}) {
   return (
-    <Card key={blog.id} className="text-black">
+    <Card key={blog.id} className="bg-login text-black">
       <Link href={`/posts/${blog.id}`} className="block">
         <img
           src={
-            blog.images?.[0]?.url ||
+            imageUrl ||
             "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
           }
           alt={blog.title}
