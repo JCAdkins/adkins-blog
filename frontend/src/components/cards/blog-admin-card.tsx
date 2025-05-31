@@ -14,7 +14,7 @@ export default function BlogAdminCard({
 }) {
   return (
     <Card
-      className="bg-login text-black transition-transform duration-50 hover:scale-[1.02]"
+      className="bg-login text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]"
       key={blog.id}
       header={blog.title}
       footer={

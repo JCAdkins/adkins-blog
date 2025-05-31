@@ -15,7 +15,7 @@ export default function BlogCard({
   return (
     <Card
       key={blog.id}
-      className="bg-login text-black transition-transform duration-50 hover:scale-[1.02]"
+      className="bg-login text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]"
     >
       <Link href={`/posts/${blog.id}`} className="block">
         <img

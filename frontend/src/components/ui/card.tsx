@@ -20,7 +20,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <RadixCard
         ref={ref}
         className={cn(
-          "border bg-white text-white shadow-md transition-shadow hover:shadow-lg",
+          "border bg-white text-white shadow-md transition-shadow hover:shadow-lg sm:m-0",
           "space-y-4 p-4",
           className,
         )}

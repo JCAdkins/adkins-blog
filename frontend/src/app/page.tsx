@@ -14,12 +14,12 @@ export default async function Home() {
   const featuredPosts: Blog[] | null = await getFeaturedBlogs();
 
   return (
-    <div className="grid min-h-screen grid-rows-[1fr_20px] items-start justify-items-center gap-16 p-4 font-[family-name:var(--font-geist-sans)] sm:p-12">
-      <main className="row-start-1 flex flex-col items-center gap-[16px] px-16 sm:items-start">
+    <div className="grid min-h-screen w-full grid-rows-[1fr_20px] items-start justify-items-center gap-16 overflow-x-hidden font-[family-name:var(--font-geist-sans)] sm:p-12">
+      <main className="row-start-1 flex w-full max-w-5/6 flex-col items-center gap-[16px] pt-6 sm:items-start sm:px-8">
         <h1 className="flex w-full items-center text-center text-2xl">
           <div className="border-login-hover h-[1px] w-full border" />
           <div
-            className={`px-2 text-3xl font-bold text-nowrap ${biancha.className} text-login-hover`}
+            className={`px-2 text-xl font-bold text-nowrap sm:text-3xl ${biancha.className} text-login-hover`}
           >
             The Blogging Photographer
           </div>
@@ -34,14 +34,14 @@ export default async function Home() {
           thank you for stopping by and viewing the site. If you want to provide
           any feedback please don't heesitate to reach out. :)
         </div>
-        <Break className="border-login-hover px-16" />
+        <Break className="border-login-hover w-full" />
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts?.map((blog, ind) => (
             <BlogCardServer key={ind} blog={blog} CardComponent={BlogCard} />
           ))}
         </div>
       </main>
-      <footer className="row-start- flex flex-wrap items-center justify-center gap-[24px]">
+      <footer className="row-start-2 flex flex-wrap items-center justify-center gap-[24px]">
         © {new Date().getFullYear()} Adkins Ninja Blog
       </footer>
     </div>

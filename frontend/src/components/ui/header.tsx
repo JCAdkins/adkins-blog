@@ -16,7 +16,7 @@ export default function Header({
     </Link>
   ),
   rightContent,
-  className = "bg-gray-900 text-white",
+  className = "bg-gray-900 text-white fixed top-0 z-50",
 }: HeaderProps) {
   return (
     <header className={`p-4 ${className}`}>
