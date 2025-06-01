@@ -4,6 +4,7 @@ import fs from "fs"; // Use fs/promises for async/await file operations
 import {
   postNewImageService,
   getImmichImageService,
+  getImmichThumbnailService,
 } from "../services/immichService.ts";
 // You might need to declare the Multer types globally or import them if not already done
 // For simplicity, let's redefine CustomRequest or ensure it's imported from a shared type file
@@ -44,9 +45,32 @@ export async function getImmichImage(
   res: express.Response
 ) {
   const immichId = req.query.id as string;
-
+  console.log("downloading immich image at controller...");
   try {
     const result = await getImmichImageService(immichId);
+
+    if (result) {
+      // If the result is the binary data, send it as a response
+      res.setHeader("Content-Type", "application/octet-stream");
+      res.send(result); // Send the binary data
+    } else {
+      // If no data is found, send an error response
+      res.status(404).json({ error: "Image not found" });
+    }
+  } catch (error) {
+    console.error("Error in getImmichImage:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export async function getImmichThumbnail(
+  req: express.Request,
+  res: express.Response
+) {
+  const immichId = req.query.id as string;
+
+  try {
+    const result = await getImmichThumbnailService(immichId);
 
     if (result) {
       // If the result is the binary data, send it as a response

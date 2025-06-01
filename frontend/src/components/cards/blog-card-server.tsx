@@ -1,5 +1,5 @@
 // src/components/cards/BlogCardServer.tsx
-import { getImmichImage } from "../../lib/db/queries";
+import { getImmichAsset } from "../../lib/db/queries";
 import { Blog } from "next-auth";
 
 type BlogCardPropsBase = {
@@ -18,7 +18,10 @@ export default async function BlogCardServer<T extends BlogCardPropsBase>({
   CardComponent,
   extraProps,
 }: BlogCardServerProps<T>) {
-  const imageUrl = await getImmichImage(blog.blogPostImages?.[0]?.image.id);
+  const imageUrl = await getImmichAsset({
+    type: "thumbnail",
+    id: blog.blogPostImages?.[0]?.image.id,
+  });
 
   // Combine required props + any extras
   const props = {

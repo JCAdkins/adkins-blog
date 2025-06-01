@@ -46,6 +46,6 @@ declare module "next-auth" {
   interface BlogPostImage {
     blogPostId: string;
     id: string;
-    image: Image;
+    imageId: string;
   }
 }

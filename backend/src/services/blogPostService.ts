@@ -33,31 +33,14 @@ export const getFeaturedBlogs = async () => {
 
 // Get a single blog post by ID
 export const getBlogPostById = async (id: string) => {
+  console.log("returning blog fetch...");
   return await prisma.blogPost.findUnique({
     where: { id },
-    include: { images: true },
+    include: {
+      blogPostImages: true,
+    },
   });
 };
-
-// // Create a new blog post
-// export const createBlogPost = async (data: BlogPostInput) => {
-//   console.log("Uploading blog post to database...");
-
-//   console.log("data: ", data);
-//   console.log("imageData: ");
-
-//   return await prisma.blogPost.create({
-//     data: {
-//       title: data.title,
-//       description: data.description,
-//       content: data.content,
-//       featured: data.featured,
-//       images: {
-//         create: data.images, // ✅
-//       },
-//     },
-//   });
-// };
 
 export async function createBlogPost(input: BlogPostInput) {
   const { title, description, content, featured, images } = input;

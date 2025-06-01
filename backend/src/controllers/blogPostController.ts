@@ -39,7 +39,8 @@ export async function getBlogPosts(
 }
 
 // Get a single blog post by ID
-export async function getBlogPost(req: express.Request, res: express.Response) {
+export async function getBlogById(req: express.Request, res: express.Response) {
+  console.log("fetching blog by id..");
   try {
     const { id } = req.params;
     const post = await getBlogPostById(id);

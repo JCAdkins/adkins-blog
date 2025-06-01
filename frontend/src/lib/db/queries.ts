@@ -80,13 +80,23 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
   }
 }
 
-export async function getImmichImage(id: number | undefined) {
+type AssetType = "original" | "thumbnail";
+
+interface GetImmichAssetParams {
+  type: AssetType;
+  id: number | string | undefined;
+}
+
+export async function getImmichAsset({ type, id }: GetImmichAssetParams) {
+  console.log("trying to fetch immich asset...");
+  console.log("id: ", id);
   if (!id) return;
-  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/images`);
+  const route = type === "original" ? "images" : "thumbnail";
+  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/${route}`);
   try {
     console.log("attempting image download...");
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/images`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${route}`,
       {
         responseType: "arraybuffer",
         headers: {
@@ -128,5 +138,23 @@ export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   } catch (err) {
     console.error("Fetch error:", err);
     throw err;
+  }
+}
+
+export async function getBlogById(id: string) {
+  console.log("fetching blog by id...");
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/blog/${id}`, {
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Fetch failed:", errText);
+      throw new Error("Failed to fetch blog.");
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Error fetching featured blogs:", err);
+    return null;
   }
 }

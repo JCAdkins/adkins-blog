@@ -37,6 +37,7 @@ import cors from "cors";
 import userRoutes from "./routes/user-routes.ts";
 import {
   getImmichImage,
+  getImmichThumbnail,
   postNewImage,
 } from "./controllers/immichController.ts";
 import blogRoutes from "./routes/blog-routes.ts";
@@ -64,6 +65,7 @@ app.post(
   postNewImage
 );
 app.get("/api/images", getImmichImage);
+app.get("/api/thumbnail", getImmichThumbnail);
 // IMPORTANT: Place general body parsers *before* your routes,
 // but be aware they will *not* parse multipart/form-data.
 // Multer handles multipart/form-data exclusively.

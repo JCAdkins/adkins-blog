@@ -2,7 +2,7 @@
 import express from "express";
 import {
   createNewBlogPost,
-  getBlogPost,
+  getBlogById,
   getBlogPosts,
   updateBlogPostController,
   deleteBlogPostController,
@@ -21,7 +21,7 @@ router.get("/", getBlogPosts);
 router.get("/featured", getFeaturedBlogPosts);
 
 // Get a single blog post by ID
-router.get("/:id", getBlogPost);
+router.get("/:id", getBlogById);
 
 // Update a blog post by ID
 router.put("/:id", updateBlogPostController);

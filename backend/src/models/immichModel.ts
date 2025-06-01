@@ -52,7 +52,33 @@ export async function uploadAsset(bFile: any, file: any) {
 
 export async function downloadAsset(id: string) {
   try {
+    console.log("downloading asset at model...");
     const response = await axios.get(`${BASE_URL}/assets/${id}/original`, {
+      headers: {
+        Accept: "application/octet-stream",
+        "x-api-key": API_KEY,
+      },
+      responseType: "arraybuffer", // or "blob" for browser
+      maxBodyLength: Infinity,
+      timeout: 10000, // 10 seconds timeout (adjust as needed)
+    });
+
+    if (response.status === 200) {
+      console.log("Download successful");
+      return response.data; // this will be the raw binary data
+    } else {
+      console.warn("Download failed with status:", response.status);
+      return null;
+    }
+  } catch (error) {
+    console.error("Download failed:", error);
+    return null;
+  }
+}
+
+export async function downloadThumbnail(id: string) {
+  try {
+    const response = await axios.get(`${BASE_URL}/assets/${id}/thumbnail`, {
       headers: {
         Accept: "application/octet-stream",
         "x-api-key": API_KEY,
