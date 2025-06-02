@@ -61,6 +61,8 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 className="object-cover"
                 loading="lazy"
                 sizes="(max-width: 768px) 50vw, 33vw"
+                placeholder="blur"
+                blurDataURL={index % 2 === 0 ? "/blur.webp" : "/dark-blur.jpeg"}
               />
             </div>
           );
