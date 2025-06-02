@@ -7,9 +7,11 @@ I decided to create this photo blogging app because I wanted a system that combi
 ## **Features**
 Blog Posts: Write and share blog posts with integrated photo galleries.
 
-### <u>Immich Integration:</u> Leverage Immich's API to store and manage images, enhancing the user experience with self-hosted image management.
+### <u>Immich Integration:</u> 
+Leverage Immich's API to store and manage images, enhancing the user experience with self-hosted image management.
 
-### <u>Future Enhancements:</u> There are a lot of ideas planned for future features, including exploring the AI capabilities and facial recognition that Immich provides.
+### <u>Future Enhancements:</u> 
+There are a lot of ideas planned for future features, including exploring the AI capabilities and facial recognition that Immich provides.
 
 ## **Progress and Updates**
 While the project is still in the early stages, I’m excited to explore and expand the app’s functionality. Regular updates are expected, with new features being added frequently—aiming for daily or at least bi-daily progress.
