@@ -7,6 +7,7 @@ import ImageGallery from "@/components/containers/image-container";
 import { Blog, BlogPostImage } from "next-auth";
 import BlogContentSkeleton from "../skeletons/blog-content-skeleton";
 import BlogImageSkeleton from "../skeletons/blog-image-skeleton";
+import React from "react";
 
 type Props = {
   id: string;
@@ -48,7 +49,14 @@ export default function BlogPostContent({ id }: Props) {
             created on {formatDateToMMDDYYYY(post.createdAt)}
           </p>
           <p className="mb-6 text-gray-500">{post.description}</p>
-          <div className="prose prose-lg dark:prose-invert">{post.content}</div>
+          <div className="prose prose-lg dark:prose-invert">
+            {post.content.split("\n").map((line, i) => (
+              <React.Fragment key={i}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </div>
         </>
       )}
 

@@ -2,8 +2,8 @@ import axios from "axios";
 import FormData from "form-data";
 import { console } from "inspector";
 
-const API_KEY = process.env.IMMICH_API_KEY; // Replace with your real API key
-const BASE_URL = "http://192.168.0.40:2283/api"; // Replace if needed
+const API_KEY = process.env.IMMICH_API_KEY;
+const BASE_URL = "http://192.168.0.40:2283/api";
 
 export async function uploadAsset(bFile: any, file: any) {
   const modifiedTime = new Date().toISOString();

@@ -75,7 +75,6 @@ export async function createNewBlogPost(
         errors: validation.error.errors,
       });
     }
-    console.log("v data: ", validation.data);
     const newPost = await createBlogPost(validation.data);
     return res.status(201).json(newPost);
   } catch (error) {
