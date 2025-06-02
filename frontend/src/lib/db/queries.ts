@@ -144,9 +144,12 @@ export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
 export async function getBlogById(id: string) {
   console.log("fetching blog by id...");
   try {
-    const response = await fetch(`${process.env.BASE_URL}/blog/${id}`, {
-      cache: "no-store",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${id}`,
+      {
+        cache: "no-store",
+      },
+    );
     if (!response.ok) {
       const errText = await response.text();
       console.error("Fetch failed:", errText);
