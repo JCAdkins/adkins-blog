@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getBlogById, getImmichAsset } from "@/lib/db/queries";
+import { getBlogById } from "@/lib/db/queries";
+import { getImmichAsset } from "@/lib/services/immich-service";
 import { formatDateToMMDDYYYY } from "@/lib/utils";
 import ImageGallery from "@/components/containers/image-container";
 import { Blog, BlogPostImage } from "next-auth";

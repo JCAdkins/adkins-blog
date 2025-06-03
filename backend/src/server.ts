@@ -9,6 +9,7 @@ import {
   postNewImage,
 } from "./controllers/immichController.ts";
 import blogRoutes from "./routes/blog-routes.ts";
+import contactRoutes from "./routes/contact-routes.ts";
 // import postNewImage from "./controllers/immichController.ts";
 
 dotenv.config();
@@ -42,8 +43,11 @@ app.get("/api/thumbnail", getImmichThumbnail);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Route to create blog post
+// Routes to create blog post
 app.use("/api/blog", blogRoutes);
+
+// Routes for contacting through email
+app.use("/api/contact", contactRoutes);
 
 // Routes for users
 app.use("/api/users", userRoutes);
