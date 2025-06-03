@@ -1,13 +1,9 @@
 "use server";
-import getImageURLs from "@/lib/services/file-upload";
+import { getImageURLs } from "@/lib/services/immich-service";
 import { createNewBlog } from "@/lib/db/queries";
 
 export async function createPost(formData: FormData) {
   const imageUrls = await getImageURLs(formData);
-  console.log("imageUrls: ", imageUrls);
-  formData.delete("images");
-  formData.append("images", JSON.stringify(imageUrls));
-  console.log("formData ", formData);
   const data = {
     title: formData.get("title") as string,
     description: formData.get("description") as string,
@@ -17,6 +13,4 @@ export async function createPost(formData: FormData) {
   };
 
   return await createNewBlog(data);
-
-  // TODO: handle actual upload and DB persistence
 }

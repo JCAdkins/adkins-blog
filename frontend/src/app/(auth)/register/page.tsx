@@ -9,6 +9,7 @@ import { AuthForm } from "@/components/forms/auth-form";
 import { SubmitButton } from "@/components/buttons/submit-button";
 
 import { register, type RegisterActionState } from "../actions";
+import { welcomeNewUser } from "@/lib/services/contact-service";
 
 export default function Page() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function Page() {
       status: "idle",
     },
   );
-  // 0oijoij
+
   useEffect(() => {
     if (state.status === "username_taken") {
       toast.error("Username already exists");
@@ -44,6 +45,7 @@ export default function Page() {
     } else if (state.status === "success") {
       toast.success("Account created successfully");
       setIsSuccessful(true);
+      welcomeNewUser(email);
       router.refresh();
       router.push("/");
     }

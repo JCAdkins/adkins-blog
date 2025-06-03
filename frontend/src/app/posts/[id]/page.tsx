@@ -5,7 +5,7 @@ type Props = {
 };
 
 export default async function BlogPostPage({ params }: Props) {
-  const { id } = params;
+  const { id } = await params;
   console.log("id: ", id);
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

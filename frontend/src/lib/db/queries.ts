@@ -1,7 +1,6 @@
 // lib/db/queries.ts
 
 import { Blog, NewBlog, User } from "next-auth";
-import axios from "axios";
 import { redirect } from "next/navigation";
 
 export async function createUser(userData: {
@@ -77,44 +76,6 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
   } catch (error) {
     console.error("Error fetching blogs:", error);
     return null;
-  }
-}
-
-type AssetType = "original" | "thumbnail";
-
-interface GetImmichAssetParams {
-  type: AssetType;
-  id: number | string | undefined;
-}
-
-export async function getImmichAsset({ type, id }: GetImmichAssetParams) {
-  console.log("trying to fetch immich asset...");
-  console.log("id: ", id);
-  if (!id) return;
-  const route = type === "original" ? "images" : "thumbnail";
-  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/${route}`);
-  try {
-    console.log("attempting image download...");
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${route}`,
-      {
-        responseType: "arraybuffer",
-        headers: {
-          Accept: "application/octet-stream",
-        },
-        params: {
-          id, // sends as ?id=yourId
-        },
-      },
-    );
-
-    const contentType = response.headers["content-type"] || "image/png";
-    const base64Image = Buffer.from(response.data, "binary").toString("base64");
-    const dataUrl = `data:${contentType};base64,${base64Image}`;
-    return dataUrl;
-  } catch (err) {
-    console.error("Fetch error:", err);
-    throw err;
   }
 }
 
