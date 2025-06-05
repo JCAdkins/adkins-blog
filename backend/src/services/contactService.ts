@@ -1,9 +1,10 @@
+import { getAdminListFromDb } from "../models/contactModel.ts";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 type EmailParams = {
-  to: string;
+  to: string[];
   subject: string;
   html: string;
 };
@@ -28,7 +29,7 @@ export async function contactAdminEmail({ to, subject, html }: EmailParams) {
 export async function welcomeNewUserEmail(to: string, username: string) {
   try {
     const data = await resend.emails.send({
-      from: "Your App <onboarding@resend.dev>", // default sender for dev
+      from: "The Blogging Photographer <onboarding@resend.dev>", // default sender for dev
       to,
       subject: "Welcome to Adkins Ninja Blog",
       html: `
@@ -73,4 +74,10 @@ export async function welcomeNewUserEmail(to: string, username: string) {
     console.error("Email sending failed:", error);
     throw error;
   }
+}
+
+export async function getAdminsList() {
+  const adminList = await getAdminListFromDb();
+  console.log("adminList: ", adminList);
+  return adminList;
 }
