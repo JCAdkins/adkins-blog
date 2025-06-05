@@ -1,1 +1,1 @@
-SELECT * FROM "BlogPostImage"
+SELECT * FROM "User"
