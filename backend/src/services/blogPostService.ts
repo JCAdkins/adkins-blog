@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 
 export async function getAllBlogPosts() {
   return await prisma.blogPost.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     include: {
       blogPostImages: {
         include: {
@@ -19,6 +22,9 @@ export const getFeaturedBlogs = async () => {
   return await prisma.blogPost.findMany({
     where: {
       featured: "true", // If 'featured' is a string (e.g., "true" instead of boolean)
+    },
+    orderBy: {
+      createdAt: "desc",
     },
     include: {
       // Include related images through the BlogPostImage model

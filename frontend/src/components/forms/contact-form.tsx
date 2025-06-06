@@ -3,6 +3,7 @@
 import { ContactAdmins } from "@/lib/services/contact-service";
 import { User } from "next-auth";
 import { useState } from "react";
+import { ContactFormButton } from "../buttons/contact-form-button";
 
 type Props = {
   user?: User | null;
@@ -29,12 +30,16 @@ export default function ContactForm({ user }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = user
-      ? { message: form.message, reason: form.reason, user }
-      : form;
+    const payload = {
+      message: form.message,
+      subject: form.reason,
+      userId: user?.id as string,
+      name: user ? (user.username as string) : form.name,
+      email: user ? (user.email as string) : form.email,
+    };
     console.log("Contact form submitted:", payload);
-    const contacted = await ContactAdmins(payload);
-    setSubmitted(contacted.status);
+    const response = await ContactAdmins(payload);
+    setSubmitted(response);
   };
 
   return submitted ? (
@@ -134,12 +139,12 @@ export default function ContactForm({ user }: Props) {
         />
       </div>
 
-      <button
+      <ContactFormButton
         type="submit"
-        className="rounded-md bg-black px-6 py-2 text-white hover:bg-gray-800"
+        className="bg-login hover:bg-login-hover rounded-md px-6 py-2 text-black"
       >
         Send Message
-      </button>
+      </ContactFormButton>
     </form>
   );
 }

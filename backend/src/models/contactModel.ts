@@ -38,7 +38,7 @@ export const saveContactMessageToDb = async (data: DataParams) => {
       },
     });
 
-    return newMessage;
+    return { newMessage };
   } catch (error) {
     console.error("Error saving contact message:", error);
     throw error;

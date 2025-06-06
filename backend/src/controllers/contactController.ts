@@ -40,15 +40,18 @@ export async function contactAdmin(
   </div>
 `,
     });
-    const data = {
+    const reqData = {
       name: name,
       email: email,
       userId: userId,
       subject: subject,
       message: message,
     };
-    const dbResult = await saveContactMessageToDb(data);
-    res.status(200).json({ email_result: emailResult, db_result: dbResult });
+    const dbResult = await saveContactMessageToDb(reqData);
+    res.status(200).json({
+      emailResult: emailResult,
+      db_result: dbResult,
+    });
   } catch (error) {
     console.error("Error contacting admin:", error);
     res.status(500).json({ result: "failed" });
