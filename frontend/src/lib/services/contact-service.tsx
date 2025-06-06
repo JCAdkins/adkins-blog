@@ -9,28 +9,31 @@ interface FormWithUser {
 interface FormWithoutUser {
   name: string;
   email: string;
-  reason: string;
+  subject: string;
   message: string;
+  userId?: string;
 }
 
 export async function ContactAdmins(payload: FormWithUser | FormWithoutUser) {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/contact`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/contact`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+    );
     if (!response.ok) {
-      console.log("response: ", response.text);
-      return { status: "failed" };
+      return "failed";
     }
-    return { status: "success" };
+
+    return response.status === 200 ? "success" : "failed";
   } catch (error) {
     console.error("Form submission error:", error);
     alert("Something went wrong.");
   }
-  return { status: "success" };
+  return "success";
 }
 
 export async function welcomeNewUser({

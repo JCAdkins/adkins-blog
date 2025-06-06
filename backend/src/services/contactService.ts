@@ -78,6 +78,5 @@ export async function welcomeNewUserEmail(to: string, username: string) {
 
 export async function getAdminsList() {
   const adminList = await getAdminListFromDb();
-  console.log("adminList: ", adminList);
   return adminList;
 }

@@ -10,6 +10,7 @@ import {
 } from "./controllers/immichController.ts";
 import blogRoutes from "./routes/blog-routes.ts";
 import contactRoutes from "./routes/contact-routes.ts";
+import messagesRoutes from "./routes/messages-routes.ts";
 // import postNewImage from "./controllers/immichController.ts";
 
 dotenv.config();
@@ -51,6 +52,9 @@ app.use("/api/contact", contactRoutes);
 
 // Routes for users
 app.use("/api/users", userRoutes);
+
+// Messages routes
+app.use("/api/messages", messagesRoutes);
 
 // Start the server
 app.listen(PORT, () => {

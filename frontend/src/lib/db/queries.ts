@@ -122,3 +122,25 @@ export async function getBlogById(id: string) {
     return null;
   }
 }
+
+export async function fetchUnread() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/messages/unread/count`,
+    );
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Error fetching unread count:", err);
+  }
+}
+
+export const fetchMessages = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/messages`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Failed to fetch messages:", err);
+  }
+};
