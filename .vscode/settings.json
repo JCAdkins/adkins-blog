@@ -4,7 +4,7 @@
       "previewLimit": 50,
       "server": "localhost",
       "port": 5432,
-      "driver": "Redshift Driver (Dedicated ver)",
+      "driver": "PostgreSQL",
       "name": "adkins-postgres",
       "database": "mydb",
       "username": "jordy",

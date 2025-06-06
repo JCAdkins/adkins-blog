@@ -15,6 +15,7 @@ export default function Page() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [isSuccessful, setIsSuccessful] = useState(false);
 
   const [state, formAction] = useActionState<RegisterActionState, FormData>(
@@ -45,7 +46,7 @@ export default function Page() {
     } else if (state.status === "success") {
       toast.success("Account created successfully");
       setIsSuccessful(true);
-      welcomeNewUser(email);
+      welcomeNewUser({ email, username });
       router.refresh();
       router.push("/");
     }
@@ -55,6 +56,7 @@ export default function Page() {
 
   const handleSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
+    setUsername(formData.get("username") as string);
     formAction(formData);
   };
 

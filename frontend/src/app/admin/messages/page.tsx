@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { fetchMessages } from "@/lib/db/queries";
+import { fetchMessages, markMessageAsRead } from "@/lib/db/queries";
 import SkeletonMessage from "@/components/skeletons/message-skeleton";
+import { useMessageContext } from "@/contexts/message-context";
 
 type Message = {
   id: string;
@@ -17,6 +18,7 @@ type Message = {
 };
 
 export default function AdminMessagesPage() {
+  const { setUnreadCount } = useMessageContext();
   const [messages, setMessages] = useState<Message[]>([]);
   const [showRead, setShowRead] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -53,14 +55,46 @@ export default function AdminMessagesPage() {
                 key={msg.id}
                 className={cn(
                   "rounded border p-2 shadow-sm transition-colors md:p-3",
-                  msg.read ? "bg-gray-100" : "bg-white",
+                  msg.read ? "bg-gray-300" : "bg-white",
                 )}
               >
                 <div
                   className="cursor-pointer space-y-1"
-                  onClick={() =>
-                    setOpenMessageId((id) => (id === msg.id ? null : msg.id))
-                  }
+                  onClick={() => {
+                    if (openMessageId && openMessageId !== msg.id) {
+                      const prevMsg = messages.find(
+                        (m) => m.id === openMessageId,
+                      );
+                      if (prevMsg && !prevMsg.read) {
+                        markMessageAsRead(prevMsg.id).then(() => {
+                          setMessages((prev) =>
+                            prev.map((m) =>
+                              m.id === prevMsg.id ? { ...m, read: true } : m,
+                            ),
+                          );
+                          setUnreadCount((prev: number) => prev - 1);
+                        });
+                      }
+                    }
+
+                    if (openMessageId === msg.id) {
+                      // Closing the currently open message
+                      const currentMsg = messages.find((m) => m.id === msg.id);
+                      if (currentMsg && !currentMsg.read) {
+                        markMessageAsRead(msg.id).then(() => {
+                          setMessages((prev) =>
+                            prev.map((m) =>
+                              m.id === msg.id ? { ...m, read: true } : m,
+                            ),
+                          );
+                          setUnreadCount((prev: number) => prev - 1);
+                        });
+                      }
+                      setOpenMessageId(null);
+                    } else {
+                      setOpenMessageId(msg.id);
+                    }
+                  }}
                 >
                   <div className="flex items-center justify-between text-sm md:text-base">
                     <span className="font-medium">{msg.subject}</span>
