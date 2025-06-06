@@ -1,6 +1,7 @@
 import {
   fetchMessages,
   fetchUnreadMessageCount,
+  markMessageReadInDb,
 } from "../models/messagesModel.ts";
 
 export async function getUnreadMessageCount() {
@@ -11,4 +12,9 @@ export async function getUnreadMessageCount() {
 export async function getAllMessages() {
   const messages = await fetchMessages();
   return messages;
+}
+
+export async function markMsgAsRead(id: string) {
+  const result = await markMessageReadInDb(id);
+  return result;
 }

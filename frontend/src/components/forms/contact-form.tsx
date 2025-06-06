@@ -70,7 +70,7 @@ export default function ContactForm({ user }: Props) {
               value={form.name}
               onChange={handleChange}
               required
-              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm"
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm"
             />
           </div>
 
@@ -88,7 +88,7 @@ export default function ContactForm({ user }: Props) {
               value={form.email}
               onChange={handleChange}
               required
-              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm"
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm"
             />
           </div>
         </>

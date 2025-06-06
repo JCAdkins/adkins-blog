@@ -1,26 +1,11 @@
+// AdminSidebar.tsx
 "use client";
 
-import { fetchUnread } from "@/lib/db/queries";
+import { useMessageContext } from "../../contexts/message-context";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function AdminSidebar() {
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  useEffect(() => {
-    const fetchAndSetUnread = async () => {
-      try {
-        console.log("fetching count...");
-        const count = await fetchUnread();
-        setUnreadCount(count);
-        console.log("unread count: ", unreadCount);
-      } catch (error) {
-        console.error("Error fetching unread count:", error);
-      }
-    };
-
-    fetchAndSetUnread();
-  }, []);
+  const { unreadCount } = useMessageContext();
 
   return (
     <aside className="bg-sidebar w-64 space-y-4 p-4 text-black">

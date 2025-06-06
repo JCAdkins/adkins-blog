@@ -144,3 +144,20 @@ export const fetchMessages = async () => {
     console.error("Failed to fetch messages:", err);
   }
 };
+
+export const markMessageAsRead = async (id: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/messages/mark-read`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: id }),
+      },
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to mark message as read: ", error);
+  }
+};
