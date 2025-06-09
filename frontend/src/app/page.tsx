@@ -4,12 +4,32 @@ import { Blog } from "next-auth";
 import BlogCardServer from "@/components/cards/blog-card-server";
 import BlogCard from "@/components/cards/blog-card";
 import localFont from "next/font/local";
+import WordOfTheDayCard from "@/components/cards/WoTD-card";
+import { promises as fs } from "fs";
+import path from "path";
 
 const biancha = localFont({
   src: "../fonts/Resillia.ttf",
 });
 
+type Term = {
+  word: string;
+  definition: string;
+};
+
 export default async function Home() {
+  const filePath = path.join(
+    process.cwd(),
+    "src",
+    "terms",
+    "photography_terms.json",
+  );
+  const file = await fs.readFile(filePath, "utf8");
+  const terms: Term[] = JSON.parse(file);
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-06-08"
+  const hash = [...today].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const index = hash % terms.length;
+  const term = terms[index];
   // Fetch the featured blog posts directly in the component
   const featuredPosts: Blog[] | null = await getFeaturedBlogs();
 
@@ -35,6 +55,9 @@ export default async function Home() {
           any feedback please don't heesitate to reach out. :)
         </div>
         <Break className="border-login-hover w-full" />
+        <div className="space-y-4">
+          <WordOfTheDayCard term={term} />
+        </div>
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts?.map((blog, ind) => (
             <BlogCardServer key={ind} blog={blog} CardComponent={BlogCard} />
