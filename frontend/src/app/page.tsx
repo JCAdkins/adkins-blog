@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import WordOfTheDayCard from "@/components/cards/WoTD-card";
 import { promises as fs } from "fs";
 import path from "path";
+import { fnv1aHash } from "@/lib/utils";
 
 const biancha = localFont({
   src: "../fonts/Resillia.ttf",
@@ -26,8 +27,8 @@ export default async function Home() {
   );
   const file = await fs.readFile(filePath, "utf8");
   const terms: Term[] = JSON.parse(file);
-  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-06-08"
-  const hash = [...today].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const today = new Date().toISOString().split("T")[0];
+  const hash = fnv1aHash(today);
   const index = hash % terms.length;
   const term = terms[index];
   // Fetch the featured blog posts directly in the component
