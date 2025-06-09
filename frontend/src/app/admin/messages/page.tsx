@@ -38,7 +38,7 @@ export default function AdminMessagesPage() {
 
   return (
     <div className="space-y-4 p-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
         <h1 className="text-2xl font-bold">Admin Messages</h1>
         <Button variant="outline" onClick={() => setShowRead((prev) => !prev)}>
           {showRead ? "Hide Read Messages" : "Show Read Messages"}

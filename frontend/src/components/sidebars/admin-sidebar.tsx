@@ -8,7 +8,7 @@ export default function AdminSidebar() {
   const { unreadCount } = useMessageContext();
 
   return (
-    <aside className="bg-sidebar w-64 space-y-4 p-4 text-black">
+    <aside className="bg-sidebar h-screen w-64 space-y-4 p-4 text-black">
       <h2 className="text-xl font-bold">Admin</h2>
       <ul className="space-y-2">
         <Link href="/admin">
