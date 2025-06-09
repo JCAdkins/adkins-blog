@@ -11,10 +11,10 @@ const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
 });
 
-const open_sans = Open_Sans({
-  variable: "--font-open-sans",
-  subsets: ["latin"],
-});
+// const open_sans = Open_Sans({
+//   variable: "--font-open-sans",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Adkins Ninja Blog",
