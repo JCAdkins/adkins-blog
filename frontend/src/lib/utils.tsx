@@ -44,3 +44,14 @@ export function formatDateToMMDDYYYY(dateString: string) {
 export function deepEqual(obj1: any, obj2: any): boolean {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 }
+
+export function fnv1aHash(input: string, prime = 31): number {
+  let hash = 0x811c9dc5; // 32-bit FNV offset basis
+  for (let i = 0; i < input.length; i++) {
+    hash ^= input.charCodeAt(i);
+    hash +=
+      (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+    hash *= prime;
+  }
+  return Math.abs(hash >>> 0); // force unsigned 32-bit
+}

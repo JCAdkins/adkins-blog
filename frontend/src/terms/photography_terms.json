@@ -1,5 +1,17 @@
 [
   {
+    "word": "35mm",
+    "definition": "A film format and the basis for the full-frame digital sensor size."
+  },
+  {
+    "word": "35mm Equivalent",
+    "definition": "Comparing lens focal lengths across different sensor sizes."
+  },
+  {
+    "word": "500 Rule",
+    "definition": "A guideline for avoiding star trails in night sky photography by sett"
+  },
+  {
     "word": "A-D Converter (or ADC)",
     "definition": "This is a chip in digital cameras with the function of converting light photons into electrons. The camera’s sensor collects photons when you press the shutter release. The A-D converter transforms these into electrical signals used to create a digital image file."
   },
@@ -20,8 +32,28 @@
     "definition": "The active area of a sensor consists of the pixels that capture photons. This can vary depending on the mode the camera is set to. Even when set to the highest resolution setting, the active area is often less than the Absolute Resolution of a sensor.\n\nMany cameras provide options to capture images in a variety of formats. For example, when set to capture a square image, the active area will be a square measurement based on the shortest side of the camera sensor."
   },
   {
+    "word": "Active Autofocus",
+    "definition": "An autofocus system where the camera emits a beam to determine the distance to the subject for focus adjustment."
+  },
+  {
+    "word": "Adobe",
+    "definition": "A software company known for products like Photoshop, widely used by creatives."
+  },
+  {
+    "word": "Adobe Camera Raw (ACR)",
+    "definition": "A Photoshop plugin for processing and enhancing raw images."
+  },
+  {
     "word": "Adobe RGB",
     "definition": "A color space using RGB primary colors designed to include most colors CMYK printers use. Adobe developed this in 1998 (it’s sometimes still referred to as Adobe RBG 1998)."
+  },
+  {
+    "word": "AE Lock",
+    "definition": "Autoexposure lock allows users to lock exposure settings."
+  },
+  {
+    "word": "AF Lock",
+    "definition": "Autofocus lock lets a photographer fix the focus point."
   },
   {
     "word": "AF Servo",
@@ -48,8 +80,20 @@
     "definition": "Aperture priority is an exposure mode setting on cameras. It is the most popular auto-exposure mode. In aperture priority mode the photographer maintains control over the aperture setting while the camera sets the shutter speed to balance the exposure. How this happens depends on the information the camera’s light meter provides.\n\nAperture priority is very popular because it allows people to capture generically well-exposed photographs while maintaining some level of control over the depth of field.\n\nThe aperture priority setting on the mode dial of a camera is usually labeled ‘A’ or ‘Av’ (on Canon cameras).\n\nFor more information about how to use the aperture priority mode, and other camera exposure modes, please refer to this article."
   },
   {
+    "word": "APEX",
+    "definition": "A system for exposure computation, using Av and Tv for aperture and shutter speed."
+  },
+  {
+    "word": "APS-C",
+    "definition": "A digital sensor size, smaller than full-frame, common in many cameras."
+  },
+  {
     "word": "APS-C (APSC)",
     "definition": "APS stands for Advanced Photo System. The ‘C’ stands for Classic. This size of an image sensor is a 3:2 ratio, which is the same as a full-frame sensor ratio. APS was a film format introduced for a short period of time in the 1990s before digital cameras were popular. There are two other APS sensor sizes. The exact APS-C size varies depending on the manufacturer of the camera.\n\nAPS-C sensors are used in most DSLR cameras that do not have full-frame sensors. They are also known as crop sensors, along with various other sensor sizes that are small than full-frame. The crop factor of an APS-C sensor is 1.5x."
+  },
+  {
+    "word": "APS-H",
+    "definition": "A sensor size larger than APS-C but smaller than full-frame, less common."
   },
   {
     "word": "APS-H (APSH)",
@@ -76,8 +120,16 @@
     "definition": "An aspherical lens has aspheric, rather the spheric, surfaces. Their curvature radius varies from the center of the lens to its edge. This type of lens can provide more optical functionality than spherical lenses can. Benefits of aspherical lenses include sharper focusing and larger aperture sizes. They also tend to make auto-focusing in low-light situations easier."
   },
   {
+    "word": "Astrophotography",
+    "definition": "Capturing images of celestial bodies and night skies."
+  },
+  {
     "word": "Auto Exposure Bracketing (AEB)",
     "definition": "Auto exposure bracketing or AEB is a term that is used to signify a process where the camera automatically takes two or more exposures but with different exposure values. This method is generally used when the photographer isn’t quite sure what the correct exposure for a scene is."
+  },
+  {
+    "word": "Auto White Balance (AWB)",
+    "definition": "Auto White Balance is a camera setting that adjusts the image so white looks white and other colors appear realistic. White balance can also be adjusted manually.\n\nThe white balance controls in a camera exist to remove unrealistic color casts caused by variance in light temperature. Light can be cool and bluish. Warm, with a yellow or orange appearance. Or it can be quite neutral.\n\nSet to Auto White Balance your camera filters out any color temperature that causes white elements to appear other than white. In situations where there are lights of varying color temperatures, it may not be possible for the camera to correctly adjust. This can occur indoors where there are different types of electric lighting with bulbs that emit both cool light and warm light.\n\nMost of the time Auto White Balance functions acceptably well. With RAW files it’s easy to adjust the white balance during post-production if it is not to your liking."
   },
   {
     "word": "Autofocus",
@@ -88,16 +140,16 @@
     "definition": "Average metering refers to a mode setting of in-camera exposure meters. It’s often given different names by camera manufacturers. In Nikon, average metering is called Matrix metering. In Canon cameras, it’s known as Evaluative metering. Olympus uses the photography term Digital ESP to name its average metering mode.\n\nNo matter what it’s called on your camera, it has the function of taking light readings from multiple parts of the frame, averaging the value, and presenting an overall exposure value. In many cameras, this is the default exposure meter mode. Most cameras have a selection of various metering modes."
   },
   {
-    "word": "Auto White Balance (AWB)",
-    "definition": "Auto White Balance is a camera setting that adjusts the image so white looks white and other colors appear realistic. White balance can also be adjusted manually.\n\nThe white balance controls in a camera exist to remove unrealistic color casts caused by variance in light temperature. Light can be cool and bluish. Warm, with a yellow or orange appearance. Or it can be quite neutral.\n\nSet to Auto White Balance your camera filters out any color temperature that causes white elements to appear other than white. In situations where there are lights of varying color temperatures, it may not be possible for the camera to correctly adjust. This can occur indoors where there are different types of electric lighting with bulbs that emit both cool light and warm light.\n\nMost of the time Auto White Balance functions acceptably well. With RAW files it’s easy to adjust the white balance during post-production if it is not to your liking."
-  },
-  {
     "word": "Back Button Focus",
     "definition": "Back button focus is a technique used to operate a camera’s autofocus system using a button on the back of the camera body rather than the shutter release button.\n\nBy default on most, if not all, cameras, auto-focusing is initiated when the shutter release button is partially depressed. By configuring your camera through the menu system you can set it to only focus when an assigned button, usually on the rear of the camera, is pressed. The auto-focus function of the shutter button can be disabled. This allows you to separate the auto-focus and shutter release functions."
   },
   {
     "word": "Background",
     "definition": "Background, as a photography term, refers to the area behind the main subject or foreground of the photograph."
+  },
+  {
+    "word": "Backlight",
+    "definition": "Illumination from behind the subject."
   },
   {
     "word": "Backlighting",
@@ -132,6 +184,10 @@
     "definition": "A blown-out area in a photograph contains no detail because it is too bright and has been overexposed. As with blocked shadows, blowout occurs more commonly on lower-quality sensors that have a more limited dynamic range."
   },
   {
+    "word": "Blown-Out Highlights",
+    "definition": "Overexposed areas in an image where detail is lost."
+  },
+  {
     "word": "Blue Hour",
     "definition": "Blue hour happens in the morning and evening when the sun is between about 4 and 8 degrees below the horizon. It’s given this name because at these times daylight appears bluish and cool. Blue hour usually lasts less than an hour. How long it lasts depends on the season and proximity to the equator. Further away it’s more likely to last longer."
   },
@@ -144,12 +200,24 @@
     "definition": "Bokeh is the quality of the blur in the out-of-focus parts of a picture. It is a Japanese word meaning ‘blur’. In photography, it’s used not so much about the blur, as it is about the quality of the blur. Lenses render the look of bokeh in particular ways. This can vary with different focal lengths and with lenses of the same focal length produced by different manufacturers."
   },
   {
+    "word": "Bracketing",
+    "definition": "Taking multiple shots of the same scene with different settings."
+  },
+  {
     "word": "Bracketing (or Exposure Bracketing)",
     "definition": "Bracketing is a technique used when a photographer is not sure if the exposure settings they have chosen will produce the best results. First, an exposure is made according to the meter reading. Then two or more further exposures are made of the same composition. Some are underexposed and some are overexposed. This provides a photographer with more choice when they are post-processing their images.\n\nThe HDR (high dynamic range) technique relies on exposure bracketing and the use of a tripod so each exposure is of precisely the same composition.\n\nMany cameras have an auto-bracketing feature where the camera will take multiple exposures at different settings based on the initial exposure."
   },
   {
+    "word": "Brenizer Method",
+    "definition": "Creating a panorama with a shallow depth of field by stitching zoomed-in photos."
+  },
+  {
     "word": "Broad Lighting",
     "definition": "Broad lighting is a portrait lighting technique. With this style of lighting, the subject’s face is not facing the camera but turned to one side. The key light illuminates the side of the face the camera can see more of or the broad side of the subject’s face. It is not considered to be particularly flattering because it can make a person’s face look wider."
+  },
+  {
+    "word": "Buffer",
+    "definition": "Camera memory that temporarily stores images before saving to a card."
   },
   {
     "word": "Buffer Memory",
@@ -158,6 +226,10 @@
   {
     "word": "Bulb (Bulb Mode)",
     "definition": "The bulb mode is a shutter speed setting that is unlimited. It’s generally used for making exposure of a longer duration than the camera has a controlled shutter speed setting for. It’s most commonly used at night and in other situations where there is very little ambient light."
+  },
+  {
+    "word": "Bulb Mode",
+    "definition": "A camera mode for long exposures controlled by the shutter button."
   },
   {
     "word": "Burst Mode",
@@ -172,12 +244,20 @@
     "definition": "Butterfly lighting is a technique where the key light is placed above the subject and directly in front of them a little. The shadow formed under a person’s nose when photographed with this style of lighting is said to represent the shape of a butterfly, hence the name. It is a flattering form of lighting that is sometimes also called Paramount lighting because it was used extensively when photographing movie stars."
   },
   {
+    "word": "Cable Release",
+    "definition": "A device to trigger the camera shutter remotely."
+  },
+  {
     "word": "Camera Body",
     "definition": "The camera body is the main part of the camera, not including the lens or other accessories."
   },
   {
     "word": "Camera Modes",
     "definition": "Camera modes control various aspects of the camera. Modes are most commonly associated with exposure. There are also modes for focus and metering. Some modes allow you to use your camera automatically like you might use your phone to take photos. Other modes allow for some or total manual control of the camera."
+  },
+  {
+    "word": "Camera Obscura",
+    "definition": "An early form of a camera without film or sensors. It features a darkened box with a convex lens or aperture for projecting the image of an external object onto a screen inside. It is important historically in the development of photography"
   },
   {
     "word": "Camera Sensor",
@@ -196,6 +276,10 @@
     "definition": "An electronic device is used to transfer photos from memory cards to another device, typically a computer or tablet."
   },
   {
+    "word": "Catchlight",
+    "definition": "A reflection of a light source in the subject’s eyes."
+  },
+  {
     "word": "CCD (Couple-Charged Device)",
     "definition": "A CCD is one of two main types of camera sensors. These consist of an integrated circuit formed on a silicon surface and form light-sensitive elements called pixels."
   },
@@ -208,12 +292,32 @@
     "definition": "Chromatic aberration is a visual defect in photos caused by light wavelengths not focusing correctly as they reach the image sensor. It mainly occurs in areas of high contrast in images and produces a purple colored fringe. It’s often also called ‘purple fringing’ or ‘color fringing’.\n\nThis occurs more frequently towards the edges of images and is more prevalent in older and cheaper lenses."
   },
   {
+    "word": "Cinemagraph",
+    "definition": "A cinemagraph is a digital image, often described as a \"moving photograph\" or a \"motion still,\" that combines elements of both photography and video. \n\nIt features a small, repeated movement within a generally static image, creating a looping, mesmerizing effect. "
+  },
+  {
+    "word": "Circular Polarizer Filter",
+    "definition": "A polarizing filter is a filter that is often placed in front of a camera lens in photography in order to darken skies, manage reflections, or suppress glare from the surface of lakes or the sea."
+  },
+  {
+    "word": "Clipping",
+    "definition": "In photography, \"clipping\" refers to the loss of information in an image due to overexposure or underexposure, resulting in pure white or pure black areas with no detail. \n\nIt's essentially the failure to record the full range of tones within a scene, leading to a flat, information-lacking appearance."
+  },
+  {
     "word": "CMOS (Complementary Metal Oxide Semiconductor)",
     "definition": "CMOS sensors are one of the two primary types of imaging sensors found in digital cameras. Its purpose is to convert photons into electrical signals for digital image processing."
   },
   {
+    "word": "CMOS Sensor",
+    "definition": "The most common type of image sensor, known for low power consumption."
+  },
+  {
     "word": "CMYK Color",
     "definition": "This is the color mode used in commercial, off-set printing. It is an alternative set of colors than used with digital photography displayed in cameras or other electronic devices.\n\nThe colors are:Cyan (C)\n\nMagenta (M)\n\nYellow (Y)\n\nBlack (K)\n\nThe K is for the key. In the printing process, the plate for black is the ‘key’ plate and is used as a base to align the plates for other colors.\n\nThese colors are known as ‘subtractive’ colors. When these colors are added to white, as in the printing process, other colors are removed from the visual spectrum."
+  },
+  {
+    "word": "Cold Shoe",
+    "definition": "A mount on a camera for accessories without electronic connections."
   },
   {
     "word": "Color Calibration",
@@ -240,12 +344,16 @@
     "definition": "Color temperature is basically the color of light and how different colors appear. The Color temperature is measured using the Kelvin scale. It’s typically referred to as neutral, cool, or warm."
   },
   {
+    "word": "Compact Camera",
+    "definition": "A compact camera, also known as a point-and-shoot camera, is a small, lightweight camera designed for ease of use and portability. \n\nThese cameras typically have built-in lenses, autofocus, automatic exposure settings, and built-in flashes, making them simple to operate for capturing snapshots of everyday events. "
+  },
+  {
     "word": "Compact Flash Card (CF Card)",
     "definition": "A type of solid state memory storage used in digital cameras."
   },
   {
-    "word": "Composite Image",
-    "definition": "A composite, or composite image, is made up of more than one photograph."
+    "word": "Composite Photograph",
+    "definition": "A composite photograph, also known as a composite image, is created by combining two or more images into a single final image. \n\nThis technique allows photographers to blend different elements from various pictures, creating a more visually compelling or realistic final result."
   },
   {
     "word": "Composition",
@@ -256,20 +364,60 @@
     "definition": "Compression can refer to two different aspects of photography. Lens compression and image compression.\n\nLens compression creates the appearance that elements that are at different distances from the camera appear closer together than they are. This happens when using a telephoto lens.\n\nImage compression happens when an image is saved in a lossy format, such as .jpg. The file is compressed as it is saved and a certain amount of the data is discarded, resulting in smaller file sizes."
   },
   {
+    "word": "Computational Photography",
+    "definition": "Using algorithms to enhance or manipulate images."
+  },
+  {
     "word": "Continuous Focus",
     "definition": "This is an autofocus mode in cameras. In this more, so long as the focus button is pressed, the camera’s autofocus system will continuously refocus if the subject or the camera move. Different camera manufacturers call continuous focus by a variety of names. Canon cameras call it AI Servo. In Nikon and Sony cameras it’s called AF-C. Olympus calls it C-AF."
+  },
+  {
+    "word": "Continuous Shooting",
+    "definition": "Another term for burst mode."
   },
   {
     "word": "Contrast",
     "definition": "The contrast in photography is basically the scale of difference between the brightest and the darkest parts of an image."
   },
   {
+    "word": "Contrast Detection Autofocus",
+    "definition": "An autofocus method using contrast for focusing."
+  },
+  {
     "word": "Copyright",
     "definition": "Copyright of a photograph belongs to the photographer who created the image. This means that you own the image and it cannot be reproduced or have derivative works made without your express permission. It does not require any special permission, paperwork, or registration under US copyright law. This may differ in other countries."
   },
   {
+    "word": "Copyright Infringement",
+    "definition": "Unauthorized use of copyrighted material."
+  },
+  {
     "word": "Crop Factor",
     "definition": "Crop Factor refers to the size of a camera sensor that is smaller than a full-frame sensor. A full-frame sensor is 36mm x 24mm, the same size as one frame of 35mm film. It is important in photography because of how the field of view of any given focal length lens renders depending on the sensor size, or crop factor."
+  },
+  {
+    "word": "Crop Sensor",
+    "definition": "A digital sensor smaller than a full-frame, affecting the image’s field of view."
+  },
+  {
+    "word": "Cropping",
+    "definition": "Cutting out parts of an image to change its composition."
+  },
+  {
+    "word": "Cross Processing",
+    "definition": "Developing film in the wrong type of chemicals for artistic effect."
+  },
+  {
+    "word": "Crushed Shadows",
+    "definition": "Underexposed areas in an image where detail is lost."
+  },
+  {
+    "word": "Daguerreotype",
+    "definition": "An early photographic process and the images it produces."
+  },
+  {
+    "word": "Darkroom",
+    "definition": "A light-tight room for developing film and making prints."
   },
   {
     "word": "Depth of Field (DoF)",
@@ -280,12 +428,24 @@
     "definition": "Diffraction of light happens when it passes through a narrow aperture opening. Smaller apertures are associated with having more of a photo in focus. Diffraction can be a problem with narrower aperture settings causing blurring."
   },
   {
+    "word": "Diffused Light",
+    "definition": "Soft, even light with reduced shadows."
+  },
+  {
     "word": "Digital Asset Management (DAM)",
     "definition": "DAM refers to a photographer’s digital workflow. It’s the process of importing, cataloging, arranging, deleting, and exporting digital images."
   },
   {
     "word": "Digital Negative (DNG)",
     "definition": "DNG is an image format developed by Adobe and publicly available."
+  },
+  {
+    "word": "Digital Photography",
+    "definition": "Capturing images electronically, rather than on film."
+  },
+  {
+    "word": "Digital Single-lens Reflex (DSLR) Camera",
+    "definition": "A camera combining SLR design with a digital sensor."
   },
   {
     "word": "Digital Zoom",
@@ -302,6 +462,10 @@
   {
     "word": "DSLR (Digital Single Lens Reflex) Camera",
     "definition": "A DSLR camera is a digital camera with a single lens that uses a mirror to reflect light via a prism to the viewfinder. When the shutter release is pressed to take a photo, the mirror moves to allow light to pass through the shutter as it opens, creating an image with the sensor. A DSLR camera has an optical viewfinder that allows the user to view directly through the camera lens."
+  },
+  {
+    "word": "Dust Spots",
+    "definition": "Unwanted spots in an image from dust on the sensor."
   },
   {
     "word": "Dye Sublimation",
@@ -324,12 +488,48 @@
     "definition": "An electronic viewfinder displays a digital rendering of what the camera’s lens is pointing at. This type of viewfinder is used in mirrorless cameras."
   },
   {
+    "word": "Enlarger",
+    "definition": "A device for making larger photographic prints from negatives."
+  },
+  {
+    "word": "ETTL",
+    "definition": "A flash metering mode for automatic flash exposure calculation."
+  },
+  {
+    "word": "ETTR",
+    "definition": "A technique for maximizing dynamic range by slightly overexposing."
+  },
+  {
+    "word": "EV",
+    "definition": "Exposure Value, representing a combination of aperture and shutter speed."
+  },
+  {
+    "word": "Exhibition",
+    "definition": "A public display of photographs."
+  },
+  {
+    "word": "EXIF",
+    "definition": "Metadata standard including camera settings and scene information."
+  },
+  {
     "word": "EXIF (Exchangeable Image File) Data",
     "definition": "EXIF data is generated by digital cameras and software to add information about how a photo was made to the image file. It contains data about the camera, lens, settings, date, etc."
   },
   {
+    "word": "Export",
+    "definition": "In photography terms, exporting an image is what happens to it once it has been edited and is then saved in a different file format than its original state. Sometimes the term is used for simply saving an image also."
+  },
+  {
     "word": "Exposure",
     "definition": "Exposure is the amount of light a camera sensor captures when the shutter release button is pressed. The amount of light is controlled by the size of the aperture in the lens and how long the shutter is open for. The responsiveness of the sensor also has an influence on the exposure appearance. ISO controls this. If too much light affects the sensor the image will be overexposed and appear very bright. When not enough light affects the sensor the image will be dark and underexposed."
+  },
+  {
+    "word": "Exposure Bracketing",
+    "definition": "Taking multiple shots at different exposures."
+  },
+  {
+    "word": "Exposure Compensation",
+    "definition": "Adjusting exposure beyond the camera’s metering."
   },
   {
     "word": "Exposure Meter",
@@ -344,8 +544,16 @@
     "definition": "Exposure value compensation is the measurement of an amount of exposure variance that can be dialed into a camera to increase or decrease the exposure. It is commonly used in automatic and semiautomatic camera modes to override the camera’s choice of exposure."
   },
   {
-    "word": "Export",
-    "definition": "In photography terms, exporting an image is what happens to it once it has been edited and is then saved in a different file format than its original state. Sometimes the term is used for simply saving an image also."
+    "word": "Extension Tube",
+    "definition": "A lens accessory for closer focusing and greater magnification."
+  },
+  {
+    "word": "F-number",
+    "definition": "A number indicating the aperture size."
+  },
+  {
+    "word": "F-stop",
+    "definition": "A measure of aperture size."
   },
   {
     "word": "F-Stop/F-Number",
@@ -368,12 +576,28 @@
     "definition": "A fill light is any other light used when taking a photo other than the key, or main, light. It can be ambient light or an introduced light source such as a flash or LED. It can be used to soften hard shadows in dramatic lighting setups and help create more of a three-dimensional appearance to the depth of a photograph."
   },
   {
+    "word": "Film",
+    "definition": "A thin flexible strip of plastic or other material coated with light-sensitive emulsion for exposure in a camera, used to produce photographs or motion pictures."
+  },
+  {
     "word": "Filters",
     "definition": "A filter in photography is a high-quality optical glass or resin device placed between the light source and the sensor (or film). Most commonly they are attached to the front of camera lenses. Alternatively, they can be inserted into special slots in some lenses and other types can be placed immediately in front of a light source.\n\nFilters have the function of altering the path of light waves entering the lens for a large variety of purposes. Most commonly, lens filters such as UV and Skylight varieties can help protect the front element of a lens from becoming damaged. A filter is much easier to remove and replace than the front element of a lens. They are also a lot cheaper."
   },
   {
     "word": "Firmware",
     "definition": "Firmware is software in a camera that enables the functionality of the hardware."
+  },
+  {
+    "word": "Fisheye Lens",
+    "definition": "A wide-angle lens with a field of view up to 180 degrees."
+  },
+  {
+    "word": "Flag",
+    "definition": "A tool used in photography to block light."
+  },
+  {
+    "word": "Flash",
+    "definition": "A device producing a brief burst of light for illumination."
   },
   {
     "word": "Flash Sync (Synchronization)",
@@ -392,12 +616,32 @@
     "definition": "The description of the angle of view of a lens on a crop sensor camera in relation to the same focal length being used on a full-frame camera body."
   },
   {
+    "word": "Focal Plane Shutter",
+    "definition": "A type of shutter in front of the sensor."
+  },
+  {
     "word": "Focus",
     "definition": "Focus in photography terms is the point at which a photograph is the sharpest. This happens when the camera lens is adjusted correctly on the point at which the photographer has decided is most relevant."
   },
   {
+    "word": "Focus Point",
+    "definition": "The specific point a camera’s autofocus system sharpens."
+  },
+  {
     "word": "Focus Stacking",
     "definition": "Focus stacking is done by combining two or more photographs of the same composition where the focus point in each image is slightly different. The effect is to generate a composite image that has more depth of field than could be captured in a single exposure."
+  },
+  {
+    "word": "Forced Perspective",
+    "definition": "A technique manipulating visual perception through scale and distance."
+  },
+  {
+    "word": "Foreground",
+    "definition": "The part of a photo closest to the camera."
+  },
+  {
+    "word": "Four Thirds",
+    "definition": "A digital camera sensor standard with a 4:3 aspect ratio."
   },
   {
     "word": "Frames Per Second (FPS)",
@@ -420,8 +664,32 @@
     "definition": "A gamma curve is a tool in digital imaging software that allows the user to adjust (or correct) the brightness of an image during the editing process."
   },
   {
+    "word": "GAS (Gear Acquisition Syndrome)",
+    "definition": "The desire to continually buy new camera equipment."
+  },
+  {
+    "word": "Geotagging",
+    "definition": "Adding geographical location data to photos."
+  },
+  {
     "word": "GIF",
     "definition": "A GIF is an image file format. GIF stands for Graphical Interchange Format."
+  },
+  {
+    "word": "GIF (Graphics Interchange Format)",
+    "definition": "A bitmap image format."
+  },
+  {
+    "word": "Gigapixel (GP)",
+    "definition": "A photo or image resolution of one billion pixels."
+  },
+  {
+    "word": "Glass",
+    "definition": "Slang for camera lenses."
+  },
+  {
+    "word": "Gobo",
+    "definition": "An object placed between a light source and subject to alter the light."
   },
   {
     "word": "Golden Hour",
@@ -452,8 +720,20 @@
     "definition": "Part of the camera where a flash or other accessory can be mounted. When a dedicated flash or wireless transmitter is mounted on a camera’s hot shoe, the flash and camera will communicate so when a photo is taken the correct amount of light will emanate from the flash."
   },
   {
+    "word": "Hyperfocal Distance",
+    "definition": "The closest distance at which a lens can be focused while keeping objects at infinity acceptably sharp."
+  },
+  {
     "word": "Hyperfocal Distance (Hyperfocal focusing)",
     "definition": "Hyperfocal distance is a method of calculating how to achieve the maximum depth of field you can obtain in a photograph. It is the measurement of how far from the camera to a point in a scene being photographed where everything from half of that distance to infinity is acceptably sharp."
+  },
+  {
+    "word": "Hyperlapse",
+    "definition": "A moving timelapse video."
+  },
+  {
+    "word": "IBIS (In-body Image Stabilization)",
+    "definition": "Camera technology that stabilizes the sensor to counteract camera shake."
   },
   {
     "word": "ICC Profile (International Color Consortium profile)",
@@ -472,6 +752,14 @@
     "definition": "Image quality as a photography term typically refers to the overall technical characteristics of a photograph. Cameras, lenses, and photographers can all impact image quality."
   },
   {
+    "word": "Image Quality (IQ)",
+    "definition": "The perceived visual attributes that determine the overall appeal of an image."
+  },
+  {
+    "word": "Image Sensor",
+    "definition": "An electronic device that converts an optical image into electronic data."
+  },
+  {
     "word": "Image Stabilization (IS)",
     "definition": "Image stabilization is also known as vibration reduction (VR) and Anti-Shake (AS). This is a technology used in some camera bodies and some lenses to help reduce the effect of blurring caused while exposure is being made."
   },
@@ -482,6 +770,22 @@
   {
     "word": "Inkjet",
     "definition": "A type of printing method commonly used in consumer computer printers that can be used to print photographs."
+  },
+  {
+    "word": "Intentional Camera Movement (ICM)",
+    "definition": "A technique where the camera is deliberately moved during exposure for creative effect."
+  },
+  {
+    "word": "Interchangeable Lens Camera (ILC)",
+    "definition": "A camera that allows different lenses to be attached."
+  },
+  {
+    "word": "Internal Focusing",
+    "definition": "Lens technology where the lens does not change in size during focusing."
+  },
+  {
+    "word": "Intervalometer",
+    "definition": "A device for making timelapse videos, controlling the intervals between shots."
   },
   {
     "word": "IPS Monitor",
@@ -500,12 +804,24 @@
     "definition": "A JPEG (or .jpg) is a commonly used image file format. This format is ‘lossy’ which means that as an image is saved some of the data that make up the photograph is discarded. If a JPEG photo is compressed too much, the loss of quality is visible. The more a JPEG image is compressed, the small the file size is."
   },
   {
+    "word": "Juxtaposition",
+    "definition": "Placing two or more elements close together or side by side for comparison or contrast."
+  },
+  {
     "word": "Kelvin",
     "definition": "Kelvin, or the Kelvin scale, is used to measure color temperature. This is closely tied to the white balance function in digital photography."
   },
   {
+    "word": "Kelvin (K)",
+    "definition": "A unit of measurement for the color temperature of light."
+  },
+  {
     "word": "Key Light",
     "definition": "The key light is the main light illuminating a photograph. It can be natural or artificial."
+  },
+  {
+    "word": "Kicker Light",
+    "definition": "A light source used to accentuate a subject’s contours."
   },
   {
     "word": "Kilobyte",
@@ -520,12 +836,48 @@
     "definition": "This is the delay between pressing the shutter button and the shutter opening in a camera. This is only noticeable using a cheap camera. Lag time is also known as shutter lag."
   },
   {
+    "word": "Landscape Orientation",
+    "definition": "A horizontal orientation of a photo."
+  },
+  {
+    "word": "Landscape Photography",
+    "definition": "Capturing images of nature and the outdoors."
+  },
+  {
+    "word": "Large Format",
+    "definition": "Photography using a film or sensor larger than medium format, typically 4×5 inches or larger."
+  },
+  {
+    "word": "LCD (Liquid Crystal Display)",
+    "definition": "A screen technology used in cameras and other devices."
+  },
+  {
+    "word": "LED (Light Emitting Diode)",
+    "definition": "A technology used for lighting and displays in photography."
+  },
+  {
+    "word": "Lens",
+    "definition": "An optical device used by a camera to focus light and create an image."
+  },
+  {
     "word": "Lens Flare",
     "definition": "Lens flare happens when you point your camera in the direction of bright light. This causes the light to scatter inside the lens and cause haze and/or colored light shapes on photographs. This effect is rather random and can be used creatively or completely avoided."
   },
   {
+    "word": "Lens Hood",
+    "definition": "A device attached to the front of a lens to block unwanted light."
+  },
+  {
+    "word": "Lens Mount",
+    "definition": "The interface between a camera body and a lens."
+  },
+  {
     "word": "Light Meter",
     "definition": "A light meter or exposure meter is a device used to measure the amount of light before taking a photograph. All modern cameras have built-in light meters that measure reflected light. When a camera is set to any auto-exposure mode the light meter will read the light when the shutter button is partially depressed. The camera will then adjust the exposure settings so the correct amount of light will enter the camera, according to the camera’s pre-programmed algorithms.\n\nWhen using a camera in manual mode, a photographer must read the information provided by a graphic display the light meter displays in the viewfinder or on the monitor. The exposure controls must then be adjusted manually according to how the photographer interprets the information the light meter provides.\n\nHand-held exposure meters can also be used to measure the amount of light. These provide the added option of being able to read incident light."
+  },
+  {
+    "word": "Light Painting",
+    "definition": "A technique of moving a light source during long exposure to create an image."
   },
   {
     "word": "Lighting Pattern",
@@ -552,12 +904,12 @@
     "definition": "Loop lighting is a technique used by portrait photographers. With this lighting pattern, the key light is placed slightly above the subject and at about a 45-degree angle. This casts a “loop” shape in the shadow cast by the subject’s nose."
   },
   {
-    "word": "Lossy",
-    "definition": "Lossy in photography terms refers to image file types where the image is compressed and data is discarded as the file is saved. JPEG is the most commonly used lossy image file format."
-  },
-  {
     "word": "Lossless",
     "definition": "Lossless image file formats retain all the image data when they are saved or exported. These can also be referred to as non-lossy formats."
+  },
+  {
+    "word": "Lossy",
+    "definition": "Lossy in photography terms refers to image file types where the image is compressed and data is discarded as the file is saved. JPEG is the most commonly used lossy image file format."
   },
   {
     "word": "Low-Pass Filter",
@@ -572,12 +924,28 @@
     "definition": "A macro lens is one that has a very short minimum focusing distance. These are used to take photos of very small objects and render them in a ratio of at least 1:1. Macro lenses can also be used to photograph subjects that are not so close.\n\nFor more information, read this article about camera lenses."
   },
   {
+    "word": "Macro Photography",
+    "definition": "Close-up photography of small subjects."
+  },
+  {
+    "word": "Magic Hour",
+    "definition": "Another term for golden hour."
+  },
+  {
+    "word": "Manual Focus (MF)",
+    "definition": "Adjusting the focus of a lens manually, rather than automatically."
+  },
+  {
     "word": "Manual Mode",
     "definition": "Manual mode is the M setting on a camera that gives the photographer the most control over the camera’s exposure settings. The settings for aperture and shutter speed must be set manually, along with the ISO, to obtain the desired exposure."
   },
   {
     "word": "Matrix Metering",
     "definition": "Matrix metering is the term Nikon uses for the averaged metering mode in their cameras."
+  },
+  {
+    "word": "Medium Format (MF)",
+    "definition": "A camera sensor or film size larger than 35mm but smaller than large format."
   },
   {
     "word": "Megabyte",
@@ -588,8 +956,16 @@
     "definition": "A megapixel is the standard measure of the size of a digital camera sensor. One megapixel is one million pixels."
   },
   {
+    "word": "Megapixel (MP)",
+    "definition": "A unit of resolution equal to one million pixels."
+  },
+  {
     "word": "Memory Card",
     "definition": "A memory card is a flash memory storage device commonly used in digital cameras."
+  },
+  {
+    "word": "Memory Card Reader",
+    "definition": "A device that reads data from a memory card."
   },
   {
     "word": "Metadata",
@@ -600,6 +976,10 @@
     "definition": "Metering in photography terms is the practice of taking an exposure meter reading before taking a photograph."
   },
   {
+    "word": "Metering Mode",
+    "definition": "The way a camera measures light to calculate exposure."
+  },
+  {
     "word": "Micro Drive",
     "definition": "A redundant form of memory storage used with early digital cameras."
   },
@@ -608,24 +988,76 @@
     "definition": "Micro Four Thirds refers to the size of sensors and the camera system using this size of the sensor. It is a format popularly used in mirrorless cameras. The size of the sensor measures 18mm x 13.5mm."
   },
   {
+    "word": "Micro Four Thirds (MFT or M4/3)",
+    "definition": "A standard for mirrorless interchangeable lens cameras."
+  },
+  {
     "word": "Micro Lens",
     "definition": "A micro lens is similar to a macro lens in that it is designed to be able to closely focus on a subject. The difference is that a mico lens has a magnification ratio of at least 20:1.\n\nThis photography term is also sometimes used to refer to certain aspects of image sensors."
+  },
+  {
+    "word": "Midtones",
+    "definition": "The middle range of tones in an image, neither dark shadows nor bright highlights."
+  },
+  {
+    "word": "Minimum Focus Distance",
+    "definition": "The closest distance at which a lens can focus."
+  },
+  {
+    "word": "Mirror Lockup",
+    "definition": "A feature that lifts the mirror out of the way before taking a photo to reduce vibration."
   },
   {
     "word": "Mirrorless Camera",
     "definition": "A mirrorless camera has no internal mirror to reflect light as does a DSLR camera. Mirrorless cameras are generally lighter and smaller than DSLR cameras because they do not contain a mirror or the pentaprism needed to flip an image so it appears the right way up in the viewfinder.\n\nViewfinders on mirrorless cameras show a digital image of what the camera sensor is rendering. Many mirrorless cameras have interchangeable lenses, some do not."
   },
   {
+    "word": "Mode Dial",
+    "definition": "A dial on a camera that allows the user to select different shooting modes."
+  },
+  {
     "word": "Moiré",
     "definition": "Moiré is a pattern of distortion that sometimes appears in digital images of subjects that contain closely spaced patterns or lines."
+  },
+  {
+    "word": "Monopod",
+    "definition": "A single-legged camera support."
   },
   {
     "word": "Mount",
     "definition": "Mount as a photography term can refer to how a print adheres or how a lens is attached to a camera."
   },
   {
+    "word": "MTF (Modulation Transfer Function)",
+    "definition": "A measurement of a lens’s optical performance."
+  },
+  {
+    "word": "Multiple Exposure",
+    "definition": "Combining two or more exposures into a single image."
+  },
+  {
+    "word": "Natural Light",
+    "definition": "Light from the sun or other natural sources."
+  },
+  {
+    "word": "Nature Photography",
+    "definition": "Photography of the natural world."
+  },
+  {
+    "word": "Negative",
+    "definition": "An image where the colors and brightness values are inverted."
+  },
+  {
+    "word": "Negative Space",
+    "definition": "The area around the main subject of an image."
+  },
+  {
     "word": "Neutral Density Filter (ND)",
     "definition": "ND filters block a certain amount of light from entering the lens. They are measured in stops and come in a variety of densities. On graduated ND filters, part of the filter reduces the amount of light, and part of the filter is clear. These are popular with landscape photographers for reducing the brightness of the sky in landscape photos."
+  },
+  {
+    "word": "Nifty Fifty",
+    "definition": "Slang for a 50mm prime lens."
   },
   {
     "word": "Noise",
@@ -640,12 +1072,20 @@
     "definition": "Non-lossy, or lossless, are terms used for image file formats that retain all the image data when they are saved or exported."
   },
   {
+    "word": "Normal Lens",
+    "definition": "A lens with a focal length roughly equal to the diagonal of the film or sensor size."
+  },
+  {
     "word": "OLED (Organic Light Emitting Diode)",
     "definition": "The type of technology used in some camera monitors."
   },
   {
     "word": "Optical Resolution",
     "definition": "Optical Resolution refers to the resolution of a camera or digital scanner. Resolution is measured in megapixels and often expressed as part of the common camera information, such as a 38 megapixel, or 24.2 megapixel camera."
+  },
+  {
+    "word": "Optical Viewfinder (OVF)",
+    "definition": "A viewfinder that allows the photographer to compose a shot through the lens."
   },
   {
     "word": "Optical Zoom",
@@ -660,6 +1100,10 @@
     "definition": "Panning is a technique photographers use to photograph moving subjects so they capture sharp, or sharpish, photographs while using a slow shutter speed."
   },
   {
+    "word": "Panorama",
+    "definition": "A wide-angle view of a scene, often created by stitching multiple images together."
+  },
+  {
     "word": "Parallax",
     "definition": "Parallax in digital photography is the difference between what the camera sees and the image that is recorded by the sensor. Most good cameras are designed to avoid parallax errors from occurring."
   },
@@ -668,8 +1112,32 @@
     "definition": "The system used in cameras to connect an external flash unit. This is standardized across camera manufacturers."
   },
   {
+    "word": "Phase Detection Autofocus (PDAF)",
+    "definition": "An autofocus system that quickly measures the convergence of two light beams."
+  },
+  {
     "word": "Photo Stitching",
     "definition": "Photo stitching is the process of joining two or more photographs of the same scene taken with the intention of forming one image from multiple photographs."
+  },
+  {
+    "word": "Photo Walk",
+    "definition": "An activity where photographers walk and take photos together."
+  },
+  {
+    "word": "Photogram",
+    "definition": "An image made by placing objects directly on light-sensitive material."
+  },
+  {
+    "word": "Photograph",
+    "definition": "An image created by capturing light on a photosensitive surface."
+  },
+  {
+    "word": "Photographer",
+    "definition": "Someone who takes photographs."
+  },
+  {
+    "word": "Photography",
+    "definition": "The art or practice of creating images by recording light."
   },
   {
     "word": "Photoshop",
@@ -684,8 +1152,16 @@
     "definition": "Pincushion Distortion happens in cheaper cameras and has the appearance of lines in a photograph bending inwards towards the center of a photograph. This is usually on photos taken with a wider angle lens."
   },
   {
+    "word": "Pinhole Camera",
+    "definition": "A simple camera with no lens, just a small aperture."
+  },
+  {
     "word": "Pixel",
     "definition": "A pixel is the smallest part that makes up a digital sensor or digital image."
+  },
+  {
+    "word": "Pixel Peeping",
+    "definition": "Examining images at high magnification to evaluate quality."
   },
   {
     "word": "Pixelization",
@@ -700,16 +1176,56 @@
     "definition": "Point and shoot cameras are also known as compact cameras. They are small, easy to use, and usually have a built-in zoom lens."
   },
   {
+    "word": "Point-and-Shoot Camera",
+    "definition": "A small, easy-to-use camera with automatic systems for setting exposure."
+  },
+  {
+    "word": "Polarizing Filter",
+    "definition": "A filter that reduces reflections and enhances colors by polarizing light."
+  },
+  {
     "word": "Polarizing Filter (Polarizer)",
     "definition": "This is a common type of photographic filter that has the effect of being able to enhance or diminish reflections. It can also boost vibrance and contrast in images. This filter requires the photographer to rotate it once it’s mounted to achieve the desired effect."
+  },
+  {
+    "word": "Portfolio",
+    "definition": "A collection of a photographer’s work, often used to showcase their skills."
+  },
+  {
+    "word": "Portrait",
+    "definition": "A photograph of a person or animal, focusing on the face."
+  },
+  {
+    "word": "Portrait Mode",
+    "definition": "A camera mode designed to optimize settings for portrait photography."
+  },
+  {
+    "word": "Portrait Orientation",
+    "definition": "The vertical orientation of a camera or image."
   },
   {
     "word": "Post-Processing",
     "definition": "Post-processing is the manipulation of digital images using a computer program or app. A skilled editor can enhance many aspects of a photograph during post-processing, especially when working with RAW files."
   },
   {
+    "word": "PPI (Pixels Per Inch)",
+    "definition": "A measurement of image resolution on digital displays."
+  },
+  {
     "word": "Prime Lens",
     "definition": "A prime lens is one that has a fixed focal length and does not zoom. Prime lenses generally have wider maximum aperture settings than zoom lenses."
+  },
+  {
+    "word": "Print",
+    "definition": "A physical copy of a photograph."
+  },
+  {
+    "word": "Product Photography",
+    "definition": "Taking pictures of products to highlight their features for commercial use."
+  },
+  {
+    "word": "Program (P) Mode",
+    "definition": "A semi-automatic shooting mode where the camera selects exposure settings."
   },
   {
     "word": "Provenance",
@@ -722,6 +1238,10 @@
   {
     "word": "Rear-Curtain Sync",
     "definition": "This is a camera setting that synchronizes the flash to fire immediately before the second shutter curtain closes during an exposure. Using this technique with a slow shutter speed it is possible to create a heightened sense of motion with moving subjects. This blur looks different than when the camera syncs so the flash fires immediately after the first shutter curtain opens."
+  },
+  {
+    "word": "Red Eye",
+    "definition": "An effect where eyes appear red in photos, caused by flash reflection."
   },
   {
     "word": "Red-Eye",
@@ -740,6 +1260,10 @@
     "definition": "A reflex camera has a mirror to reflect light entering the lens so the photographer can see an image in the viewfinder."
   },
   {
+    "word": "Rembrandt Lighting",
+    "definition": "A lighting technique that creates a triangle of light on the cheek."
+  },
+  {
     "word": "Remote Capture",
     "definition": "Remote capture is the process of taking a photo when the photographer is not holding the camera or close to it. It involves the use of a cable release, remote control, mobile phone app, or another device to trigger the shutter release."
   },
@@ -750,6 +1274,10 @@
   {
     "word": "Resolution",
     "definition": "Resolution as a photographer term refers to the amount of detail in an image. It is used for measuring monitors, digital photo sensors, and just about anything you’d put on a monitor or photosensor such as web pages, photographs, and windows. It is typically measured in pixels per inch (PPI) or dots per inch (DPI)."
+  },
+  {
+    "word": "RGB (Red, Green, Blue)",
+    "definition": "A color model used for digital imaging."
   },
   {
     "word": "RGB Color (Red Green Blue)",
@@ -772,12 +1300,36 @@
     "definition": "Scene modes are generally found in lower-end cameras. These are pre-programmed exposure modes designed for specific situations. They can include modes such as Portrait, Landscape, Night/Low Light, etc."
   },
   {
+    "word": "Scrim",
+    "definition": "A device that diffuses light for softer illumination."
+  },
+  {
+    "word": "SD (Secure Digital)",
+    "definition": "A popular format for digital storage in cameras."
+  },
+  {
     "word": "SD Card (Secure Digital)",
     "definition": "An SD card is a common type of flash memory used in many cameras."
   },
   {
+    "word": "Secret Photography",
+    "definition": "Taking photos without the subject’s knowledge."
+  },
+  {
+    "word": "Self Portrait",
+    "definition": "A photo taken by the photographer, of themselves."
+  },
+  {
+    "word": "Selfie",
+    "definition": "A self-portrait photo typically taken with a smartphone."
+  },
+  {
     "word": "Sensor Size",
     "definition": "The sensor size is the physical dimensions of a camera sensor, usually measured in millimeters. This is different from the megapixel count of a sensor which can also be used to describe its size and resolution."
+  },
+  {
+    "word": "Shadows",
+    "definition": "Dark areas in an image, opposite of highlights."
   },
   {
     "word": "Sharpness",
@@ -808,6 +1360,14 @@
     "definition": "The shutter speed is the duration of time the shutter on a camera remains open when the shutter release is activated."
   },
   {
+    "word": "Shutter-Release Button",
+    "definition": "The button pressed to take a photo."
+  },
+  {
+    "word": "Single-Lens Reflex (SLR)",
+    "definition": "A camera with a mirror that reflects the lens’s view to the viewfinder."
+  },
+  {
     "word": "Slow Sync Flash",
     "definition": "A slow flash sync is a combination of using a flash with a slow shutter speed setting. This can allow for more ambient light to affect the exposure and create some blurring of any movement that happens while the shutter is open."
   },
@@ -832,6 +1392,14 @@
     "definition": "Soft light is a photography term used to describe the light that casts shadows with indefinite edges, or soft edges. This type of light is indirect and diffused, such as the sun is on a cloudy day."
   },
   {
+    "word": "Softbox",
+    "definition": "A light modifier that diffuses light for softer shadows."
+  },
+  {
+    "word": "SOOC (Straight Out of Camera)",
+    "definition": "Images as they are captured, without post-processing."
+  },
+  {
     "word": "Speedlight",
     "definition": "A speedlight is a portable camera accessory also known as a flash. This provides an additional light source the photographer is able to control."
   },
@@ -842,6 +1410,10 @@
   {
     "word": "Spot Metering",
     "definition": "Spot Metering is a standard exposure metering mode on many cameras. Using this mode it is possible to take a light reading from a very small area of composition."
+  },
+  {
+    "word": "Spray and Pray",
+    "definition": "Taking many shots hoping one will be successful."
   },
   {
     "word": "sRGB",
@@ -856,8 +1428,24 @@
     "definition": "Stop is a photography term used to describe the measure of aperture, shutter speed, and ISO. An increment of one-stop either halves or doubles the amount of light affecting an exposure."
   },
   {
+    "word": "Stop Up/Down",
+    "definition": "Adjusting the aperture to change the amount of light exposure."
+  },
+  {
     "word": "Stopping Down",
     "definition": "Stopping down is a term used to describe the decreasing of the size of the aperture in a camera lens. Changing the f-stop number from a lower number to a higher one and thus reducing the amount of light passing through the lens."
+  },
+  {
+    "word": "Straight Photography",
+    "definition": "Photography that attempts to depict a scene as realistically and naturally as possible."
+  },
+  {
+    "word": "Street Photography",
+    "definition": "Capturing candid moments and everyday life in public spaces."
+  },
+  {
+    "word": "Strobe",
+    "definition": "A powerful flash used in photography."
   },
   {
     "word": "Strobe Light",
@@ -868,8 +1456,20 @@
     "definition": "Subtractive lighting is the blocking of light affecting a composition. When there’s too much light, especially hard light, accessories can be placed between the light and the subject so less light is falling on the subject."
   },
   {
+    "word": "Sunny 16 Rule",
+    "definition": "A guideline for manual exposure settings under bright sunlight."
+  },
+  {
+    "word": "Super-Telephoto Lens",
+    "definition": "A lens with a very long focal length, ideal for distant subjects."
+  },
+  {
     "word": "Superzoom (Ultrazoom)",
     "definition": "A superzoom is a zoom lens with a very diverse focal length range, from very wide-angle to extreme telephoto."
+  },
+  {
+    "word": "Symmetry",
+    "definition": "Balance and harmony of elements within the photo."
   },
   {
     "word": "Sync Speed",
@@ -884,12 +1484,16 @@
     "definition": "Telephoto lenses have a focal length of more than 100mm. This style of lens has the effect of making the subject in a photo look larger. Distance has the appearance of being compressed in photos taken with telephoto lenses. The longer the focal length is the more compression occurs."
   },
   {
-    "word": "TTL (Through-the-lens)",
-    "definition": "TTL metering measures light as it passes through the camera lens and affects the sensor. This is part of the built-in exposure metering system in cameras and generally provides a more accurate light reading than a handheld exposure meter."
+    "word": "Tethered Shooting",
+    "definition": "Connecting a camera to a computer for immediate image review."
   },
   {
     "word": "Thumbnail",
     "definition": "A thumbnail image is a small-sized, often low resolution, digital photo used as a reference."
+  },
+  {
+    "word": "TIFF (Tagged Image File Format)",
+    "definition": "A high-quality graphic format used for storing images."
   },
   {
     "word": "TIFF (Tagged-Image File Format)",
@@ -906,6 +1510,10 @@
   {
     "word": "Time Lapse",
     "definition": "Time lapse photography captures a sequence of images taken over a period of time. These photos are then used to create a video giving the appearance of time moving faster than normal."
+  },
+  {
+    "word": "Timelapse",
+    "definition": "A video created from a series of photos taken at regular intervals."
   },
   {
     "word": "Tonal Range",
@@ -928,6 +1536,14 @@
     "definition": "A tripod is a photography accessory with three legs used to mount a camera on. Mounting a camera on a tripod is accomplished with a standard sized threaded hole in the base of the camera. Using a tripod allows a photographer to use much slower shutter speeds than can be achieved effectively when hand-holding the camera."
   },
   {
+    "word": "TTL (Through The Lens)",
+    "definition": "A method for measuring flash exposure through the lens."
+  },
+  {
+    "word": "TTL (Through-the-lens)",
+    "definition": "TTL metering measures light as it passes through the camera lens and affects the sensor. This is part of the built-in exposure metering system in cameras and generally provides a more accurate light reading than a handheld exposure meter."
+  },
+  {
     "word": "Tungsten Light",
     "definition": "Tungsten light is an older style of electric lighting that produces a warm color temperature of about 3200 Kelvin."
   },
@@ -936,12 +1552,20 @@
     "definition": "A twin lens relex camera has two lenses, usually configured with one above the other. Behind the top lens is a mirror that reflects the light onto a ground glass screen in the top of the camera so the photographer can see an image."
   },
   {
+    "word": "Twin-Lens Reflex (TLR)",
+    "definition": "A camera with two identical lenses, one for viewing and one for taking the picture."
+  },
+  {
     "word": "Ultra-low Dispersion (ULD)",
     "definition": "Ultra-low Dispersion glass is used in camera lenses and was developed to help overcome chromatic aberrations."
   },
   {
     "word": "Ultrasonic Motor",
     "definition": "Ultrasonic Motors are used to focus auto-focus lenses. These are tiny motors built into higher-end camera lenses."
+  },
+  {
+    "word": "Umbrella",
+    "definition": "A tool used in photography to diffuse light."
   },
   {
     "word": "Underexposure",
@@ -954,6 +1578,10 @@
   {
     "word": "UV (Ultraviolet) Filter",
     "definition": "A UV filter reduces the ultraviolet rays entering the lens and affecting the photograph. These filters also help protect the front lens element from being damaged. They are sometimes known as haze filters."
+  },
+  {
+    "word": "V-flat",
+    "definition": "A foldable large panel used to reflect or block light."
   },
   {
     "word": "Vibrance",
@@ -980,16 +1608,40 @@
     "definition": "A watermark is a visual reference placed on a digital image or print by a photographer to help protect the image from being copied illegally."
   },
   {
+    "word": "Wedding Photography",
+    "definition": "Capturing images related to weddings and ceremonies."
+  },
+  {
     "word": "White Balance",
     "definition": "White Balance is the process of correcting the color balance in a digital photograph. It can be controlled in camera or during post-processing of RAW files. It is the correction of light temperature by adding a filter so white appears white and colors in the image look natural."
+  },
+  {
+    "word": "White Balance (WB)",
+    "definition": "Adjusting colors so that they appear as they do in real life under different lighting."
   },
   {
     "word": "Wide Angle Lens",
     "definition": "A wide angle lens generally has a field of view of 50 degrees or wider. This can be either as part of the focal length of a zoom lens or a prime lens. These are often preferred by landscape photographers."
   },
   {
+    "word": "Wide Open",
+    "definition": "Using the largest possible aperture of a lens."
+  },
+  {
+    "word": "Wide-Angle Lens",
+    "definition": "A lens with a short focal length and wide field of view."
+  },
+  {
+    "word": "Wildlife Photography",
+    "definition": "Capturing images of animals in their natural habitats."
+  },
+  {
     "word": "xD Cards",
     "definition": "xD Cards are a type of flash memory storage device used in modern digital cameras."
+  },
+  {
+    "word": "Zebra Pattern",
+    "definition": "A camera feature displaying striped patterns to indicate overexposed areas."
   },
   {
     "word": "Zone System",
@@ -1002,677 +1654,5 @@
   {
     "word": "Zoom Ratio",
     "definition": "The zoom ratio is the ratio between the shortest focal length and the maximum focal length of a zoom lens. This measurement is commonly used in labeling on compact cameras with fixed lenses and indicated by 5X, 10X, etc."
-  },
-  {
-    "word": "Active Autofocus",
-    "definition": "An autofocus system where the camera emits a beam to determine the distance to the subject for focus adjustment."
-  },
-  {
-    "word": "Adobe",
-    "definition": "A software company known for products like Photoshop, widely used by creatives."
-  },
-  {
-    "word": "Adobe Camera Raw (ACR)",
-    "definition": "A Photoshop plugin for processing and enhancing raw images."
-  },
-  {
-    "word": "AE Lock",
-    "definition": "Autoexposure lock allows users to lock exposure settings."
-  },
-  {
-    "word": "AF Lock",
-    "definition": "Autofocus lock lets a photographer fix the focus point."
-  },
-  {
-    "word": "APEX",
-    "definition": "A system for exposure computation, using Av and Tv for aperture and shutter speed."
-  },
-  {
-    "word": "APS-C",
-    "definition": "A digital sensor size, smaller than full-frame, common in many cameras."
-  },
-  {
-    "word": "APS-H",
-    "definition": "A sensor size larger than APS-C but smaller than full-frame, less common."
-  },
-  {
-    "word": "Astrophotography",
-    "definition": "Capturing images of celestial bodies and night skies."
-  },
-  {
-    "word": "Backlight",
-    "definition": "Illumination from behind the subject."
-  },
-  {
-    "word": "Blown-Out Highlights",
-    "definition": "Overexposed areas in an image where detail is lost."
-  },
-  {
-    "word": "Bracketing",
-    "definition": "Taking multiple shots of the same scene with different settings."
-  },
-  {
-    "word": "Brenizer Method",
-    "definition": "Creating a panorama with a shallow depth of field by stitching zoomed-in photos."
-  },
-  {
-    "word": "Buffer",
-    "definition": "Camera memory that temporarily stores images before saving to a card."
-  },
-  {
-    "word": "Bulb Mode",
-    "definition": "A camera mode for long exposures controlled by the shutter button."
-  },
-  {
-    "word": "Cable Release",
-    "definition": "A device to trigger the camera shutter remotely."
-  },
-  {
-    "word": "Camera",
-    "definition": "A device for capturing images, consisting of a light-proof box and a sensor or film."
-  },
-  {
-    "word": "Camera Obscura",
-    "definition": "An early form of a camera without film or sensors."
-  },
-  {
-    "word": "Candid Photograph",
-    "definition": "A photo taken without the subject’s awareness."
-  },
-  {
-    "word": "Catchlight",
-    "definition": "A reflection of a light source in the subject’s eyes."
-  },
-  {
-    "word": "CCD Sensor",
-    "definition": "A type of image sensor known for high quality and sensitivity."
-  },
-  {
-    "word": "Cinemagraph",
-    "definition": "A still photo with a minor, repeated movement."
-  },
-  {
-    "word": "Circular Polarizer Filter",
-    "definition": "A filter reducing glare and reflections, enhancing colors."
-  },
-  {
-    "word": "Clipping",
-    "definition": "Loss of detail in the brightest or darkest parts of an image."
-  },
-  {
-    "word": "CMOS Sensor",
-    "definition": "The most common type of image sensor, known for low power consumption."
-  },
-  {
-    "word": "Cold Shoe",
-    "definition": "A mount on a camera for accessories without electronic connections."
-  },
-  {
-    "word": "Compact Camera",
-    "definition": "Also known as a point-and-shoot camera."
-  },
-  {
-    "word": "Composite Photograph",
-    "definition": "An image made by combining several photos."
-  },
-  {
-    "word": "Computational Photography",
-    "definition": "Using algorithms to enhance or manipulate images."
-  },
-  {
-    "word": "Continuous Shooting",
-    "definition": "Another term for burst mode."
-  },
-  {
-    "word": "Contrast Detection Autofocus",
-    "definition": "An autofocus method using contrast for focusing."
-  },
-  {
-    "word": "Copyright Infringement",
-    "definition": "Unauthorized use of copyrighted material."
-  },
-  {
-    "word": "Cropping",
-    "definition": "Cutting out parts of an image to change its composition."
-  },
-  {
-    "word": "Crop Sensor",
-    "definition": "A digital sensor smaller than a full-frame, affecting the image’s field of view."
-  },
-  {
-    "word": "Cross Processing",
-    "definition": "Developing film in the wrong type of chemicals for artistic effect."
-  },
-  {
-    "word": "Crushed Shadows",
-    "definition": "Underexposed areas in an image where detail is lost."
-  },
-  {
-    "word": "Daguerreotype",
-    "definition": "An early photographic process and the images it produces."
-  },
-  {
-    "word": "Darkroom",
-    "definition": "A light-tight room for developing film and making prints."
-  },
-  {
-    "word": "Diffused Light",
-    "definition": "Soft, even light with reduced shadows."
-  },
-  {
-    "word": "Digital Photography",
-    "definition": "Capturing images electronically, rather than on film."
-  },
-  {
-    "word": "Digital Single-lens Reflex (DSLR) Camera",
-    "definition": "A camera combining SLR design with a digital sensor."
-  },
-  {
-    "word": "Dust Spots",
-    "definition": "Unwanted spots in an image from dust on the sensor."
-  },
-  {
-    "word": "Enlarger",
-    "definition": "A device for making larger photographic prints from negatives."
-  },
-  {
-    "word": "ETTL",
-    "definition": "A flash metering mode for automatic flash exposure calculation."
-  },
-  {
-    "word": "ETTR",
-    "definition": "A technique for maximizing dynamic range by slightly overexposing."
-  },
-  {
-    "word": "EV",
-    "definition": "Exposure Value, representing a combination of aperture and shutter speed."
-  },
-  {
-    "word": "Exhibition",
-    "definition": "A public display of photographs."
-  },
-  {
-    "word": "EXIF",
-    "definition": "Metadata standard including camera settings and scene information."
-  },
-  {
-    "word": "Exposure Bracketing",
-    "definition": "Taking multiple shots at different exposures."
-  },
-  {
-    "word": "Exposure Compensation",
-    "definition": "Adjusting exposure beyond the camera’s metering."
-  },
-  {
-    "word": "Extension Tube",
-    "definition": "A lens accessory for closer focusing and greater magnification."
-  },
-  {
-    "word": "Film",
-    "definition": "A light-sensitive material used for capturing images in analog photography."
-  },
-  {
-    "word": "Film Photography",
-    "definition": "Creating images on light-sensitive film."
-  },
-  {
-    "word": "Fisheye Lens",
-    "definition": "A wide-angle lens with a field of view up to 180 degrees."
-  },
-  {
-    "word": "Flag",
-    "definition": "A tool used in photography to block light."
-  },
-  {
-    "word": "Flash",
-    "definition": "A device producing a brief burst of light for illumination."
-  },
-  {
-    "word": "F-number",
-    "definition": "A number indicating the aperture size."
-  },
-  {
-    "word": "Focus Point",
-    "definition": "The specific point a camera’s autofocus system sharpens."
-  },
-  {
-    "word": "Focal Plane Shutter",
-    "definition": "A type of shutter in front of the sensor."
-  },
-  {
-    "word": "Forced Perspective",
-    "definition": "A technique manipulating visual perception through scale and distance."
-  },
-  {
-    "word": "Foreground",
-    "definition": "The part of a photo closest to the camera."
-  },
-  {
-    "word": "Four Thirds",
-    "definition": "A digital camera sensor standard with a 4:3 aspect ratio."
-  },
-  {
-    "word": "F-stop",
-    "definition": "A measure of aperture size."
-  },
-  {
-    "word": "GAS (Gear Acquisition Syndrome)",
-    "definition": "The desire to continually buy new camera equipment."
-  },
-  {
-    "word": "Geotagging",
-    "definition": "Adding geographical location data to photos."
-  },
-  {
-    "word": "GIF (Graphics Interchange Format)",
-    "definition": "A bitmap image format."
-  },
-  {
-    "word": "Gigapixel (GP)",
-    "definition": "A photo or image resolution of one billion pixels."
-  },
-  {
-    "word": "Glass",
-    "definition": "Slang for camera lenses."
-  },
-  {
-    "word": "Gobo",
-    "definition": "An object placed between a light source and subject to alter the light."
-  },
-  {
-    "word": "Hyperfocal Distance",
-    "definition": "The closest distance at which a lens can be focused while keeping objects at infinity acceptably sharp."
-  },
-  {
-    "word": "Hyperlapse",
-    "definition": "A moving timelapse video."
-  },
-  {
-    "word": "IBIS (In-body Image Stabilization)",
-    "definition": "Camera technology that stabilizes the sensor to counteract camera shake."
-  },
-  {
-    "word": "Image Quality (IQ)",
-    "definition": "The perceived visual attributes that determine the overall appeal of an image."
-  },
-  {
-    "word": "Image Sensor",
-    "definition": "An electronic device that converts an optical image into electronic data."
-  },
-  {
-    "word": "Intentional Camera Movement (ICM)",
-    "definition": "A technique where the camera is deliberately moved during exposure for creative effect."
-  },
-  {
-    "word": "Interchangeable Lens Camera (ILC)",
-    "definition": "A camera that allows different lenses to be attached."
-  },
-  {
-    "word": "Internal Focusing",
-    "definition": "Lens technology where the lens does not change in size during focusing."
-  },
-  {
-    "word": "Intervalometer",
-    "definition": "A device for making timelapse videos, controlling the intervals between shots."
-  },
-  {
-    "word": "Juxtaposition",
-    "definition": "Placing two or more elements close together or side by side for comparison or contrast."
-  },
-  {
-    "word": "Kelvin (K)",
-    "definition": "A unit of measurement for the color temperature of light."
-  },
-  {
-    "word": "Kicker Light",
-    "definition": "A light source used to accentuate a subject’s contours."
-  },
-  {
-    "word": "Landscape Orientation",
-    "definition": "A horizontal orientation of a photo."
-  },
-  {
-    "word": "Landscape Photography",
-    "definition": "Capturing images of nature and the outdoors."
-  },
-  {
-    "word": "Large Format",
-    "definition": "Photography using a film or sensor larger than medium format, typically 4×5 inches or larger."
-  },
-  {
-    "word": "LCD (Liquid Crystal Display)",
-    "definition": "A screen technology used in cameras and other devices."
-  },
-  {
-    "word": "LED (Light Emitting Diode)",
-    "definition": "A technology used for lighting and displays in photography."
-  },
-  {
-    "word": "Lens",
-    "definition": "An optical device used by a camera to focus light and create an image."
-  },
-  {
-    "word": "Lens Hood",
-    "definition": "A device attached to the front of a lens to block unwanted light."
-  },
-  {
-    "word": "Lens Mount",
-    "definition": "The interface between a camera body and a lens."
-  },
-  {
-    "word": "Light Painting",
-    "definition": "A technique of moving a light source during long exposure to create an image."
-  },
-  {
-    "word": "Macro Photography",
-    "definition": "Close-up photography of small subjects."
-  },
-  {
-    "word": "Magic Hour",
-    "definition": "Another term for golden hour."
-  },
-  {
-    "word": "Manual Focus (MF)",
-    "definition": "Adjusting the focus of a lens manually, rather than automatically."
-  },
-  {
-    "word": "Medium Format (MF)",
-    "definition": "A camera sensor or film size larger than 35mm but smaller than large format."
-  },
-  {
-    "word": "Megapixel (MP)",
-    "definition": "A unit of resolution equal to one million pixels."
-  },
-  {
-    "word": "Memory Card Reader",
-    "definition": "A device that reads data from a memory card."
-  },
-  {
-    "word": "Metering Mode",
-    "definition": "The way a camera measures light to calculate exposure."
-  },
-  {
-    "word": "Micro Four Thirds (MFT or M4/3)",
-    "definition": "A standard for mirrorless interchangeable lens cameras."
-  },
-  {
-    "word": "Midtones",
-    "definition": "The middle range of tones in an image, neither dark shadows nor bright highlights."
-  },
-  {
-    "word": "Minimum Focus Distance",
-    "definition": "The closest distance at which a lens can focus."
-  },
-  {
-    "word": "Mirror Lockup",
-    "definition": "A feature that lifts the mirror out of the way before taking a photo to reduce vibration."
-  },
-  {
-    "word": "Mode Dial",
-    "definition": "A dial on a camera that allows the user to select different shooting modes."
-  },
-  {
-    "word": "Monopod",
-    "definition": "A single-legged camera support."
-  },
-  {
-    "word": "MTF (Modulation Transfer Function)",
-    "definition": "A measurement of a lens’s optical performance."
-  },
-  {
-    "word": "Multiple Exposure",
-    "definition": "Combining two or more exposures into a single image."
-  },
-  {
-    "word": "Natural Light",
-    "definition": "Light from the sun or other natural sources."
-  },
-  {
-    "word": "Nature Photography",
-    "definition": "Photography of the natural world."
-  },
-  {
-    "word": "Negative",
-    "definition": "An image where the colors and brightness values are inverted."
-  },
-  {
-    "word": "Negative Space",
-    "definition": "The area around the main subject of an image."
-  },
-  {
-    "word": "Nifty Fifty",
-    "definition": "Slang for a 50mm prime lens."
-  },
-  {
-    "word": "Normal Lens",
-    "definition": "A lens with a focal length roughly equal to the diagonal of the film or sensor size."
-  },
-  {
-    "word": "Optical Viewfinder (OVF)",
-    "definition": "A viewfinder that allows the photographer to compose a shot through the lens."
-  },
-  {
-    "word": "Panorama",
-    "definition": "A wide-angle view of a scene, often created by stitching multiple images together."
-  },
-  {
-    "word": "Phase Detection Autofocus (PDAF)",
-    "definition": "An autofocus system that quickly measures the convergence of two light beams."
-  },
-  {
-    "word": "Photo Walk",
-    "definition": "An activity where photographers walk and take photos together."
-  },
-  {
-    "word": "Photogram",
-    "definition": "An image made by placing objects directly on light-sensitive material."
-  },
-  {
-    "word": "Photograph",
-    "definition": "An image created by capturing light on a photosensitive surface."
-  },
-  {
-    "word": "Photographer",
-    "definition": "Someone who takes photographs."
-  },
-  {
-    "word": "Photography",
-    "definition": "The art or practice of creating images by recording light."
-  },
-  {
-    "word": "Pinhole Camera",
-    "definition": "A simple camera with no lens, just a small aperture."
-  },
-  {
-    "word": "Pixel Peeping",
-    "definition": "Examining images at high magnification to evaluate quality."
-  },
-  {
-    "word": "Point-and-Shoot Camera",
-    "definition": "A small, easy-to-use camera with automatic systems for setting exposure."
-  },
-  {
-    "word": "Polarizing Filter",
-    "definition": "A filter that reduces reflections and enhances colors by polarizing light."
-  },
-  {
-    "word": "Portfolio",
-    "definition": "A collection of a photographer’s work, often used to showcase their skills."
-  },
-  {
-    "word": "Portrait",
-    "definition": "A photograph of a person or animal, focusing on the face."
-  },
-  {
-    "word": "Portrait Mode",
-    "definition": "A camera mode designed to optimize settings for portrait photography."
-  },
-  {
-    "word": "Portrait Orientation",
-    "definition": "The vertical orientation of a camera or image."
-  },
-  {
-    "word": "PPI (Pixels Per Inch)",
-    "definition": "A measurement of image resolution on digital displays."
-  },
-  {
-    "word": "Print",
-    "definition": "A physical copy of a photograph."
-  },
-  {
-    "word": "Product Photography",
-    "definition": "Taking pictures of products to highlight their features for commercial use."
-  },
-  {
-    "word": "Program (P) Mode",
-    "definition": "A semi-automatic shooting mode where the camera selects exposure settings."
-  },
-  {
-    "word": "Red Eye",
-    "definition": "An effect where eyes appear red in photos, caused by flash reflection."
-  },
-  {
-    "word": "Rembrandt Lighting",
-    "definition": "A lighting technique that creates a triangle of light on the cheek."
-  },
-  {
-    "word": "RGB (Red, Green, Blue)",
-    "definition": "A color model used for digital imaging."
-  },
-  {
-    "word": "Scrim",
-    "definition": "A device that diffuses light for softer illumination."
-  },
-  {
-    "word": "SD (Secure Digital)",
-    "definition": "A popular format for digital storage in cameras."
-  },
-  {
-    "word": "Secret Photography",
-    "definition": "Taking photos without the subject’s knowledge."
-  },
-  {
-    "word": "Selfie",
-    "definition": "A self-portrait photo typically taken with a smartphone."
-  },
-  {
-    "word": "Self Portrait",
-    "definition": "A photo taken by the photographer, of themselves."
-  },
-  {
-    "word": "Shadows",
-    "definition": "Dark areas in an image, opposite of highlights."
-  },
-  {
-    "word": "Shutter-Release Button",
-    "definition": "The button pressed to take a photo."
-  },
-  {
-    "word": "Single-Lens Reflex (SLR)",
-    "definition": "A camera with a mirror that reflects the lens’s view to the viewfinder."
-  },
-  {
-    "word": "Softbox",
-    "definition": "A light modifier that diffuses light for softer shadows."
-  },
-  {
-    "word": "Spray and Pray",
-    "definition": "Taking many shots hoping one will be successful."
-  },
-  {
-    "word": "SOOC (Straight Out of Camera)",
-    "definition": "Images as they are captured, without post-processing."
-  },
-  {
-    "word": "Stop Up/Down",
-    "definition": "Adjusting the aperture to change the amount of light exposure."
-  },
-  {
-    "word": "Straight Photography",
-    "definition": "Photography that attempts to depict a scene as realistically and naturally as possible."
-  },
-  {
-    "word": "Street Photography",
-    "definition": "Capturing candid moments and everyday life in public spaces."
-  },
-  {
-    "word": "Strobe",
-    "definition": "A powerful flash used in photography."
-  },
-  {
-    "word": "Sunny 16 Rule",
-    "definition": "A guideline for manual exposure settings under bright sunlight."
-  },
-  {
-    "word": "Super-Telephoto Lens",
-    "definition": "A lens with a very long focal length, ideal for distant subjects."
-  },
-  {
-    "word": "Symmetry",
-    "definition": "Balance and harmony of elements within the photo."
-  },
-  {
-    "word": "Tethered Shooting",
-    "definition": "Connecting a camera to a computer for immediate image review."
-  },
-  {
-    "word": "TIFF (Tagged Image File Format)",
-    "definition": "A high-quality graphic format used for storing images."
-  },
-  {
-    "word": "Timelapse",
-    "definition": "A video created from a series of photos taken at regular intervals."
-  },
-  {
-    "word": "TTL (Through The Lens)",
-    "definition": "A method for measuring flash exposure through the lens."
-  },
-  {
-    "word": "Twin-Lens Reflex (TLR)",
-    "definition": "A camera with two identical lenses, one for viewing and one for taking the picture."
-  },
-  {
-    "word": "Umbrella",
-    "definition": "A tool used in photography to diffuse light."
-  },
-  {
-    "word": "V-flat",
-    "definition": "A foldable large panel used to reflect or block light."
-  },
-  {
-    "word": "Wedding Photography",
-    "definition": "Capturing images related to weddings and ceremonies."
-  },
-  {
-    "word": "White Balance (WB)",
-    "definition": "Adjusting colors so that they appear as they do in real life under different lighting."
-  },
-  {
-    "word": "Wide-Angle Lens",
-    "definition": "A lens with a short focal length and wide field of view."
-  },
-  {
-    "word": "Wide Open",
-    "definition": "Using the largest possible aperture of a lens."
-  },
-  {
-    "word": "Wildlife Photography",
-    "definition": "Capturing images of animals in their natural habitats."
-  },
-  {
-    "word": "Zebra Pattern",
-    "definition": "A camera feature displaying striped patterns to indicate overexposed areas."
-  },
-  {
-    "word": "35mm",
-    "definition": "A film format and the basis for the full-frame digital sensor size."
-  },
-  {
-    "word": "35mm Equivalent",
-    "definition": "Comparing lens focal lengths across different sensor sizes."
-  },
-  {
-    "word": "500 Rule",
-    "definition": "A guideline for avoiding star trails in night sky photography by sett"
   }
 ]
