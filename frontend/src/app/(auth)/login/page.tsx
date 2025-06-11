@@ -20,7 +20,7 @@ const Page = () => {
     login,
     {
       status: "idle",
-    },
+    }
   );
 
   useEffect(() => {
@@ -50,17 +50,12 @@ const Page = () => {
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>Sign in</SubmitButton>
-          <p className="mt-4 text-center text-sm text-white dark:text-amber-200">
-            {"Don't have an account? "}
-            <Link
-              href="/register"
-              className="font-semibold text-gray-800 hover:underline dark:text-white"
-            >
-              Sign up
-            </Link>
-            {" for free."}
-          </p>
+          <SubmitButton
+            className="border-1 border-black shadow-md hover:shadow-amber-700"
+            isSuccessful={isSuccessful}
+          >
+            Sign in
+          </SubmitButton>
         </AuthForm>
       </div>
     </div>

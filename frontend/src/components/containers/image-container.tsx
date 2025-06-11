@@ -20,7 +20,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   const showNext = () =>
     setSelectedIndex((prev) =>
-      prev !== null && prev < images.length - 1 ? prev + 1 : prev,
+      prev !== null && prev < images.length - 1 ? prev + 1 : prev
     );
 
   const closeModal = () => {
@@ -72,7 +72,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
       {/* Shared Dialog */}
       <Dialog.Root
         open={open}
-        onOpenChange={(isOpen) => {
+        onOpenChange={(isOpen: boolean) => {
           setOpen(isOpen);
           if (!isOpen) setSelectedIndex(null);
         }}

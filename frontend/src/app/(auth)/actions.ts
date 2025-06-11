@@ -6,7 +6,7 @@ import {
   getUserByEmail,
   getUserByUsername,
 } from "@/lib/db/queries";
-import { signIn } from "./auth";
+import { signIn, signOut } from "./auth";
 import { capitalizeFirstLetter } from "@/lib/utils";
 
 const authLogInFormSchema = z.object({
@@ -43,6 +43,7 @@ export const login = async (
   formData: FormData,
 ): Promise<LoginActionState> => {
   try {
+    console.log("loggin in...");
     const validatedData = authLogInFormSchema.parse({
       email: formData.get("email"),
       password: formData.get("password"),
@@ -64,7 +65,7 @@ export const login = async (
       return { status: "invalid_data" };
     }
 
-    return { status: "failed" };
+    return { status: "idle" };
   }
 };
 
@@ -121,3 +122,7 @@ export const register = async (
     return { status: "failed" };
   }
 };
+
+export async function doLogout() {
+  await signOut({ redirectTo: "/" });
+}
