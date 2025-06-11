@@ -22,7 +22,7 @@ export default function Page() {
     register,
     {
       status: "idle",
-    },
+    }
   );
 
   useEffect(() => {
@@ -50,8 +50,6 @@ export default function Page() {
       router.refresh();
       router.push("/");
     }
-    console.log(state.status);
-    toast.error("error");
   }, [state.status, router]);
 
   const handleSubmit = (formData: FormData) => {
@@ -61,8 +59,8 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-login-bg flex h-dvh w-full items-start justify-center pt-12 md:items-center md:pt-0">
-      <div className="flex w-full max-w-md flex-col gap-12 overflow-hidden rounded-2xl">
+    <div className="bg-login-bg flex h-dvh w-full items-start justify-center md:items-center md:pt-0">
+      <div className="flex w-full max-w-md flex-col gap-8 pt-0 overflow-hidden rounded-2xl">
         <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
           <h3 className="text-xl font-semibold dark:text-amber-900">Sign Up</h3>
           <p className="text-sm text-white dark:text-amber-200">
@@ -70,17 +68,12 @@ export default function Page() {
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>Sign Up</SubmitButton>
-          <p className="mt-4 text-center text-sm text-white dark:text-amber-200">
-            {"Already have an account? "}
-            <Link
-              href="/login"
-              className="font-semibold text-white hover:underline dark:text-white"
-            >
-              Sign in
-            </Link>
-            {" instead."}
-          </p>
+          <SubmitButton
+            className="border-1 border-black shadow-md hover:shadow-amber-700"
+            isSuccessful={isSuccessful}
+          >
+            Sign Up
+          </SubmitButton>
         </AuthForm>
       </div>
     </div>

@@ -19,7 +19,15 @@ const links = [
 ];
 
 export default function MainHeader() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return (
+      <div className="flex-justify flex h-screen w-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const leftContent = (
     <h1

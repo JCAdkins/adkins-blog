@@ -1,20 +1,15 @@
-import { Open_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import MainHeader from "@/components/headers/main-header";
 import { Toaster } from "sonner";
-import { SessionProvider } from "next-auth/react";
+import { Providers } from "./providers";
 import localFont from "next/font/local";
+import { auth } from "./(auth)/auth";
 
 const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
 });
-
-// const open_sans = Open_Sans({
-//   variable: "--font-open-sans",
-//   subsets: ["latin"],
-// });
 
 export const metadata: Metadata = {
   title: "Adkins Ninja Blog",
@@ -70,12 +65,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider>
-            {/* <Toaster richColors position="top-center" /> */}
+          <Providers>
             <MainHeader />
-            <Toaster richColors position="bottom-center" />
+            <Toaster richColors position="top-center" />
             {children}
-          </SessionProvider>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

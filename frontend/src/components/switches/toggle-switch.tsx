@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Switch } from "radix-ui";
+import { Switch } from "@radix-ui/react-switch";
 
 const ToggleSwitch = () => {
   const [isDark, setIsDark] = useState(
     typeof window !== "undefined" &&
-      document.documentElement.classList.contains("dark"),
+      document.documentElement.classList.contains("dark")
   );
 
   useEffect(() => {

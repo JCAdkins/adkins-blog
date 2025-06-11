@@ -34,10 +34,8 @@ interface GetImmichAssetParams {
 
 export async function getImmichAsset({ type, id }: GetImmichAssetParams) {
   console.log("trying to fetch immich asset...");
-  console.log("id: ", id);
   if (!id) return;
   const route = type === "original" ? "images" : "thumbnail";
-  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/${route}`);
   try {
     console.log("attempting image download...");
     const response = await axios.get(

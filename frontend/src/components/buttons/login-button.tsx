@@ -6,7 +6,6 @@ const LoginButton = () => {
   const router = useRouter();
 
   const handleLogin = () => {
-    console.log("log in clicked");
     router.push("/login");
   };
 

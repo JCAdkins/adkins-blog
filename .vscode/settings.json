@@ -5,10 +5,9 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "name": "adkins-postgres",
+      "name": "adkins-blog",
       "database": "mydb",
-      "username": "jordy",
-      "password": "1234"
+      "username": "jordy"
     }
   ]
 }
