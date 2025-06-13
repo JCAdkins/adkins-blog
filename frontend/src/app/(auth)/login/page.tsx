@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
-
+import { useSession } from "next-auth/react";
 import { AuthForm } from "@/components/forms/auth-form";
 import { SubmitButton } from "@/components/buttons/submit-button";
 
@@ -12,7 +11,7 @@ import { login, type LoginActionState } from "../actions";
 
 const Page = () => {
   const router = useRouter();
-
+  const { data: _, status, update } = useSession();
   const [email, setEmail] = useState("");
   const [isSuccessful, setIsSuccessful] = useState(false);
 
@@ -30,8 +29,8 @@ const Page = () => {
       toast.error("Please enter valid inputs!");
     } else if (state.status === "success") {
       setIsSuccessful(true);
-      router.refresh();
       router.push("/");
+      update();
     }
   }, [state.status, router]);
 

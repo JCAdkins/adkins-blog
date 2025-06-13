@@ -8,7 +8,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface ImageGalleryProps {
-  images: (string | undefined)[];
+  images: ({ thumbnail: string; original: string } | undefined)[];
 }
 
 export default function ImageGallery({ images }: ImageGalleryProps) {
@@ -44,7 +44,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     <>
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {images.map((img, index) => {
-          if (!img || img === "") return null;
+          if (!img || img === undefined) return null;
           return (
             <div
               key={index}
@@ -55,7 +55,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               }}
             >
               <Image
-                src={img}
+                src={img.thumbnail}
                 alt={`Gallery image ${index + 1}`}
                 fill
                 className="object-cover"
@@ -103,7 +103,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               {/* Image */}
               {images[selectedIndex!] ? (
                 <Image
-                  src={images[selectedIndex!] as string}
+                  src={images[selectedIndex!]?.original as string}
                   alt={`Full image ${selectedIndex! + 1}`}
                   width={800}
                   height={600}

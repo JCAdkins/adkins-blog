@@ -16,7 +16,9 @@ type Props = {
 
 export default function BlogPostContent({ id }: Props) {
   const [post, setPost] = useState<Blog | null>(null);
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<
+    ({ thumbnail: string; original: string } | undefined)[]
+  >([]);
   const [loadingImages, setLoadingImages] = useState(true);
 
   useEffect(() => {
@@ -26,9 +28,13 @@ export default function BlogPostContent({ id }: Props) {
 
       if (data?.blogPostImages?.length) {
         const imgs = await Promise.all(
-          data.blogPostImages.map((img: BlogPostImage) =>
-            getImmichAsset({ type: "original", id: img.imageId }),
-          ),
+          data.blogPostImages.map(async (img: BlogPostImage) => {
+            const [thumbnail, original] = await Promise.all([
+              getImmichAsset({ type: "thumbnail", id: img.imageId }),
+              getImmichAsset({ type: "original", id: img.imageId }),
+            ]);
+            return { thumbnail, original };
+          })
         );
         setImages(imgs);
       }

@@ -3,9 +3,9 @@ import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import MainHeader from "@/components/headers/main-header";
 import { Toaster } from "sonner";
-import { Providers } from "./providers";
+// import { Providers } from "./providers";
+import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
-import { auth } from "./(auth)/auth";
 
 const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
@@ -65,11 +65,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Providers>
+          <SessionProvider>
             <MainHeader />
             <Toaster richColors position="top-center" />
             {children}
-          </Providers>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>
