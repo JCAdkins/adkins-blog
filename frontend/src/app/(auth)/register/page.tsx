@@ -1,13 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
-
+import { useSession } from "next-auth/react";
 import { AuthForm } from "@/components/forms/auth-form";
 import { SubmitButton } from "@/components/buttons/submit-button";
-
 import { register, type RegisterActionState } from "../actions";
 import { welcomeNewUser } from "@/lib/services/contact-service";
 
@@ -17,7 +15,7 @@ export default function Page() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [isSuccessful, setIsSuccessful] = useState(false);
-
+  const { data: _, status, update } = useSession();
   const [state, formAction] = useActionState<RegisterActionState, FormData>(
     register,
     {
@@ -47,7 +45,7 @@ export default function Page() {
       toast.success("Account created successfully");
       setIsSuccessful(true);
       welcomeNewUser({ email, username });
-      router.refresh();
+      update();
       router.push("/");
     }
   }, [state.status, router]);

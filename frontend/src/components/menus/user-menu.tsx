@@ -6,12 +6,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { doLogout } from "@/app/(auth)/actions";
 import { User } from "next-auth";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 export function UserMenu({ user }: { user: User }) {
   const router = useRouter();
+  const { data: _, status, update } = useSession();
 
   return (
     <DropdownMenu>
@@ -33,9 +35,9 @@ export function UserMenu({ user }: { user: User }) {
           <></>
         )}
         <DropdownMenuItem
-          onClick={() => {
+          onClick={async () => {
             console.log("Logging out");
-            doLogout();
+            await signOut();
           }}
         >
           Log out

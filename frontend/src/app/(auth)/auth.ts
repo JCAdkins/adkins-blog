@@ -13,6 +13,9 @@ interface ExtendedUser extends User {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...config,
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
