@@ -22,7 +22,7 @@ export default function Header({
     <header className={`p-4 ${className}`}>
       <nav className="container mx-auto grid grid-cols-3 items-center">
         <div className="flex items-center">{leftContent}</div>
-        <div className="flex justify-center space-x-4 text-xl">
+        <div className="flex justify-center space-x-4 text-xl z-10">
           {links.map((link) => (
             <Link
               key={link.href}

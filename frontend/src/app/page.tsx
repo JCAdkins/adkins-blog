@@ -8,6 +8,7 @@ import WordOfTheDayCard from "@/components/cards/WoTD-card";
 import { promises as fs } from "fs";
 import path from "path";
 import { fnv1aHash } from "@/lib/utils";
+import MovingTextBackground from "@/components/backgrounds/moving-text-background";
 
 const biancha = localFont({
   src: "../fonts/Resillia.ttf",
@@ -23,7 +24,7 @@ export default async function Home() {
     process.cwd(),
     "src",
     "terms",
-    "photography_terms.json",
+    "photography_terms.json"
   );
   const file = await fs.readFile(filePath, "utf8");
   const terms: Term[] = JSON.parse(file);
@@ -36,7 +37,8 @@ export default async function Home() {
 
   return (
     <div className="grid min-h-screen w-full grid-rows-[1fr_20px] items-start justify-items-center gap-16 overflow-x-hidden font-[family-name:var(--font-geist-sans)] sm:p-12">
-      <main className="row-start-1 flex w-full max-w-5/6 flex-col items-center gap-[16px] pt-6 sm:items-start sm:px-8">
+      <MovingTextBackground />
+      <main className="row-start-1 flex w-full max-w-5/6 flex-col items-center gap-[16px] pt-6 sm:items-start sm:px-8 z-10">
         <h1 className="flex w-full items-center text-center text-2xl">
           <div className="border-login-hover h-[1px] w-full border" />
           <div
@@ -53,7 +55,7 @@ export default async function Home() {
           Along the way I will share my thoughts and share any tips I learn that
           I believe will help you if you are just starting your own journey. So,
           thank you for stopping by and viewing the site. If you want to provide
-          any feedback please don't heesitate to reach out. :)
+          any feedback please don't heesitate to reach out. 😊
         </div>
         <Break className="border-login-hover w-full" />
         <div className="space-y-4">
