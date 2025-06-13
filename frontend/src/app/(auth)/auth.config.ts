@@ -14,9 +14,6 @@ const config = {
       return token;
     },
     async session({ session, token }) {
-      // Map additional fields from the token to the session
-      console.log("📦 SESSION CALLBACK");
-      console.log({ session, token });
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
@@ -44,14 +41,14 @@ const config = {
       return true;
     },
   },
-  events: {
-    signIn(message) {
-      console.log("✅ User signed in", message);
-    },
-    signOut(message) {
-      console.log("🚪 User signed out", message);
-    },
-  },
+  // events: {
+  //   signIn(message) {
+  //     console.log("✅ User signed in", message);
+  //   },
+  //   signOut(message) {
+  //     console.log("🚪 User signed out", message);
+  //   },
+  // },
 } satisfies NextAuthConfig;
 
 export default config;

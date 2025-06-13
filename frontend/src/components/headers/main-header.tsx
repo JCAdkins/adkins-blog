@@ -21,14 +21,6 @@ const links = [
 export default function MainHeader() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    return (
-      <div className="flex-justify flex h-screen w-screen">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
   const leftContent = (
     <h1
       className={`text-sm font-bold md:text-lg lg:text-2xl ${biancha.className}`}
