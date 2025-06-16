@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { Card } from "../ui/card";
 import { Blog } from "next-auth";
+import Image from "next/image";
 
 export default function BlogCard({
   blog,
@@ -18,11 +19,13 @@ export default function BlogCard({
       className="bg-login text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]"
     >
       <Link href={`/posts/${blog.id}`} className="block">
-        <img
+        <Image
           src={
             imageUrl ||
             "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
           }
+          width={30}
+          height={10}
           alt={blog.title}
           className="mb-4 h-32 w-full rounded object-cover"
         />

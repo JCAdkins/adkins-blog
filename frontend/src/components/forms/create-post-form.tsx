@@ -21,7 +21,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const target = e.target;
     const { name, type, value } = target;
@@ -44,7 +44,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
   };
 
   const steps = [
-    <>
+    <div key={1}>
       <label className="text-sm font-medium">Title</label>
       <Input
         name="title"
@@ -52,8 +52,8 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         onChange={handleChange}
         placeholder="Enter title"
       />
-    </>,
-    <>
+    </div>,
+    <div key={2}>
       <label className="text-sm font-medium">Description</label>
       <textarea
         name="description"
@@ -62,8 +62,8 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         className="border-input bg-background min-h-[120px] w-full rounded-md border p-2 text-sm"
         placeholder="Enter description"
       />
-    </>,
-    <>
+    </div>,
+    <div key={3}>
       <label className="text-sm font-medium">Content</label>
       <textarea
         name="content"
@@ -72,8 +72,8 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         className="border-input bg-background min-h-[200px] w-full rounded-md border p-2 text-sm"
         placeholder="Write your content..."
       />
-    </>,
-    <>
+    </div>,
+    <div key={4}>
       <label className="flex items-center gap-2 text-sm font-medium">
         <Input
           type="checkbox"
@@ -83,7 +83,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         />
         Featured Post
       </label>
-    </>,
+    </div>,
     <FileDropZone
       fileType={[
         "image/svg+xml",

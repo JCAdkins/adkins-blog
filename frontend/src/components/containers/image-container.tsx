@@ -105,8 +105,8 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 <Image
                   src={images[selectedIndex!]?.original as string}
                   alt={`Full image ${selectedIndex! + 1}`}
-                  width={800}
-                  height={600}
+                  width={400}
+                  height={300}
                   loading="eager"
                   className="max-h-[80vh] w-auto rounded-lg object-contain"
                 />

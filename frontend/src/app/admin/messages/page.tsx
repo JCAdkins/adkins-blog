@@ -28,7 +28,6 @@ export default function AdminMessagesPage() {
     const fetchAndSetMessages = async () => {
       const msgs = await fetchMessages();
       setMessages(msgs);
-      console.log("messages: ", messages);
       setLoading(false);
     };
     fetchAndSetMessages();
@@ -55,7 +54,7 @@ export default function AdminMessagesPage() {
                 key={msg.id}
                 className={cn(
                   "rounded border p-2 shadow-sm transition-colors md:p-3",
-                  msg.read ? "bg-gray-300" : "bg-white",
+                  msg.read ? "bg-gray-300" : "bg-white"
                 )}
               >
                 <div
@@ -63,14 +62,14 @@ export default function AdminMessagesPage() {
                   onClick={() => {
                     if (openMessageId && openMessageId !== msg.id) {
                       const prevMsg = messages.find(
-                        (m) => m.id === openMessageId,
+                        (m) => m.id === openMessageId
                       );
                       if (prevMsg && !prevMsg.read) {
                         markMessageAsRead(prevMsg.id).then(() => {
                           setMessages((prev) =>
                             prev.map((m) =>
-                              m.id === prevMsg.id ? { ...m, read: true } : m,
-                            ),
+                              m.id === prevMsg.id ? { ...m, read: true } : m
+                            )
                           );
                           setUnreadCount((prev: number) => prev - 1);
                         });
@@ -84,8 +83,8 @@ export default function AdminMessagesPage() {
                         markMessageAsRead(msg.id).then(() => {
                           setMessages((prev) =>
                             prev.map((m) =>
-                              m.id === msg.id ? { ...m, read: true } : m,
-                            ),
+                              m.id === msg.id ? { ...m, read: true } : m
+                            )
                           );
                           setUnreadCount((prev: number) => prev - 1);
                         });
