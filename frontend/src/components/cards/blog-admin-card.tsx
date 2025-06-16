@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card"; // Adjust the import path as needed
 import { formatDateToMMDDYYYY } from "@/lib/utils";
 import { Blog } from "next-auth";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function BlogAdminCard({
@@ -32,11 +33,13 @@ export default function BlogAdminCard({
       }
     >
       <div className="flex-col">
-        <img
+        <Image
           src={
             imageUrl ||
             "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
           }
+          height={10}
+          width={30}
           alt={blog.title}
           className="mb-4 h-32 w-full rounded object-cover"
         />

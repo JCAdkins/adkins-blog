@@ -1,61 +1,45 @@
 .moving-text-background {
-  position: absolute;
-  inset: 0;
-  z-index: -10;
+  position: fixed;
+  inset: -50%;
   overflow: hidden;
-  transform: rotate(30deg);
   pointer-events: none;
-  opacity: 0.07;
+  z-index: -20;
+  transform: rotate(30deg);
+}
+
+@media (max-width: 640px) {
+  .moving-text-background {
+    display: none;
+  }
 }
 
 .moving-row {
-  white-space: nowrap;
-  display: flex;
-  font-size: 3rem;
+  position: absolute; /**/
+  white-space: nowrap; /**/
+  display: flex; /**/
+  will-change: transform; /**/
+  animation: scroll-left linear infinite; /**/
+  width: fit-content;
+  font-size: 2rem;
   font-weight: bold;
-  text-transform: uppercase;
-  animation-name: scroll-left;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  will-change: transform;
+  opacity: 0.06;
+  color: white;
 }
 
-.moving-row span {
-  margin-right: 2rem;
+.scroll-track {
+  display: flex;
+  gap: 2rem;
+  white-space: nowrap;
+  color: black;
 }
 
-/* Animate leftward scroll */
+/* Seamless loop */
 @keyframes scroll-left {
   0% {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    /* transform: translateX(calc(-1 * var(--scroll-width))); */
+    transform: translateX(-50%);
   }
-}
-
-/* Optional row spacing using nth-child style class names */
-.row-0 {
-  top: 5%;
-  position: absolute;
-}
-.row-1 {
-  top: 20%;
-  position: absolute;
-}
-.row-2 {
-  top: 35%;
-  position: absolute;
-}
-.row-3 {
-  top: 50%;
-  position: absolute;
-}
-.row-4 {
-  top: 65%;
-  position: absolute;
-}
-.row-5 {
-  top: 80%;
-  position: absolute;
 }

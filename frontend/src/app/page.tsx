@@ -48,14 +48,14 @@ export default async function Home() {
           </div>
           <div className="border-login-hover h-[1px] w-full border" />
         </h1>
-        <div className="">
+        <div className="z-10 text-login-hover text-4xl">
           Welcome to my journey into the wonder world of photography! I received
           my first DSLR on Christmas of 2024 and will be uploading my pictures
           onto this blog to document the learning process and track my progress.
           Along the way I will share my thoughts and share any tips I learn that
           I believe will help you if you are just starting your own journey. So,
           thank you for stopping by and viewing the site. If you want to provide
-          any feedback please don't heesitate to reach out. 😊
+          any feedback please don&apos;t hesitate to reach out. 😊
         </div>
         <Break className="border-login-hover w-full" />
         <div className="space-y-4">
