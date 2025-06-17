@@ -18,7 +18,7 @@ export default function BlogCard({
       key={blog.id}
       className="bg-login text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]"
     >
-      <Link href={`/posts/${blog.id}`} className="block">
+      <Link href={`/blogs/${blog.id}`} className="block">
         <Image
           src={
             imageUrl ||
