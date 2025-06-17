@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { getRandomColor } from "@/lib/utils";
 import "../../styles/moving-text-background.css";
 
 const WORD_POOL = [
@@ -20,6 +21,12 @@ const WORD_POOL = [
   "MACRO",
   "STUDIO",
   "FILM",
+  "F-STOP",
+  "COMPOSITION",
+  "ASPECT RATIO",
+  "BRACKETING",
+  "BULB",
+  "FLASH",
 ];
 
 function getRandomWords(count: number): string[] {
@@ -29,8 +36,8 @@ function getRandomWords(count: number): string[] {
 
 export default function MovingTextBackground() {
   const [rows, setRows] = useState<string[][] | null>(null);
-  const trackRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const containerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [directions, setDirections] = useState<boolean[]>([]);
+  const fontClasses = ["pacifico", "caveat", "Nunito"];
 
   useEffect(() => {
     const newRows = Array.from({ length: 10 }).map(() => {
@@ -39,56 +46,54 @@ export default function MovingTextBackground() {
     });
     console.log("Generated rows:", newRows); // Debug
     setRows(newRows);
+    const dirs = Array.from({ length: 10 }).map(() => Math.random() > 0.5);
+    setDirections(dirs);
   }, []);
 
-  useEffect(() => {
-    trackRefs.current.forEach((ref, index) => {
-      if (ref) {
-        const width = ref.offsetWidth;
-        const rowEl = containerRefs.current[index];
-        console.log(`row ${rowEl} width: `, width);
-        if (rowEl) {
-          rowEl.style.setProperty("--scroll-width", `${width}px`);
-        }
-      }
-    });
-  }, [rows]);
-
-  if (!rows) return;
+  if (!rows) return null;
 
   return (
     <div className="moving-text-background">
-      {rows.map((words, index) => (
-        <div
-          key={index}
-          className="moving-row"
-          style={{
-            top: `${(100 / rows.length) * index}%`,
-            animationDuration: `${25 + index * 2}s`,
-            fontSize: "2rem", // boost visibility
-            color: "#ffffff10", // subtle white overlay
-          }}
-          ref={(el) => {
-            containerRefs.current[index] = el;
-          }}
-        >
+      {rows.map((words, index) => {
+        return (
           <div
-            className="scroll-track"
-            ref={(el) => {
-              trackRefs.current[index] = el;
+            key={index}
+            className="moving-row"
+            style={{
+              top: `${(100 / rows.length) * index}%`,
+              animationDuration: `${Math.floor(Math.random() * (13 - 9 + 1)) + 9}s`,
+              animationName: `${directions[index] ? "shift-left-right" : "shift-right-left"}`,
+              fontSize: "2rem",
+              color: "#ffffff10",
             }}
           >
-            {words.map((word, i) => (
-              <span key={`1-${i}`}>{word}</span>
-            ))}
+            <div className="scroll-track">
+              {words.map((word, i) => (
+                <span
+                  key={`1-${i}`}
+                  style={{
+                    fontFamily: `var(--font-${fontClasses[Math.floor(Math.random() * fontClasses.length)].toLowerCase()})`,
+                  }}
+                >
+                  <p /*style={{ color: `${getRandomColor()}` }}*/> {word} </p>
+                </span>
+              ))}
+            </div>
+            <div className="scroll-track">
+              {words.map((word, i) => (
+                <span
+                  key={`2-${i}`}
+                  style={{
+                    fontFamily: `var(--font-${fontClasses[Math.floor(Math.random() * fontClasses.length)].toLowerCase()})`,
+                  }}
+                >
+                  <p /*style={{ color: `${getRandomColor()}` }}*/>{word}</p>
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="scroll-track">
-            {words.map((word, i) => (
-              <span key={`2-${i}`}>{word}</span>
-            ))}
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
