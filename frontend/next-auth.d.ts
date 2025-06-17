@@ -20,6 +20,7 @@ declare module "next-auth" {
   }
 
   interface Blog {
+    genre?: string;
     id: Key | null | undefined;
     title: string;
     description: string;
