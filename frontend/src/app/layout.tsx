@@ -11,6 +11,23 @@ const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
 });
 
+// app/layout.tsx or wherever you're applying global styles
+import { Pacifico, Caveat } from "next/font/google";
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: "400", // or ['400'] for multiple
+  variable: "--font-pacifico",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Adkins Ninja Blog",
   description: "A dynamic and personalized blog experience.",

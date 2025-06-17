@@ -15,7 +15,7 @@ export const fetcher = async (url: string) => {
 
   if (!res.ok) {
     const error = new Error(
-      "An error occurred while fetching the data.",
+      "An error occurred while fetching the data."
     ) as ApplicationError;
 
     error.info = await res.json();
@@ -54,4 +54,10 @@ export function fnv1aHash(input: string, prime = 31): number {
     hash *= prime;
   }
   return Math.abs(hash >>> 0); // force unsigned 32-bit
+}
+
+export function getRandomColor() {
+  return `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, "0")}`;
 }
