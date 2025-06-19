@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card"; // Adjust the import path as needed
 import { formatDateToMMDDYYYY } from "@/lib/utils";
 import { Blog } from "next-auth";
@@ -9,13 +10,18 @@ import Link from "next/link";
 export default function BlogAdminCard({
   blog,
   imageUrl,
+  className = "",
 }: {
   blog: Blog;
-  imageUrl: string | undefined;
+  imageUrl?: string;
+  className?: string;
 }) {
   return (
     <Card
-      className="bg-login text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]"
+      className={cn(
+        "bg-login text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]",
+        className
+      )}
       key={blog.id}
       header={blog.title}
       footer={

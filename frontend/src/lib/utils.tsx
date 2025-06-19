@@ -29,7 +29,7 @@ export const fetcher = async (url: string) => {
 
 // Capitalize the first letter of a string
 export function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string[0].toUpperCase() + string.slice(1);
 }
 
 export function formatDateToMMDDYYYY(dateString: string) {

@@ -4,7 +4,8 @@ import { Blog } from "next-auth";
 
 type BlogCardPropsBase = {
   blog: Blog;
-  imageUrl: string | undefined;
+  imageUrl?: string;
+  className?: string;
 };
 
 type BlogCardServerProps<T extends BlogCardPropsBase> = {

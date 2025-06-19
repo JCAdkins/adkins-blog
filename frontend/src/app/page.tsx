@@ -36,7 +36,7 @@ export default async function Home() {
   const featuredPosts: Blog[] | null = await getFeaturedBlogs();
 
   return (
-    <div className="grid min-h-screen w-full grid-rows-[1fr_20px] items-start justify-items-center gap-16 overflow-x-hidden font-[family-name:var(--font-geist-sans)] sm:p-12">
+    <div className="grid min-h-screen w-full grid-rows-[1fr_20px] bg-red-200/50 items-start justify-items-center gap-16 overflow-x-hidden font-[family-name:var(--font-geist-sans)] sm:p-12">
       <MovingTextBackground />
       <main className="row-start-1 flex w-full max-w-5/6 flex-col items-center gap-[16px] pt-6 sm:items-start sm:px-8 z-10">
         <h1 className="flex w-full items-center text-center text-2xl">
@@ -63,7 +63,14 @@ export default async function Home() {
         </div>
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts?.map((blog, ind) => (
-            <BlogCardServer key={ind} blog={blog} CardComponent={BlogCard} />
+            <BlogCardServer
+              key={ind}
+              blog={blog}
+              CardComponent={BlogCard}
+              extraProps={{
+                className: "bg-blur border-none shadow-none",
+              }}
+            />
           ))}
         </div>
       </main>
