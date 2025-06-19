@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { genreOptions } from "../types/types.ts";
 
 // Define the schema for a single Immich image
 const ImmichImageSchema = z.object({
@@ -12,6 +13,7 @@ export type ImmichImage = z.infer<typeof ImmichImageSchema>;
 export const BlogPostInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  genre: z.enum(genreOptions),
   content: z.string().min(1, "Content is required"),
   featured: z.string().min(1, "Content is required"),
   images: z.array(ImmichImageSchema).optional(), // optional if sometimes missing

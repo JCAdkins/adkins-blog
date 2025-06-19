@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export async function getImageURLs(files: FormData): Promise<string[]> {
   const uploadEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}/upload`;
-  console.log("files: ", files);
+  console.log("Uploading files...");
 
   try {
     const res = await fetch(uploadEndpoint, {
@@ -11,16 +11,21 @@ export async function getImageURLs(files: FormData): Promise<string[]> {
     });
 
     if (!res.ok) {
-      const errorText = await res.text(); // await this to capture server message
-      console.error("Upload failed response:", errorText);
-      throw new Error(`Upload failed with status ${res.status}`);
+      const errorText = await res.text();
+      console.error("❌ Upload failed:", errorText);
+      return []; // Fail gracefully
     }
 
     const data = await res.json();
-    console.log("Upload response:", data);
-    return data; // Ensure your backend returns an array of URLs
+
+    if (!Array.isArray(data)) {
+      console.error("Unexpected upload response format:", data);
+      return [];
+    }
+
+    return data;
   } catch (error) {
-    console.error("Error uploading files:", error);
+    console.error("🚨 Error uploading files:", error);
     return [];
   }
 }
@@ -32,31 +37,48 @@ interface GetImmichAssetParams {
   id: number | string | undefined;
 }
 
-export async function getImmichAsset({ type, id }: GetImmichAssetParams) {
-  console.log("trying to fetch immich asset...");
-  if (!id) return;
+/**
+ * Fetches and returns a base64 image data URL from Immich.
+ * Returns `undefined` on failure instead of throwing.
+ */
+export async function getImmichAsset({
+  type,
+  id,
+}: GetImmichAssetParams): Promise<string | undefined> {
+  if (!id) {
+    console.warn("No ID provided for Immich asset fetch.");
+    return undefined;
+  }
+
   const route = type === "original" ? "images" : "thumbnail";
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/${route}`;
+
   try {
-    console.log("attempting image download...");
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${route}`,
-      {
-        responseType: "arraybuffer",
-        headers: {
-          Accept: "application/octet-stream",
-        },
-        params: {
-          id, // sends as ?id=yourId
-        },
+    const response = await axios.get(url, {
+      responseType: "arraybuffer",
+      headers: {
+        Accept: "application/octet-stream",
       },
-    );
+      params: { id },
+    });
 
     const contentType = response.headers["content-type"] || "image/png";
     const base64Image = Buffer.from(response.data, "binary").toString("base64");
-    const dataUrl = `data:${contentType};base64,${base64Image}`;
-    return dataUrl;
+    return `data:${contentType};base64,${base64Image}`;
   } catch (err) {
-    console.error("Fetch error:", err);
-    throw err;
+    const error = err as AxiosError;
+
+    console.error(`❌ Failed to fetch ${type} asset (ID: ${id}) from ${url}`);
+    if (error.response) {
+      console.error(
+        `  Status: ${error.response.status} \n Data:`,
+        error.response.data
+      );
+    } else {
+      console.error("  General error:", error.message);
+    }
+
+    // Always return undefined to prevent crashes
+    return undefined;
   }
 }

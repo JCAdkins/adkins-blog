@@ -7,6 +7,7 @@ export async function createPost(formData: FormData) {
   const data = {
     title: formData.get("title") as string,
     description: formData.get("description") as string,
+    genre: formData.get("genre") as string,
     content: formData.get("content") as string,
     featured: formData.get("featured") as string, // use boolean, not string
     images: imageUrls,

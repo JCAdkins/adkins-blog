@@ -49,12 +49,13 @@ export const getBlogPostById = async (id: string) => {
 };
 
 export async function createBlogPost(input: BlogPostInput) {
-  const { title, description, content, featured, images } = input;
+  const { title, description, genre, content, featured, images } = input;
 
   const blogPost = await prisma.blogPost.create({
     data: {
       title,
       description,
+      genre,
       content,
       featured,
       blogPostImages: {

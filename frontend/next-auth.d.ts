@@ -19,8 +19,8 @@ declare module "next-auth" {
     username: string;
   }
 
-  interface Blog {
-    genre?: string;
+  export type Blog = {
+    genre: BlogGenre;
     id: Key | null | undefined;
     title: string;
     description: string;
@@ -29,20 +29,31 @@ declare module "next-auth" {
     blogPostImages?: BlogPostImage[];
     createdAt: string;
     updatedAt: string;
-  }
+  };
 
-  interface NewBlog {
+  const genreOptions = [
+    "educational",
+    "excursion",
+    "review",
+    "comparison",
+    "tutorial",
+    "news",
+  ] as const;
+
+  export type BlogGenre = (typeof genreOptions)[number];
+
+  export type NewBlog = {
     title: string;
     description: string;
     content: string;
     featured: string;
     images?: string[];
-  }
+  };
 
-  interface Image {
+  export type Image = {
     id: number;
     status: string;
-  }
+  };
 
   interface BlogPostImage {
     blogPostId: string;

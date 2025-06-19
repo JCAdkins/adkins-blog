@@ -5,10 +5,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ProgressIndicator } from "../ui/progress-indicator";
 import FileDropZone from "../inputs/file-drop-zone";
+import { BlogGenre } from "next-auth";
 
 interface CreatePostFormProps {
   action: (formData: FormData) => Promise<void>;
 }
+
+const genreOptions = [
+  "educational",
+  "excursion",
+  "review",
+  "comparison",
+  "tutorial",
+  "news",
+] as const;
 
 export default function CreatePostForm({ action }: CreatePostFormProps) {
   const [step, setStep] = useState(0);
@@ -16,12 +26,15 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
     title: "",
     description: "",
     content: "",
+    genre: "" as BlogGenre | "",
     featured: false,
     images: [] as File[],
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const target = e.target;
     const { name, type, value } = target;
@@ -37,6 +50,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
     const formData = new FormData();
     formData.append("title", formState.title);
     formData.append("description", formState.description);
+    formData.append("genre", formState.genre);
     formData.append("content", formState.content);
     formData.append("featured", String(formState.featured));
     formState.images.forEach((file) => formData.append("images", file));
@@ -64,6 +78,22 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
       />
     </div>,
     <div key={3}>
+      <label className="text-sm font-medium">Genre</label>
+      <select
+        name="genre"
+        value={formState.genre}
+        onChange={handleChange}
+        className="border-input bg-background w-full rounded-md border p-2 text-sm"
+      >
+        <option value="">Select a genre</option>
+        {genreOptions.map((genre) => (
+          <option key={genre} value={genre}>
+            {genre.charAt(0).toUpperCase() + genre.slice(1)}
+          </option>
+        ))}
+      </select>
+    </div>,
+    <div key={4}>
       <label className="text-sm font-medium">Content</label>
       <textarea
         name="content"
@@ -73,7 +103,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         placeholder="Write your content..."
       />
     </div>,
-    <div key={4}>
+    <div key={5}>
       <label className="flex items-center gap-2 text-sm font-medium">
         <Input
           type="checkbox"
