@@ -23,6 +23,7 @@ model BlogPost {
   updatedAt      DateTime        @updatedAt
   genre          String?
   blogPostImages BlogPostImage[]
+  Comment        Comment[]
 }
 
 model Image {
@@ -52,6 +53,8 @@ model User {
   updatedAt       DateTime         @updatedAt
   role            String           @default("user") // Can be "admin", "user", etc.
   contactMessages ContactMessage[]
+  Comment         Comment[]
+  Like            Like[]
 }
 
 model ContactMessage {
@@ -65,4 +68,36 @@ model ContactMessage {
   read      Boolean  @default(false)
 
   user User? @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post   BlogPost @relation(fields: [postId], references: [id])
+  postId String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  parentId String?
+  replies  Comment[] @relation("CommentReplies")
+
+  likes Like[]
+}
+
+model Like {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  comment   Comment @relation(fields: [commentId], references: [id])
+  commentId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, commentId]) // Prevent double-liking
 }

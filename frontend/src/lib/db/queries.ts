@@ -1,5 +1,6 @@
 // lib/db/queries.ts
 
+import axios from "axios";
 import { Blog, NewBlog, User } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -10,10 +11,6 @@ export async function createUser(userData: {
   role: string;
   name?: string;
 }): Promise<User> {
-  console.log(
-    `${process.env.BASE_URL || ""}/users/register`,
-    JSON.stringify(userData),
-  );
   try {
     const res = await fetch(`${process.env.BASE_URL || ""}/users/register`, {
       method: "POST",
@@ -36,17 +33,17 @@ export async function createUser(userData: {
 
 export async function getUserByEmail(email: string): Promise<User | null> {
   const res = await fetch(
-    `${process.env.BASE_URL || ""}/users/email/${encodeURIComponent(email)}`,
+    `${process.env.BASE_URL || ""}/users/email/${encodeURIComponent(email)}`
   );
   if (!res.ok) return null;
   return await res.json();
 }
 
 export async function getUserByUsername(
-  username: string,
+  username: string
 ): Promise<User | null> {
   const res = await fetch(
-    `${process.env.BASE_URL || ""}/users/username/${encodeURIComponent(username)}`,
+    `${process.env.BASE_URL || ""}/users/username/${encodeURIComponent(username)}`
   );
   if (!res.ok) return null;
   return await res.json();
@@ -55,7 +52,7 @@ export async function getUserByUsername(
 export async function getFeaturedBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/featured`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/featured`
     );
     if (!response.ok) return null;
     return await response.json();
@@ -109,7 +106,7 @@ export async function getBlogById(id: string) {
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${id}`,
       {
         cache: "no-store",
-      },
+      }
     );
     if (!response.ok) {
       const errText = await response.text();
@@ -126,7 +123,7 @@ export async function getBlogById(id: string) {
 export async function fetchUnread() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/messages/unread/count`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/messages/unread/count`
     );
     const data = await res.json();
     return data;
@@ -153,7 +150,7 @@ export const markMessageAsRead = async (id: string) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: id }),
-      },
+      }
     );
     const data = await res.json();
     return data;
@@ -161,3 +158,73 @@ export const markMessageAsRead = async (id: string) => {
     console.error("Failed to mark message as read: ", error);
   }
 };
+
+export async function fetchBlogCommentsPaginated({
+  blogId,
+  page = 1,
+  pageSize = 10,
+}: {
+  blogId: number | string;
+  page?: number;
+  pageSize?: number;
+}): Promise<{ comments: Comment[]; totalCount: number }> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments?blogId=${blogId}&page=${page}&pageSize=${pageSize}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Failed to fetch comments:", errorText);
+      throw new Error(`Error ${res.status}: ${errorText}`);
+    }
+
+    const data = await res.json();
+
+    if (data.error) {
+      console.error("Failed to fetch comments:", data.error);
+      throw new Error(`Error: ${data.error}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return { comments: [], totalCount: 0 };
+  }
+}
+
+export async function postNewComment({
+  content,
+  blogId,
+  authorId,
+  parentId,
+}: {
+  content: string;
+  blogId: string;
+  authorId: string;
+  parentId?: string;
+}) {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments`,
+      {
+        content,
+        blogId,
+        authorId,
+        parentId,
+      }
+    );
+
+    console.log("res.data: ", res.data);
+    return res.data;
+  } catch (error) {
+    console.error("Error posting comment:", error);
+    throw error;
+  }
+}

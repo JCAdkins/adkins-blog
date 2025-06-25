@@ -68,7 +68,8 @@ export default async function Home() {
               blog={blog}
               CardComponent={BlogCard}
               extraProps={{
-                className: "bg-blur border-none shadow-none",
+                className:
+                  "border-none shadow-none bg-transparent hover:backdrop-blur rounded-md",
               }}
             />
           ))}

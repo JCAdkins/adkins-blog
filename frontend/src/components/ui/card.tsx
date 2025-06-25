@@ -21,8 +21,8 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cn(
           "border bg-white text-white shadow-md transition-shadow hover:shadow-lg sm:m-0",
-          "space-y-4 p-4",
-          className,
+          "space-y-4",
+          className
         )}
         {...props}
       >
@@ -35,7 +35,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         {footer && <div className="mt-4 border-t pt-2 text-sm">{footer}</div>}
       </RadixCard>
     );
-  },
+  }
 );
 
 Card.displayName = "Card";

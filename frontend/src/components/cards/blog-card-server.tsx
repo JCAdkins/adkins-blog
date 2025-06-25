@@ -6,6 +6,7 @@ type BlogCardPropsBase = {
   blog: Blog;
   imageUrl?: string;
   className?: string;
+  childProps?: {};
 };
 
 type BlogCardServerProps<T extends BlogCardPropsBase> = {

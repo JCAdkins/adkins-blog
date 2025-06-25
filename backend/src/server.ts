@@ -8,6 +8,7 @@ import {
   getImmichThumbnail,
   postNewImage,
 } from "./controllers/immichController.ts";
+import commentsRoutes from "./routes/comment-routes.ts";
 import blogRoutes from "./routes/blog-routes.ts";
 import contactRoutes from "./routes/contact-routes.ts";
 import messagesRoutes from "./routes/messages-routes.ts";
@@ -52,6 +53,9 @@ app.use("/api/contact", contactRoutes);
 
 // Routes for users
 app.use("/api/users", userRoutes);
+
+// Routes for blog comments and replies
+app.use("/api/comments", commentsRoutes);
 
 // Messages routes
 app.use("/api/messages", messagesRoutes);

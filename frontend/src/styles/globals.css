@@ -86,3 +86,7 @@ body {
 #admin-sidebar-content[data-state="closed"] {
   animation: slideOutToLeft 200ms ease-in forwards;
 }
+
+.text-shadow-glow {
+  text-shadow: 0 0 2px rgb(252, 252, 252);
+}
