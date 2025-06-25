@@ -60,4 +60,17 @@ declare module "next-auth" {
     id: string;
     imageId: string;
   }
+
+  interface Comment {
+    id: number;
+    content: string;
+    author: {
+      id: string;
+      username: string;
+    };
+    createdAt: string;
+    parentId?: number;
+    replies?: Comment[];
+    likes: number;
+  }
 }

@@ -74,6 +74,7 @@ export default function MovingTextBackground() {
                   style={{
                     fontFamily: `var(--font-${fontClasses[Math.floor(Math.random() * fontClasses.length)].toLowerCase()})`,
                   }}
+                  className="text-orange-700"
                 >
                   <p /*style={{ color: `${getRandomColor()}` }}*/> {word} </p>
                 </span>
@@ -86,6 +87,7 @@ export default function MovingTextBackground() {
                   style={{
                     fontFamily: `var(--font-${fontClasses[Math.floor(Math.random() * fontClasses.length)].toLowerCase()})`,
                   }}
+                  className="text-orange-700"
                 >
                   <p /*style={{ color: `${getRandomColor()}` }}*/>{word}</p>
                 </span>
