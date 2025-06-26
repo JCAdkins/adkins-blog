@@ -54,6 +54,34 @@ export async function postNewCommentService(data: {
   });
 }
 
+export async function softDeleteComment(commentId: string) {
+  console.log("service id: ", commentId);
+  try {
+    await db.like.deleteMany({
+      where: { commentId: commentId },
+    });
+
+    await db.comment.update({
+      where: { id: commentId },
+      data: {
+        isDeleted: true,
+      },
+    });
+    return { message: "Comment soft-deleted" };
+  } catch (err) {
+    console.error("Failed to soft-delete comment", err);
+    return { error: "Failed to delete comment" };
+  }
+}
+
+export async function hardDeleteComment(commentId: string) {
+  return await db.comment.delete({
+    where: {
+      id: commentId,
+    },
+  });
+}
+
 export async function likeCommentService({
   commentId,
   userId,

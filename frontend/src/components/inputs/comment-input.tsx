@@ -5,18 +5,22 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { postNewComment } from "@/lib/db/queries";
+import { useComments } from "@/contexts/comments-context";
 
 export const CommentInput = ({
   blogId,
   authorId,
   parentId,
+  closeReply,
 }: {
   blogId: string;
   authorId: string;
   parentId?: string;
+  closeReply?: () => void;
 }) => {
   const { data: session } = useSession();
   const [content, setContent] = useState("");
+  const { refreshComments } = useComments();
 
   const handleSubmit = async () => {
     if (!session?.user?.id) return;
@@ -25,7 +29,8 @@ export const CommentInput = ({
     try {
       await postNewComment({ content, blogId, authorId, parentId });
       setContent("");
-      // Optionally trigger comment reload
+      refreshComments();
+      if (closeReply) closeReply();
     } catch (error) {
       console.error("Failed to post comment", error);
     }
@@ -40,7 +45,7 @@ export const CommentInput = ({
         placeholder="Write your comment..."
         className="w-full"
       />
-      <Button size="sm" onClick={handleSubmit}>
+      <Button size="sm" onClick={handleSubmit} className="hover:bg-login">
         Submit
       </Button>
     </div>

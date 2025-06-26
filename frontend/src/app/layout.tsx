@@ -3,16 +3,13 @@ import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import MainHeader from "@/components/headers/main-header";
 import { Toaster } from "sonner";
-// import { Providers } from "./providers";
 import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
+import { Pacifico, Caveat } from "next/font/google";
 
 const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
 });
-
-// app/layout.tsx or wherever you're applying global styles
-import { Pacifico, Caveat } from "next/font/google";
 
 const pacifico = Pacifico({
   subsets: ["latin"],
