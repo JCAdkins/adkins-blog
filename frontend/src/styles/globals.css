@@ -22,6 +22,8 @@ html.dark {
 
 @theme {
   --color-header: #ffd3c4;
+  --color-accent: #c8c5de;
+  --color-destructive: #a63939;
   --color-sidebar: #e8b8a7;
   --color-header-text: #f2e2d8;
   --color-login: #e09f89;

@@ -221,10 +221,35 @@ export async function postNewComment({
       }
     );
 
-    console.log("res.data: ", res.data);
     return res.data;
   } catch (error) {
     console.error("Error posting comment:", error);
     throw error;
+  }
+}
+
+export async function softDeleteComment(commentId: string) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}?hard=false`,
+      {
+        method: "DELETE",
+      }
+    );
+  } catch (err) {
+    console.error("Failed to delete comment", err);
+  }
+}
+
+export async function hardDeleteComment(commentId: string) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}?hard=true`,
+      {
+        method: "DELETE",
+      }
+    );
+  } catch (err) {
+    console.error("Failed to delete comment", err);
   }
 }

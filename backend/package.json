@@ -11,7 +11,8 @@
     "clear-images": "ts-node prisma/scripts/clearImage.ts",
     "clear-users": "ts-node prisma/scripts/clearUser.ts",
     "clear-blog-posts": "ts-node prisma/scripts/clearBlogPost.ts",
-    "clear-blog-post-image": "ts-node prisma/scripts/clearBlogPostImage.ts"
+    "clear-blog-post-image": "ts-node prisma/scripts/clearBlogPostImage.ts",
+    "clear-blog-comments": "ts-node prisma/scripts/clearComments.ts"
   },
   "type": "module",
   "keywords": [],
