@@ -1,13 +1,54 @@
+import {
+  attachRepliesCountToComments,
+  getTopLevelComments,
+  getTotalCommentCountForPost,
+} from "../lib/utils.ts";
 import { db } from "../lib/prisma.ts";
 
-export async function getBlogMessagesPaginated(postId, page = 1, limit = 10) {
-  const offset = (page - 1) * limit;
-  if (!postId)
-    return { error: "Post ID was not include in the fetch but is required." };
+export async function getBlogMessagesPaginated(
+  postId: string,
+  page = 1,
+  limit = 10
+) {
+  console.log("limite service: ", typeof limit);
+  if (!postId) {
+    return { error: "Post ID is required." };
+  }
 
-  const topLevelComments = await db.comment.findMany({
-    where: { postId, parentId: null },
-    orderBy: { createdAt: "desc" },
+  try {
+    // Fetch top-level comments (with first reply included)
+    const topLevelComments = await getTopLevelComments(postId, page, limit);
+
+    // Attach repliesCount to each top-level comment and its one reply
+    const commentsWithCounts = await attachRepliesCountToComments(
+      topLevelComments
+    );
+
+    // Get total count of all comments for the post
+    const totalCount = await getTotalCommentCountForPost(postId);
+
+    return {
+      comments: commentsWithCounts,
+      totalCount,
+    };
+  } catch (error) {
+    console.error("Error in getBlogMessagesPaginated:", error);
+    throw error;
+  }
+}
+
+export async function fetchCommentRepliesService(
+  parentId: string,
+  page = 1,
+  limit = 3
+) {
+  if (!parentId) throw new Error("parentId is required");
+
+  const offset = (page - 1) * limit;
+
+  const replies = await db.comment.findMany({
+    where: { parentId },
+    orderBy: { createdAt: "asc" },
     skip: offset,
     take: limit,
     include: {
@@ -15,7 +56,7 @@ export async function getBlogMessagesPaginated(postId, page = 1, limit = 10) {
       likes: true,
       replies: {
         orderBy: { createdAt: "asc" },
-        take: 1, // Load only the first reply
+        take: 0,
         include: {
           author: true,
           likes: true,
@@ -24,13 +65,17 @@ export async function getBlogMessagesPaginated(postId, page = 1, limit = 10) {
     },
   });
 
-  const totalCount = await db.comment.count({
-    where: { postId },
+  const repliesWithCounts = await attachRepliesCountToComments(replies);
+
+  const totalReplies = await db.comment.count({
+    where: { parentId },
   });
 
   return {
-    comments: topLevelComments,
-    totalCount,
+    repliesWithCounts,
+    totalCount: totalReplies,
+    page,
+    hasMore: offset + replies.length < totalReplies,
   };
 }
 
@@ -55,7 +100,6 @@ export async function postNewCommentService(data: {
 }
 
 export async function softDeleteComment(commentId: string) {
-  console.log("service id: ", commentId);
   try {
     await db.like.deleteMany({
       where: { commentId: commentId },
@@ -82,21 +126,31 @@ export async function hardDeleteComment(commentId: string) {
   });
 }
 
-export async function likeCommentService({
-  commentId,
-  userId,
-}: {
-  commentId: string;
-  userId: string;
-}) {
+export async function likeCommentService(commentId: string, userId: string) {
   // Optional: Check if already liked
-  const existing = await db.like.findFirst({
-    where: { commentId, userId },
-  });
+  try {
+    const existing = await db.like.findFirst({
+      where: { commentId, userId },
+    });
 
-  if (existing) return { message: "Already liked" };
+    if (existing) {
+      await db.like.delete({
+        where: {
+          userId_commentId: {
+            userId,
+            commentId,
+          },
+        },
+      });
+      return { status: "success", liked: false };
+    }
 
-  return await db.like.create({
-    data: { commentId, userId },
-  });
+    await db.like.create({
+      data: { commentId, userId },
+    });
+    return { status: "success", liked: true };
+  } catch (error) {
+    console.error("Failed to soft-delete comment", error);
+    return { error: "Failed to like/unlike comment" };
+  }
 }

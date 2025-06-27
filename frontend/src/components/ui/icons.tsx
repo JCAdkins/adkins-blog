@@ -763,7 +763,7 @@ export const CopyIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export const ThumbUpIcon = ({ size = 16 }: { size?: number }) => (
+export const ThumbUpIcon = ({ size = 12 }: { size?: number }) => (
   <svg
     height={size}
     strokeLinejoin="round"

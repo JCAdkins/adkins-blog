@@ -1,5 +1,6 @@
 import {
   fetchBlogCommentsPaginated,
+  fetchCommentReplies,
   postNewComment,
   likeComment,
   deleteComment,
@@ -9,6 +10,8 @@ import express from "express";
 const router = express.Router();
 
 router.get("/", fetchBlogCommentsPaginated);
+
+router.get("/:commentId/replies", fetchCommentReplies);
 
 router.post("/", postNewComment);
 

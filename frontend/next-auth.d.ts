@@ -71,7 +71,15 @@ declare module "next-auth" {
     updatedAt: string;
     parentId?: number;
     replies?: Comment[];
+    repliesCount: number;
     likes: Like[];
     isDeleted: boolean;
   }
+
+  type Like = {
+    id: string;
+    commentId: string;
+    userId: string;
+    createdAt: string;
+  };
 }
