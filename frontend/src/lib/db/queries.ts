@@ -4,6 +4,10 @@ import axios from "axios";
 import { Blog, NewBlog, User } from "next-auth";
 import { redirect } from "next/navigation";
 
+/*++===========================================================================================================++
+  ||                                           USER DATABASE QUERIES                                           ||
+  ++===========================================================================================================++*/
+
 export async function createUser(userData: {
   email: string;
   username: string;
@@ -49,6 +53,10 @@ export async function getUserByUsername(
   return await res.json();
 }
 
+/*++===========================================================================================================++
+  ||                                           BLOG DATABASE QUERIES                                           ||
+  ++===========================================================================================================++*/
+
 export async function getFeaturedBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(
@@ -78,7 +86,6 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
 
 export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   try {
-    console.log("trying to create new blog");
     const response = await fetch(`${process.env.BASE_URL}/blog`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -100,7 +107,6 @@ export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
 }
 
 export async function getBlogById(id: string) {
-  console.log("fetching blog by id...");
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${id}`,
@@ -119,6 +125,10 @@ export async function getBlogById(id: string) {
     return null;
   }
 }
+
+/*++===========================================================================================================++
+  ||                                       MESSAGES DATABASE QUERIES                                           ||
+  ++===========================================================================================================++*/
 
 export async function fetchUnread() {
   try {
@@ -159,6 +169,10 @@ export const markMessageAsRead = async (id: string) => {
   }
 };
 
+/*++===========================================================================================================++
+  ||                                       COMMENTS DATABASE QUERIES                                           ||
+  ++===========================================================================================================++*/
+
 export async function fetchBlogCommentsPaginated({
   blogId,
   page = 1,
@@ -191,7 +205,6 @@ export async function fetchBlogCommentsPaginated({
       console.error("Failed to fetch comments:", data.error);
       throw new Error(`Error: ${data.error}`);
     }
-
     return data;
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -220,7 +233,6 @@ export async function postNewComment({
         parentId,
       }
     );
-
     return res.data;
   } catch (error) {
     console.error("Error posting comment:", error);
@@ -251,5 +263,42 @@ export async function hardDeleteComment(commentId: string) {
     );
   } catch (err) {
     console.error("Failed to delete comment", err);
+  }
+}
+
+export async function fetchRepliesForComment(
+  commentId: string,
+  page = 1,
+  limit = 3
+) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}/replies?page=${page}&limit=${limit}`
+    );
+
+    if (!res.ok) throw new Error("Failed to fetch replies");
+
+    const data = await res.json();
+    return data.repliesWithCounts;
+  } catch (error) {
+    console.error("Error fetching more replies:", error);
+    throw error;
+  }
+}
+
+export async function likeComment(commentId: string, userId: string) {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/like`,
+      {
+        commentId,
+        userId,
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    console.error("Error posting comment:", error);
+    throw error;
   }
 }

@@ -22,6 +22,7 @@ export const CommentsProvider = ({
   blogId: string;
   children: React.ReactNode;
 }) => {
+  const PAGE_SIZE = 5;
   const [comments, setComments] = useState<globalThis.Comment[]>([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -30,6 +31,7 @@ export const CommentsProvider = ({
     const response = await fetchBlogCommentsPaginated({
       blogId,
       page: reset ? 1 : page,
+      pageSize: PAGE_SIZE,
     });
     if (reset) {
       setComments(response.comments);

@@ -29,7 +29,7 @@ export default async function BlogsPage() {
           <p>🆕 New Posts</p>
           <div className="w-full border-1 border-black h-1 bg-header" />
         </h2>
-        <ul className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {newestPosts?.map((blog) => (
             <li key={blog.id}>
               <BlogCardServer
@@ -63,7 +63,7 @@ export default async function BlogsPage() {
               </Link>
               <div className="w-full border-1 border-black h-1 bg-header" />
             </h2>
-            <ul className="grid gap-0 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            <ul className="grid gap-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               {posts?.map((blog) => (
                 <li key={blog.id}>
                   <BlogCardServer
@@ -92,7 +92,7 @@ export default async function BlogsPage() {
           <Link href="blogs/all">📚 All Blog Posts</Link>
           <div className="w-full border-1 border-black h-1 bg-header" />
         </h2>
-        <ul className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {posts?.slice(0, POST_LIMIT).map((blog) => (
             <li key={blog.id}>
               <BlogCardServer

@@ -1,80 +1,133 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CommentInput } from "../inputs/comment-input";
-import { Comment } from "next-auth";
 import { useComments } from "@/contexts/comments-context";
-import { hardDeleteComment, softDeleteComment } from "@/lib/db/queries";
+import {
+  hardDeleteComment,
+  likeComment,
+  softDeleteComment,
+  fetchRepliesForComment,
+} from "@/lib/db/queries";
 import { ConfirmDeleteModal } from "../modals/confirm-delete-modal";
+import { ThumbUpIcon, TrashIcon } from "../ui/icons";
+import { Comment } from "next-auth";
+import { Like } from "next-auth";
+import { PlusCircleIcon } from "lucide-react";
 
 export const CommentCard = ({ comment }: { comment: Comment }) => {
+  const { data: session } = useSession();
   const [likes, setLikes] = useState(comment.likes?.length || 0);
   const [reply, setReply] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [userLiked, setUserLiked] = useState(false);
+  const [visibleReplies, setVisibleReplies] = useState(comment.replies || []);
+  const [hasMoreReplies, setHasMoreReplies] = useState(
+    (comment.repliesCount || 0) > (comment.replies?.length || 0)
+  );
+  const [replyPage, setReplyPage] = useState(0);
+
   const { refreshComments } = useComments();
-  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user?.id && comment.likes) {
+      const liked = comment.likes.some(
+        (like: Like) => like.userId === session.user.id
+      );
+      setUserLiked(liked);
+    }
+  }, [session?.user?.id, comment.likes]);
 
   const handleLike = async () => {
     try {
-      await fetch(`/api/comments/${comment.id}/like`, { method: "POST" });
-      setLikes((l: number) => l + 1);
+      const res = await likeComment(comment.id, session?.user?.id!);
+      res.liked
+        ? setLikes((l: number) => l + 1)
+        : setLikes((l: number) => l - 1);
+      setUserLiked((prev) => !prev);
+      refreshComments();
     } catch (err) {
       console.error("Like failed", err);
     }
   };
 
   const handleReplyClicked = () => setReply((prev) => !prev);
-  const handleDelete = () => {
-    setShowConfirm(true);
-  };
 
   const confirmDelete = async () => {
     setShowConfirm(false);
-    !comment.replies || comment.replies.length === 0
-      ? await hardDeleteComment(comment.id)
-      : await softDeleteComment(comment.id);
+    if (!comment.replies || comment.replies.length === 0)
+      await hardDeleteComment(comment.id);
+    else await softDeleteComment(comment.id);
     refreshComments();
   };
 
-  const handleEdit = () => console.log("edit button clicked");
+  const loadMoreReplies = async () => {
+    const nextPage = replyPage + 1;
+
+    try {
+      const newReplies = await fetchRepliesForComment(comment.id, nextPage);
+
+      setVisibleReplies((prev) => {
+        const existingIds = new Set(prev.map((r) => r.id));
+        const filteredNew = newReplies.filter(
+          (r: Comment) => !existingIds.has(r.id)
+        );
+        return [...prev, ...filteredNew];
+      });
+
+      setReplyPage(nextPage);
+
+      if (visibleReplies.length + newReplies.length >= comment.repliesCount) {
+        setHasMoreReplies(false);
+      }
+    } catch (err) {
+      console.error("Failed to load more replies", err);
+    }
+  };
 
   return (
-    <Card className="mb-4 p-4 bg-header text-foreground rounded-md">
+    <Card className="py-2 px-4 bg-header text-foreground rounded-md">
       <div className="flex justify-between">
-        <p className="text-sm font-medium mb-2">
+        <p className="text-sm font-xs">
           {comment.isDeleted ? "[deleted]" : comment.author?.username}
         </p>
         <p>{new Date(comment.createdAt).toLocaleString()}</p>
       </div>
-      <p className="bg-header p-2">
+
+      <p className="bg-header">
         {comment.isDeleted ? "[DELETED]" : comment.content}
       </p>
-      <div className="mt-2 flex gap-4">
+
+      <div className="flex gap-2">
         <Button
-          className="hover:cursor-pointer"
-          size="sm"
+          className="cursor-pointer"
+          size="xs"
           variant="ghost"
           onClick={handleLike}
+          disabled={comment.isDeleted || !session?.user}
         >
-          👍 {likes}
+          {userLiked ? (
+            <>👍 {likes}</>
+          ) : (
+            <>
+              <ThumbUpIcon size={12} />
+              {likes}
+            </>
+          )}
         </Button>
+
         {session && (
-          <Button className="" size="sm" onClick={handleReplyClicked}>
+          <Button size="xs" onClick={handleReplyClicked}>
             Reply
           </Button>
         )}
         {session && comment.authorId === session.user.id && (
-          <Button className="" size="sm" onClick={handleEdit}>
-            Edit
-          </Button>
-        )}
-        {session && comment.authorId === session.user.id && (
           <>
-            <Button className="" size="sm" onClick={handleDelete}>
-              Delete
+            <Button size="xs" onClick={() => setShowConfirm(true)}>
+              <TrashIcon />
             </Button>
             <ConfirmDeleteModal
               isOpen={showConfirm}
@@ -92,11 +145,24 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
           closeReply={handleReplyClicked}
         />
       )}
-      {comment.replies && comment.replies.length > 0 && (
-        <div className="flex flex-col gap-4 mt-4 bg-header border-l pl-4 space-y-4">
-          {comment.replies.map((reply: any) => (
+
+      {visibleReplies.length > 0 && (
+        <div className="flex flex-col gap-4 border-l pl-4">
+          {visibleReplies.map((reply) => (
             <CommentCard key={reply.id} comment={reply} />
           ))}
+        </div>
+      )}
+      {hasMoreReplies && (
+        <div className="flex w-full mx-auto justify-center">
+          <Button
+            size="xs"
+            onClick={loadMoreReplies}
+            className="text-sm cursor-pointer"
+          >
+            <PlusCircleIcon />
+            replies
+          </Button>
         </div>
       )}
     </Card>
