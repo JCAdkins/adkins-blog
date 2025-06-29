@@ -304,7 +304,7 @@ export async function fetchRepliesForComment(
     if (!res.ok) throw new Error("Failed to fetch replies");
 
     const data = await res.json();
-    return data.repliesWithCounts;
+    return data;
   } catch (error) {
     console.error("Error fetching more replies:", error);
     throw error;

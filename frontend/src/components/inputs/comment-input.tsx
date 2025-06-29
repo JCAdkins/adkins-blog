@@ -27,7 +27,12 @@ export const CommentInput = ({
     if (!content.trim()) return;
 
     try {
-      await postNewComment({ content, blogId, authorId, parentId });
+      await postNewComment({
+        content,
+        blogId,
+        authorId: session.user.id,
+        parentId,
+      });
 
       // If the reply is not to a users own comment/reply create a notification
       if (authorId !== session.user.id)
