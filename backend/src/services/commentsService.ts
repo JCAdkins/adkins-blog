@@ -1,6 +1,7 @@
 import {
   attachRepliesCountToComments,
   getTopLevelComments,
+  getTopLevelCount,
   getTotalCommentCountForPost,
 } from "../lib/utils.ts";
 import { db } from "../lib/prisma.ts";
@@ -18,6 +19,7 @@ export async function getBlogMessagesPaginated(
   try {
     // Fetch top-level comments (with first reply included)
     const topLevelComments = await getTopLevelComments(postId, page, limit);
+    const topLevelCount = await getTopLevelCount(postId);
 
     // Attach repliesCount to each top-level comment and its one reply
     const commentsWithCounts = await attachRepliesCountToComments(
@@ -29,7 +31,8 @@ export async function getBlogMessagesPaginated(
 
     return {
       comments: commentsWithCounts,
-      totalCount,
+      allCommentCount: totalCount,
+      topLevelCount: topLevelCount,
     };
   } catch (error) {
     console.error("Error in getBlogMessagesPaginated:", error);

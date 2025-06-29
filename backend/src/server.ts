@@ -12,6 +12,7 @@ import commentsRoutes from "./routes/comment-routes.ts";
 import blogRoutes from "./routes/blog-routes.ts";
 import contactRoutes from "./routes/contact-routes.ts";
 import messagesRoutes from "./routes/messages-routes.ts";
+import notificationRoutes from "./routes/notification-routes.ts";
 // import postNewImage from "./controllers/immichController.ts";
 
 dotenv.config();
@@ -59,6 +60,9 @@ app.use("/api/comments", commentsRoutes);
 
 // Messages routes
 app.use("/api/messages", messagesRoutes);
+
+// Notification routes
+app.use("/api/notifications", notificationRoutes);
 
 // Start the server
 app.listen(PORT, () => {

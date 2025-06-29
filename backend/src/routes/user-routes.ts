@@ -10,10 +10,10 @@ import {
 
 const router = express.Router();
 
-// GET /api/users/:email
+// GET /api/users/email/:email
 router.get("/email/:email", getUserByEmailController);
 
-// GET /api/users/:username
+// GET /api/users/username/:username
 router.get("/username/:username", getUserByUsernameController);
 
 // Get all users

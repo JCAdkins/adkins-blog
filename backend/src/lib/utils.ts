@@ -63,3 +63,12 @@ export async function attachRepliesCountToComments(comments: any[]) {
 
   return withCounts;
 }
+
+export async function getTopLevelCount(postId: string) {
+  return db.comment.count({
+    where: {
+      postId,
+      parentId: null,
+    },
+  });
+}

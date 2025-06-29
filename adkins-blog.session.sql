@@ -1,1 +1,1 @@
-SELECT * FROM "Comment"
+SELECT * FROM "Notification"

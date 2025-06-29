@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { postNewComment } from "@/lib/db/queries";
+import { createReplyNotification, postNewComment } from "@/lib/db/queries";
 import { useComments } from "@/contexts/comments-context";
 
 export const CommentInput = ({
@@ -28,6 +28,16 @@ export const CommentInput = ({
 
     try {
       await postNewComment({ content, blogId, authorId, parentId });
+
+      // If the reply is not to a users own comment/reply create a notification
+      if (authorId !== session.user.id)
+        createReplyNotification({
+          commentId: parentId as string,
+          authorName: session.user.username,
+          userId: authorId,
+          actorId: session.user.id,
+        });
+
       setContent("");
       refreshComments();
       if (closeReply) closeReply();

@@ -41,6 +41,23 @@ export function formatDateToMMDDYYYY(dateString: string) {
   return `${month}/${day}/${year}`;
 }
 
+export function formatDateToShortDateTime(dateString: string) {
+  const date = new Date(dateString);
+
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // 0-indexed
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2); // Last two digits
+
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+
+  hours = hours % 12;
+  hours = hours === 0 ? 12 : hours; // 0 becomes 12
+
+  return `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
+}
+
 export function deepEqual(obj1: any, obj2: any): boolean {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 }

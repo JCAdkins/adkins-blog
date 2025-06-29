@@ -20,7 +20,6 @@ const links = [
 
 export default function MainHeader() {
   const { data: session, status } = useSession();
-
   const leftContent = (
     <h1
       className={`text-sm font-bold md:text-lg lg:text-2xl ${biancha.className}`}
@@ -30,6 +29,7 @@ export default function MainHeader() {
   );
 
   const rightContent = session?.user ? (
+    // <Alert
     <UserMenu user={session.user} />
   ) : (
     <LoginButton />

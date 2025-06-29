@@ -23,14 +23,41 @@ export const createUserService = async (userData: UserInput) => {
 };
 
 // Find user by email
-export const findUserByEmail = async (email: string) => {
-  const user = await findUserInDb({ where: { email } });
+export const findUserByEmail = async (email: string, include = "false") => {
+  let user;
+  if (include)
+    user = await findUserInDb({
+      where: { email },
+      include: {
+        Comment: true,
+        contactMessages: true,
+        Like: true,
+        receivedNotifications: true,
+        sentNotifications: true,
+      },
+    });
+  else user = await findUserInDb({ where: { email } });
   return user;
 };
 
 // Find user by email
-export const findUserByUsername = async (username: string) => {
-  const user = await findUserInDb({ where: { username } });
+export const findUserByUsername = async (
+  username: string,
+  include = "false"
+) => {
+  let user;
+  if (include)
+    user = await findUserInDb({
+      where: { username },
+      include: {
+        Comment: true,
+        contactMessages: true,
+        Like: true,
+        receivedNotifications: true,
+        sentNotifications: true,
+      },
+    });
+  else user = await findUserInDb({ where: { username } });
   return user;
 };
 

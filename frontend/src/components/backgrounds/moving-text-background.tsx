@@ -44,7 +44,6 @@ export default function MovingTextBackground() {
       const words = getRandomWords(5);
       return Array.from({ length: 20 }, (_, i) => words[i % words.length]);
     });
-    console.log("Generated rows:", newRows); // Debug
     setRows(newRows);
     const dirs = Array.from({ length: 10 }).map(() => Math.random() > 0.5);
     setDirections(dirs);

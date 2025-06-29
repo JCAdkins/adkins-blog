@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { db } from "../lib/prisma.ts"; // adjust based on your DB client
 // import { Prisma, User } from "@prisma/client"; // or your custom type
-import User, { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 interface NewUser {
   email: string;
@@ -23,7 +23,6 @@ export const getAllUsersInDb = async () => {
       role: true,
       createdAt: true,
       updatedAt: true,
-      // password: false, // Omit this by simply not including it
     },
   });
   return users;
@@ -46,6 +45,7 @@ export const createUserInDb = async (userData: NewUser): Promise<NewUser> => {
 
 export const findUserInDb = async (args: {
   where: Prisma.UserWhereUniqueInput;
+  include?: Prisma.UserInclude;
 }) => {
   const user = await db.user.findUnique(args);
   return user;
