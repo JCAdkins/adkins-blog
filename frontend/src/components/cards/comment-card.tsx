@@ -61,12 +61,12 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
         ? setLikes((l: number) => l + 1)
         : setLikes((l: number) => l - 1);
       setUserLiked((prev) => !prev);
-      refreshComments();
     } catch (err) {
       console.error("Like failed", err);
     }
   };
 
+  // Opens and closes reply text field
   const handleReplyClicked = () => setReply((prev) => !prev);
 
   const confirmDelete = async () => {
@@ -79,23 +79,19 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
 
   const loadMoreReplies = async () => {
     const nextPage = replyPage + 1;
-
     try {
-      const newReplies = await fetchRepliesForComment(comment.id, nextPage);
+      const data = await fetchRepliesForComment(comment.id, nextPage);
 
       setVisibleReplies((prev) => {
         const existingIds = new Set(prev.map((r) => r.id));
-        const filteredNew = newReplies.filter(
+        const filteredNew = data.repliesWithCounts.filter(
           (r: Comment) => !existingIds.has(r.id)
         );
         return [...prev, ...filteredNew];
       });
 
       setReplyPage(nextPage);
-
-      if (visibleReplies.length + newReplies.length >= comment.repliesCount) {
-        setHasMoreReplies(false);
-      }
+      if (!data.hasMore) setHasMoreReplies(false);
     } catch (err) {
       console.error("Failed to load more replies", err);
     }
