@@ -51,7 +51,8 @@ export const getUserByEmailController = async (
 ) => {
   try {
     const email = req.params.email;
-    const user = await findUserByEmail(email);
+    const include = req.params.include as string | undefined;
+    const user = await findUserByEmail(email, include);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -71,7 +72,8 @@ export const getUserByUsernameController = async (
 ) => {
   try {
     const username = req.params.username;
-    const user = await findUserByUsername(username);
+    const include = req.params.include as string | undefined;
+    const user = await findUserByUsername(username, include);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

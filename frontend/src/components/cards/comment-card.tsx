@@ -11,12 +11,14 @@ import {
   likeComment,
   softDeleteComment,
   fetchRepliesForComment,
+  createLikeNotification,
 } from "@/lib/db/queries";
 import { ConfirmDeleteModal } from "../modals/confirm-delete-modal";
 import { ThumbUpIcon, TrashIcon } from "../ui/icons";
 import { Comment } from "next-auth";
 import { Like } from "next-auth";
 import { PlusCircleIcon } from "lucide-react";
+import { formatDateToShortDateTime } from "@/lib/utils";
 
 export const CommentCard = ({ comment }: { comment: Comment }) => {
   const { data: session } = useSession();
@@ -43,7 +45,18 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
 
   const handleLike = async () => {
     try {
-      const res = await likeComment(comment.id, session?.user?.id!);
+      const res = await likeComment(
+        comment.id,
+        comment.authorId,
+        session?.user?.id!
+      );
+      if (comment.authorId != session?.user?.id)
+        await createLikeNotification({
+          commentId: comment.id,
+          authorName: session?.user.username as string,
+          userId: comment.authorId,
+          actorId: session?.user.id as string,
+        });
       res.liked
         ? setLikes((l: number) => l + 1)
         : setLikes((l: number) => l - 1);
@@ -94,7 +107,11 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
         <p className="text-sm font-xs">
           {comment.isDeleted ? "[deleted]" : comment.author?.username}
         </p>
-        <p>{new Date(comment.createdAt).toLocaleString()}</p>
+        <p className="text-end">
+          {formatDateToShortDateTime(
+            new Date(comment.createdAt).toLocaleString()
+          )}
+        </p>
       </div>
 
       <p className="bg-header">
@@ -103,9 +120,8 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
 
       <div className="flex gap-2">
         <Button
-          className="cursor-pointer"
+          className="cursor-pointer hover:scale-[1.05]"
           size="xs"
-          variant="ghost"
           onClick={handleLike}
           disabled={comment.isDeleted || !session?.user}
         >
@@ -126,7 +142,11 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
         )}
         {session && comment.authorId === session.user.id && (
           <>
-            <Button size="xs" onClick={() => setShowConfirm(true)}>
+            <Button
+              className="hover:scale-[1.05]"
+              size="xs"
+              onClick={() => setShowConfirm(true)}
+            >
               <TrashIcon />
             </Button>
             <ConfirmDeleteModal

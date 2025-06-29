@@ -16,11 +16,14 @@ export async function createUser(userData: {
   name?: string;
 }): Promise<User> {
   try {
-    const res = await fetch(`${process.env.BASE_URL || ""}/users/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/register`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      }
+    );
 
     if (!res.ok) {
       const errText = await res.text();
@@ -35,20 +38,34 @@ export async function createUser(userData: {
   }
 }
 
-export async function getUserByEmail(email: string): Promise<User | null> {
-  const res = await fetch(
-    `${process.env.BASE_URL || ""}/users/email/${encodeURIComponent(email)}`
+export async function getUserByEmail(
+  email: string,
+  include?: boolean
+): Promise<User | null> {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/email/${encodeURIComponent(email)}`
   );
+
+  if (include) {
+    url.searchParams.set("include", JSON.stringify(include));
+  }
+  const res = await fetch(url.toString());
   if (!res.ok) return null;
   return await res.json();
 }
 
 export async function getUserByUsername(
-  username: string
+  username: string,
+  include?: boolean
 ): Promise<User | null> {
-  const res = await fetch(
-    `${process.env.BASE_URL || ""}/users/username/${encodeURIComponent(username)}`
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/username/${encodeURIComponent(username)}`
   );
+
+  if (include) {
+    url.searchParams.set("include", JSON.stringify(include));
+  }
+  const res = await fetch(url.toString());
   if (!res.ok) return null;
   return await res.json();
 }
@@ -72,7 +89,7 @@ export async function getFeaturedBlogs(): Promise<Blog[] | null> {
 
 export async function getAllBlogs(): Promise<Blog[] | null> {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/blog`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`);
     if (!response.ok) return null;
 
     const data = await response.json();
@@ -86,7 +103,7 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
 
 export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/blog`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(blogData),
@@ -181,7 +198,11 @@ export async function fetchBlogCommentsPaginated({
   blogId: number | string;
   page?: number;
   pageSize?: number;
-}): Promise<{ comments: Comment[]; totalCount: number }> {
+}): Promise<{
+  comments: Comment[];
+  allCommentCount: number;
+  topLevelCount: number;
+}> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comments?blogId=${blogId}&page=${page}&pageSize=${pageSize}`,
@@ -208,7 +229,11 @@ export async function fetchBlogCommentsPaginated({
     return data;
   } catch (error) {
     console.error("Error fetching comments:", error);
-    return { comments: [], totalCount: 0 };
+    return {
+      comments: [],
+      allCommentCount: 0,
+      topLevelCount: 0,
+    };
   }
 }
 
@@ -286,12 +311,17 @@ export async function fetchRepliesForComment(
   }
 }
 
-export async function likeComment(commentId: string, userId: string) {
+export async function likeComment(
+  commentId: string,
+  authorId: string,
+  userId: string
+) {
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comments/like`,
       {
         commentId,
+        authorId,
         userId,
       }
     );
@@ -300,5 +330,92 @@ export async function likeComment(commentId: string, userId: string) {
   } catch (error) {
     console.error("Error posting comment:", error);
     throw error;
+  }
+}
+
+/*++===========================================================================================================++
+  ||                                   NOTIFICATION DATABASE QUERIES                                           ||
+  ++===========================================================================================================++*/
+
+export async function fetchNotifications(userId: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications?userId=${userId}`
+  );
+  return await res.json();
+}
+
+/**
+ * Creates a like notification for a user's comment.
+ *
+ * @param params.commentId - The ID of the comment that was liked.
+ * @param params.authorName - The name of the user who liked the comment.
+ * @param params.userId - The ID of the user who owns the comment (i.e., the recipient of the notification).
+ * @param params.actorId - The ID of the user who performed the like action (used for validation or analytics).
+ *
+ * @returns A response object containing the created or deleted notification, or an error.
+ */
+export async function createLikeNotification({
+  commentId,
+  authorName,
+  userId,
+  actorId,
+}: {
+  commentId: string;
+  authorName: string;
+  userId: string;
+  actorId: string;
+}) {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/like`,
+      {
+        commentId,
+        authorName,
+        userId,
+        actorId,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error: ", error);
+    return { error: error };
+  }
+}
+
+/**
+ * Creates a reply notification to a user's comment.
+ *
+ * @param params.commentId - The ID of the comment that was replied to.
+ * @param params.authorName - The name of the user who replied to the comment.
+ * @param params.userId - The ID of the user who owns the comment (i.e., the recipient of the notification).
+ * @param params.actorId - The ID of the user who performed the reply action (used for validation or analytics).
+ *
+ * @returns A response object containing the created or deleted notification, or an error.
+ */
+export async function createReplyNotification({
+  commentId,
+  authorName,
+  userId,
+  actorId,
+}: {
+  commentId: string;
+  authorName: string;
+  userId: string;
+  actorId: string;
+}) {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/reply`,
+      {
+        commentId,
+        authorName,
+        userId,
+        actorId,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error: ", error);
+    return { error: error };
   }
 }
