@@ -45,7 +45,8 @@ export async function getBlogById(req: express.Request, res: express.Response) {
     const { id } = req.params;
     const post = await getBlogPostById(id);
     if (!post) {
-      return res.status(404).json({ message: "Blog post not found" });
+      res.status(404).json({ message: "Blog post not found" });
+      return;
     }
     res.status(200).json(post);
   } catch (error) {
@@ -70,16 +71,17 @@ export async function createNewBlogPost(
     });
     if (!validation.success) {
       // If validation fails, send an error response
-      return res.status(400).json({
+      res.status(400).json({
         message: "Invalid data",
         errors: validation.error.errors,
       });
+      return;
     }
     const newPost = await createBlogPost(validation.data);
-    return res.status(201).json(newPost);
+    res.status(201).json(newPost);
   } catch (error) {
     if (error instanceof ZodError) {
-      return res
+      res
         .status(400)
         .json({ message: "Validation failed", errors: error.errors });
     }
@@ -101,10 +103,11 @@ export async function updateBlogPostController(
 
   if (!validation.success) {
     // If validation fails, send an error response
-    return res.status(400).json({
+    res.status(400).json({
       message: "Invalid data",
       errors: validation.error.errors,
     });
+    return;
   }
 
   try {
@@ -127,7 +130,8 @@ export async function deleteBlogPostController(
   const idValidation = z.string().uuid().safeParse(id);
 
   if (!idValidation.success) {
-    return res.status(400).json({ message: "Invalid blog post ID" });
+    res.status(400).json({ message: "Invalid blog post ID" });
+    return;
   }
 
   try {

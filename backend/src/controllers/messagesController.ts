@@ -36,11 +36,9 @@ export async function markMessageAsRead(
   res: express.Response
 ) {
   const { id } = req.body;
-  console.log("id: ", id);
   if (!id) {
-    return res
-      .status(400)
-      .json({ error: "No id was included in the request." });
+    res.status(400).json({ error: "No id was included in the request." });
+    return;
   }
   try {
     const result = await markMsgAsRead(id);

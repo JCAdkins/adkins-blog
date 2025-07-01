@@ -19,15 +19,16 @@ export const createNewUserController = async (
 
     const newUser = await createUserService(validatedData);
 
-    return res.status(201).json(newUser);
+    res.status(201).json(newUser);
   } catch (error) {
     console.error("User creation failed:", error);
     if (error instanceof ZodError) {
       // Handle validation errors
-      return res.status(400).json({ errors: error.errors });
+      res.status(400).json({ errors: error.errors });
+      return;
     }
 
-    return res.status(500).json({ error: "Failed to create user" });
+    res.status(500).json({ error: "Failed to create user" });
   }
 };
 
@@ -37,7 +38,7 @@ export const getAllUsersController = async (
 ) => {
   try {
     const users = await getAllUsers();
-    return res.json(users);
+    res.json(users);
   } catch (err) {
     console.log("Error getting the users.");
     res.status(500).json({ message: "There was a problem getting the users." });
@@ -51,14 +52,18 @@ export const getUserByEmailController = async (
 ) => {
   try {
     const email = req.params.email;
-    const include = req.params.include as string | undefined;
+    const includeParam = req.params.include;
+    const include = includeParam === "true";
+
+    console.log("include: ", include);
     const user = await findUserByEmail(email, include);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
+      return;
     }
 
-    return res.json(user);
+    res.json(user);
   } catch (err) {
     console.error("Error getting user by email:", err);
     res.status(500).json({ message: "Server error" });
@@ -72,14 +77,17 @@ export const getUserByUsernameController = async (
 ) => {
   try {
     const username = req.params.username;
-    const include = req.params.include as string | undefined;
+    const includeParam = req.params.include;
+    const include = includeParam === "true";
+
     const user = await findUserByUsername(username, include);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
+      return;
     }
 
-    return res.json(user);
+    res.json(user);
   } catch (err) {
     console.error("Error getting user by email:", err);
     res.status(500).json({ message: "Server error" });
@@ -96,17 +104,19 @@ export const loginUserController = async (
   try {
     const user = await findUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      res.status(401).json({ message: "Invalid credentials" });
+      return;
     }
 
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      res.status(401).json({ message: "Invalid credentials" });
+      return;
     }
 
     console.log("login successful.");
     // Optionally generate a session or token here
-    return res.status(200).json({
+    res.status(200).json({
       message: "Login successful",
       user: {
         id: user.id,

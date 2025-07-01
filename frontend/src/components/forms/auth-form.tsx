@@ -24,8 +24,6 @@ export function AuthForm({
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   useEffect(() => {
-    console.log("password: ", password);
-    console.log("confirm-password: ", confirmPassword);
     if (isRegisterPage) {
       setPasswordsMatch(password === confirmPassword);
     }

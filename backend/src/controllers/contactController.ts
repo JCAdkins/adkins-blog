@@ -17,10 +17,8 @@ export async function contactAdmin(
     console.warn("No admins found to notify.");
     return;
   }
-  console.log("admins: ", admins);
-  const { subject, message, name, email, userId } = req.body;
-
   try {
+    const { subject, message, name, email, userId } = req.body;
     const emailResult = await contactAdminEmail({
       to: admins,
       subject,
@@ -62,13 +60,14 @@ export async function welcomeNewUser(
   req: express.Request,
   res: express.Response
 ) {
-  const { email, username } = req.body;
-
-  if (!email || !username) {
-    return res.status(400).json({ error: "Email and Username are required" });
-  }
-
   try {
+    const { email, username } = req.body;
+
+    if (!email || !username) {
+      res.status(400).json({ error: "Email and Username are required" });
+      return;
+    }
+
     const result = await welcomeNewUserEmail(email, username);
     res.status(200).json(result);
   } catch (error) {

@@ -2,7 +2,6 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchUnread } from "@/lib/db/queries";
 
 type MessageContextType = {
   unreadCount: number;
@@ -23,7 +22,8 @@ export const MessageProvider = ({
 
   useEffect(() => {
     const load = async () => {
-      const count = await fetchUnread();
+      const res = await fetch("/api/admin/messages/unread/count");
+      const count = await res.json();
       setUnreadCount(count);
     };
     load();

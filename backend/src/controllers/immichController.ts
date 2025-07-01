@@ -20,9 +20,10 @@ export async function postNewImage(
     console.log("Creating new image.");
     const uploadedFiles = req.files; // This is where the file data will be
 
-    if (!uploadedFiles) {
+    if (!uploadedFiles || !Array.isArray(uploadedFiles)) {
       console.error("No file found on req.file");
-      return res.status(400).json({ message: "No file provided for upload." });
+      res.status(400).json({ message: "No file provided for upload." });
+      return;
     }
 
     const urls = await Promise.all(

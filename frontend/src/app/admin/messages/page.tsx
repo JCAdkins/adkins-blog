@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { fetchMessages, markMessageAsRead } from "@/lib/db/queries";
+import { markMessageAsRead } from "@/lib/db/queries";
 import SkeletonMessage from "@/components/skeletons/message-skeleton";
 import { useMessageContext } from "@/contexts/message-context";
+import { useSession } from "next-auth/react";
 
 type Message = {
   id: string;
@@ -26,7 +27,8 @@ export default function AdminMessagesPage() {
 
   useEffect(() => {
     const fetchAndSetMessages = async () => {
-      const msgs = await fetchMessages();
+      const res = await fetch("/api/admin/messages");
+      const msgs = await res.json();
       setMessages(msgs);
       setLoading(false);
     };
