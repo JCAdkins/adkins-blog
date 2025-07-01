@@ -1,3 +1,4 @@
+import { verifyToken } from "../middleware.ts";
 import {
   contactAdmin,
   welcomeNewUser,
@@ -6,7 +7,7 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/", contactAdmin);
+router.post("/", verifyToken, contactAdmin);
 
 router.post("/greeting", welcomeNewUser);
 
