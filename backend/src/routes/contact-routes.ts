@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.post("/", verifyToken, contactAdmin);
 
-router.post("/greeting", welcomeNewUser);
+router.post("/greeting", verifyToken, welcomeNewUser);
 
 export default router;
