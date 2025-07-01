@@ -43,17 +43,12 @@ export async function welcomeNewUser({
   // Have to use these until the app is up and running on our actual domain.
   const testEmail = "jordan.adkins111@gmail.com";
   const testUsername = "JCAdkins24";
-  console.log("Email: ", email);
-  console.log("username: ", username);
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/contact/greeting`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: testEmail, username: testUsername }),
-      }
-    );
+    const response = await fetch("api/contact/greeting", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: testEmail, username: testUsername }),
+    });
     if (!response.ok) {
       const errorText = await response.text();
       console.log("response: ", errorText);
