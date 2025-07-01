@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function ContactForm({ user }: Props) {
-  console.log("user: ", user);
   const [form, setForm] = useState({
     name: "",
     email: user?.email ?? "",
@@ -23,7 +22,7 @@ export default function ContactForm({ user }: Props) {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -37,7 +36,6 @@ export default function ContactForm({ user }: Props) {
       name: user ? (user.username as string) : form.name,
       email: user ? (user.email as string) : form.email,
     };
-    console.log("Contact form submitted:", payload);
     const response = await ContactAdmins(payload);
     setSubmitted(response);
   };

@@ -16,14 +16,11 @@ interface FormWithoutUser {
 
 export async function ContactAdmins(payload: FormWithUser | FormWithoutUser) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/contact`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      },
-    );
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
     if (!response.ok) {
       return "failed";
     }
@@ -55,7 +52,7 @@ export async function welcomeNewUser({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: testEmail, username: testUsername }),
-      },
+      }
     );
     if (!response.ok) {
       const errorText = await response.text();
