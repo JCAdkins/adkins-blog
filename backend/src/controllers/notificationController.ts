@@ -10,11 +10,13 @@ export async function createLikeNotification(
   res: express.Response
 ) {
   const { commentId, authorName, userId, actorId } = req.body;
-  if (!commentId || !authorName || !userId || !actorId)
-    return res.status(400).json({
+  if (!commentId || !authorName || !userId || !actorId) {
+    res.status(400).json({
       error:
         "Comment ID, Author Name, UserId, and ActorId are required. One or more were missing.",
     });
+    return;
+  }
   try {
     const data = await createLikeNotificationServ(
       commentId as string,
@@ -22,10 +24,10 @@ export async function createLikeNotification(
       userId as string,
       actorId as string
     );
-    return res.status(200).json(data);
+    res.status(200).json(data);
   } catch (error) {
     console.error("Error creating like notification: ", error);
-    return res.status(500).json(error);
+    res.status(500).json(error);
   }
 }
 
@@ -34,11 +36,13 @@ export async function createReplyNotification(
   res: express.Response
 ) {
   const { commentId, authorName, userId, actorId } = req.body;
-  if (!commentId || !authorName || !userId || !actorId)
-    return res.status(400).json({
+  if (!commentId || !authorName || !userId || !actorId) {
+    res.status(400).json({
       error:
         "Comment ID, Author Name, UserId, and ActorId are required. One or more were missing.",
     });
+    return;
+  }
   try {
     const data = await createReplyNotificationServ(
       commentId as string,
@@ -46,9 +50,9 @@ export async function createReplyNotification(
       userId as string,
       actorId as string
     );
-    return res.status(200).json(data);
+    res.status(200).json(data);
   } catch (error) {
     console.error("Error creating reply notification: ", error);
-    return res.status(500).json(error);
+    res.status(500).json(error);
   }
 }

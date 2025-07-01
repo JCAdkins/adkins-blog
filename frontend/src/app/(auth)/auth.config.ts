@@ -15,6 +15,7 @@ const config = {
     },
     async session({ session, token }) {
       if (session.user) {
+        session.token = token;
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         session.user.username = token.username as string;
@@ -41,14 +42,6 @@ const config = {
       return true;
     },
   },
-  // events: {
-  //   signIn(message) {
-  //     console.log("✅ User signed in", message);
-  //   },
-  //   signOut(message) {
-  //     console.log("🚪 User signed out", message);
-  //   },
-  // },
 } satisfies NextAuthConfig;
 
 export default config;

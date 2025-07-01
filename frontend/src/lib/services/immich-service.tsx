@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 export async function getImageURLs(files: FormData): Promise<string[]> {
-  const uploadEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}/upload`;
+  const uploadEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}/immich/upload`;
   console.log("Uploading files...");
 
   try {
@@ -51,7 +51,7 @@ export async function getImmichAsset({
   }
 
   const route = type === "original" ? "images" : "thumbnail";
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/${route}`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/immich/${route}`;
 
   try {
     const response = await axios.get(url, {

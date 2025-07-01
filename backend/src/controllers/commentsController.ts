@@ -12,10 +12,11 @@ export async function fetchBlogCommentsPaginated(
   req: express.Request,
   res: express.Response
 ) {
-  const { blogId, page = 1, pageSize = 10 } = req.query;
-  const numericPage = parseInt(page as string, 10);
-  const numericPageSize = parseInt(pageSize as string, 10);
   try {
+    const { blogId, page = 1, pageSize = 10 } = req.query;
+    const numericPage = parseInt(page as string, 10);
+    const numericPageSize = parseInt(pageSize as string, 10);
+
     const comments = await getBlogMessagesPaginated(
       blogId as string,
       numericPage,
@@ -63,13 +64,10 @@ export async function deleteComment(
   req: express.Request,
   res: express.Response
 ) {
-  const { commentId } = req.params;
-  const hard = req.query.hard === "true";
-
-  console.log("commentId: ", commentId);
-  console.log("hard: ", hard);
-
   try {
+    const { commentId } = req.params;
+    const hard = req.query.hard === "true";
+
     const result = hard
       ? await hardDeleteComment(commentId)
       : await softDeleteComment(commentId);
@@ -82,8 +80,6 @@ export async function deleteComment(
 
 export async function likeComment(req: express.Request, res: express.Response) {
   const { commentId, userId } = req.body;
-  console.log("cId: ", commentId);
-  console.log("uId: ", userId);
   try {
     const result = await likeCommentService(commentId, userId);
     res.status(200).json(result);

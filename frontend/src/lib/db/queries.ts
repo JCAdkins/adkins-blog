@@ -20,7 +20,9 @@ export async function createUser(userData: {
       `${process.env.NEXT_PUBLIC_BASE_URL}/users/register`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(userData),
       }
     );
@@ -49,7 +51,9 @@ export async function getUserByEmail(
   if (include) {
     url.searchParams.set("include", JSON.stringify(include));
   }
-  const res = await fetch(url.toString());
+  const res = await fetch(url.toString(), {
+    headers: {},
+  });
   if (!res.ok) return null;
   return await res.json();
 }
@@ -105,7 +109,9 @@ export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(blogData),
     });
 
@@ -114,9 +120,7 @@ export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
       console.error("Fetch failed:", errText);
       throw new Error("Failed to create blog");
     }
-
     redirect("/admin");
-    return await response.json();
   } catch (err) {
     console.error("Fetch error:", err);
     throw err;
@@ -147,7 +151,7 @@ export async function getBlogById(id: string) {
   ||                                       MESSAGES DATABASE QUERIES                                           ||
   ++===========================================================================================================++*/
 
-export async function fetchUnread() {
+export async function fetchUnreadCount() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/messages/unread/count`
@@ -159,23 +163,15 @@ export async function fetchUnread() {
   }
 }
 
-export const fetchMessages = async () => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/messages`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Failed to fetch messages:", err);
-  }
-};
-
 export const markMessageAsRead = async (id: string) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/messages/mark-read`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ id: id }),
       }
     );
@@ -338,10 +334,14 @@ export async function likeComment(
   ++===========================================================================================================++*/
 
 export async function fetchNotifications(userId: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications?userId=${userId}`
-  );
-  return await res.json();
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications?userId=${userId}`
+    );
+    return await res.json();
+  } catch (error) {
+    console.error("Error: ", error);
+  }
 }
 
 /**

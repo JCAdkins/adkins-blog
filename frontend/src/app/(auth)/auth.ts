@@ -31,21 +31,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials: any) {
         const user = credentials.email
           ? await getUserByEmail(credentials.email)
-          : await getUserByUsername(credentials.username);
+          : credentials.username
+            ? await getUserByUsername(credentials.username)
+            : null;
 
         if (!user) return null;
-        // biome-ignore lint: Forbidden non-null assertion.
+
         const passwordsMatch = await compare(
           credentials.password,
-          user.password!
+          user.password
         );
         if (!passwordsMatch) return null;
 
         // Add role to the user object returned after successful login
         return {
-          ...user,
+          id: user.id,
           role: user.role, // Ensure the role is included
           username: user.username,
+          name: `${user.first_name} ${user.last_name}`,
+          email: user.email,
+          image: user.image,
         } as ExtendedUser;
       },
     }),

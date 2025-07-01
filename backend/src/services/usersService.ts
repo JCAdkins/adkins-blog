@@ -23,7 +23,7 @@ export const createUserService = async (userData: UserInput) => {
 };
 
 // Find user by email
-export const findUserByEmail = async (email: string, include = "false") => {
+export const findUserByEmail = async (email: string, include = false) => {
   let user;
   if (include)
     user = await findUserInDb({
@@ -41,10 +41,7 @@ export const findUserByEmail = async (email: string, include = "false") => {
 };
 
 // Find user by email
-export const findUserByUsername = async (
-  username: string,
-  include = "false"
-) => {
+export const findUserByUsername = async (username: string, include = false) => {
   let user;
   if (include)
     user = await findUserInDb({

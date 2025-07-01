@@ -78,3 +78,11 @@ export function getRandomColor() {
     .toString(16)
     .padStart(6, "0")}`;
 }
+
+import { getSession } from "next-auth/react";
+import { auth } from "@/app/(auth)/auth";
+
+export const getAuthToken = async (): Promise<string | null> => {
+  const session = await auth();
+  return session?.token ?? null; // or session?.accessToken depending on your config
+};

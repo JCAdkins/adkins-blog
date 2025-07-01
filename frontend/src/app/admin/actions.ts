@@ -13,5 +13,5 @@ export async function createPost(formData: FormData) {
     images: imageUrls,
   };
 
-  return await createNewBlog(data);
+  await createNewBlog(data);
 }

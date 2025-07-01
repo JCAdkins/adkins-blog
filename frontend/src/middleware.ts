@@ -15,9 +15,6 @@ export default authMiddleware(async function middleware(req: NextRequest) {
   // ✅ Use imported auth to get session
   const session = await auth(); // no args needed in middleware (edge runtime auto-extracts request)
 
-  console.log("isAdminRoute: ", isAdminRoute);
-  console.log("session: ", session);
-
   if (isAdminRoute) {
     const isLoggedIn = !!session?.user;
     const isAdmin = session?.user?.role === "admin";
