@@ -357,15 +357,12 @@ export async function createLikeNotification({
   actorId: string;
 }) {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/like`,
-      {
-        commentId,
-        authorName,
-        userId,
-        actorId,
-      }
-    );
+    const res = await axios.post("/api/notifications/like", {
+      commentId,
+      authorName,
+      userId,
+      actorId,
+    });
     return res.data;
   } catch (error) {
     console.error("Error: ", error);
@@ -395,15 +392,12 @@ export async function createReplyNotification({
   actorId: string;
 }) {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/reply`,
-      {
-        commentId,
-        authorName,
-        userId,
-        actorId,
-      }
-    );
+    const res = await axios.post("/api/notifications/reply", {
+      commentId,
+      authorName,
+      userId,
+      actorId,
+    });
     return res.data;
   } catch (error) {
     console.error("Error: ", error);
