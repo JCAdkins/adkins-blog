@@ -5,13 +5,14 @@ import {
   postNewImage,
 } from "../controllers/immichController.ts";
 import multer from "multer";
+import { verifyToken } from "../middleware.ts";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
 router.post(
   "/upload",
-
+  verifyToken,
   upload.array("images"), // Multer middleware processes the file
   postNewImage
 );

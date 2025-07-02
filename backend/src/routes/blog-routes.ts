@@ -8,11 +8,12 @@ import {
   deleteBlogPostController,
   getFeaturedBlogPosts,
 } from "../controllers/blogPostController.ts";
+import { verifyToken } from "../middleware.ts";
 
 const router = express.Router();
 
 // Create a new blog post
-router.post("/", createNewBlogPost);
+router.post("/", verifyToken, createNewBlogPost);
 
 // Get all blog posts
 router.get("/", getBlogPosts);

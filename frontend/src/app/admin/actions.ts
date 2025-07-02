@@ -1,10 +1,17 @@
 "use server";
 import { getImageURLs } from "@/lib/services/immich-service";
 import { createNewBlog } from "@/lib/db/queries";
+import { auth } from "../(auth)/auth";
 
 export async function createPost(formData: FormData) {
-  const imageUrls = await getImageURLs(formData);
-  const data = {
+  const session = await auth();
+  const token = session?.token;
+  const response = await getImageURLs({
+    formData,
+    token,
+  });
+  const imageUrls = await response.json();
+  const blogData = {
     title: formData.get("title") as string,
     description: formData.get("description") as string,
     genre: formData.get("genre") as string,
@@ -13,5 +20,5 @@ export async function createPost(formData: FormData) {
     images: imageUrls,
   };
 
-  await createNewBlog(data);
+  await createNewBlog({ blogData, token });
 }
