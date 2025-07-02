@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { markMessageAsRead } from "@/lib/db/queries";
 import SkeletonMessage from "@/components/skeletons/message-skeleton";
 import { useMessageContext } from "@/contexts/message-context";
-import { useSession } from "next-auth/react";
 
 type Message = {
   id: string;

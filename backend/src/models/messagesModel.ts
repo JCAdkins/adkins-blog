@@ -26,13 +26,10 @@ export const fetchMessages = async () => {
 
 export const markMessageReadInDb = async (id: string) => {
   try {
-    const wasSuccessful = await db.$executeRawUnsafe(
-      `
-  SELECT mark_message_as_read(CAST($1 AS TEXT));
-`,
-      id
-    );
-    return Response.json({ result: wasSuccessful });
+    const result = await db.$queryRawUnsafe<
+      { mark_message_as_read: boolean }[]
+    >(`SELECT mark_message_as_read(CAST($1 AS TEXT))`, id);
+    return Response.json({ result: result });
   } catch (error) {
     console.error("Failed to mark message as read in db: ", error);
     return Response.json({ error: "Failed to mark as read" }, { status: 500 });
