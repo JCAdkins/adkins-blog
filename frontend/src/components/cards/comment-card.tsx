@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button";
 import { CommentInput } from "../inputs/comment-input";
 import { useComments } from "@/contexts/comments-context";
 import {
-  hardDeleteComment,
   likeComment,
-  softDeleteComment,
   fetchRepliesForComment,
   createLikeNotification,
+  deleteComment,
 } from "@/lib/db/queries";
 import { ConfirmDeleteModal } from "../modals/confirm-delete-modal";
 import { ThumbUpIcon, TrashIcon } from "../ui/icons";
@@ -72,8 +71,8 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
   const confirmDelete = async () => {
     setShowConfirm(false);
     if (!comment.replies || comment.replies.length === 0)
-      await hardDeleteComment(comment.id);
-    else await softDeleteComment(comment.id);
+      await deleteComment(comment.id, "true");
+    else await deleteComment(comment.id, "false");
     refreshComments();
   };
 

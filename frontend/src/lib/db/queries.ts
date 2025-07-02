@@ -253,15 +253,12 @@ export async function postNewComment({
   parentId?: string;
 }) {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/comments`,
-      {
-        content,
-        blogId,
-        authorId,
-        parentId,
-      }
-    );
+    const res = await axios.post("/api/comment/create-comment", {
+      content,
+      blogId,
+      authorId,
+      parentId,
+    });
     return res.data;
   } catch (error) {
     console.error("Error posting comment:", error);
@@ -269,27 +266,16 @@ export async function postNewComment({
   }
 }
 
-export async function softDeleteComment(commentId: string) {
+export async function deleteComment(commentId: string, type: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}?hard=false`,
+      `/api/comment/delete-comment/${commentId}?hard=${type}`,
       {
         method: "DELETE",
       }
     );
-  } catch (err) {
-    console.error("Failed to delete comment", err);
-  }
-}
-
-export async function hardDeleteComment(commentId: string) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}?hard=true`,
-      {
-        method: "DELETE",
-      }
-    );
+    const data = await res.json();
+    return data;
   } catch (err) {
     console.error("Failed to delete comment", err);
   }
@@ -321,14 +307,11 @@ export async function likeComment(
   userId: string
 ) {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/like`,
-      {
-        commentId,
-        authorId,
-        userId,
-      }
-    );
+    const res = await axios.post("/api/comment/like-comment", {
+      commentId,
+      authorId,
+      userId,
+    });
 
     return res.data;
   } catch (error) {
