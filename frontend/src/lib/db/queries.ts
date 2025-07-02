@@ -3,6 +3,8 @@
 import axios from "axios";
 import { Blog, NewBlog, User } from "next-auth";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 /*++===========================================================================================================++
   ||                                           USER DATABASE QUERIES                                           ||
@@ -108,12 +110,29 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
 }
 
 // Needs secured
-export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
+export async function createNewBlog({
+  blogData,
+  token,
+}: {
+  blogData: NewBlog;
+  token: any;
+}) {
   try {
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (token.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    // Sign the decoded token to create a raw JWT string
+    const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${signedToken}`,
       },
       body: JSON.stringify(blogData),
     });

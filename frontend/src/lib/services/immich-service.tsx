@@ -1,32 +1,48 @@
 import axios, { AxiosError } from "axios";
+import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
-export async function getImageURLs(files: FormData): Promise<string[]> {
+export async function getImageURLs({
+  formData,
+  token,
+}: {
+  formData: FormData;
+  token: any;
+}) {
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (token.role !== "admin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  // Sign the decoded token to create a raw JWT string
+  const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
   const uploadEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}/immich/upload`;
   console.log("Uploading files...");
 
   try {
     const res = await fetch(uploadEndpoint, {
       method: "POST",
-      body: files,
+      headers: {
+        Authorization: `Bearer ${signedToken}`,
+      },
+      body: formData,
     });
 
     if (!res.ok) {
       const errorText = await res.text();
       console.error("❌ Upload failed:", errorText);
-      return []; // Fail gracefully
+      return NextResponse.json([]); // Fail gracefully
     }
 
     const data = await res.json();
 
-    if (!Array.isArray(data)) {
-      console.error("Unexpected upload response format:", data);
-      return [];
-    }
-
-    return data;
+    return NextResponse.json(data);
   } catch (error) {
     console.error("🚨 Error uploading files:", error);
-    return [];
+    return NextResponse.json([]);
   }
 }
 
@@ -49,7 +65,6 @@ export async function getImmichAsset({
     console.warn("No ID provided for Immich asset fetch.");
     return undefined;
   }
-
   const route = type === "original" ? "images" : "thumbnail";
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/immich/${route}`;
 
