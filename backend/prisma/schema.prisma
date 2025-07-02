@@ -51,7 +51,7 @@ model User {
   last_name             String
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
-  role                  String           @default("user") // Can be "admin", "user", etc.
+  role                  String             @default("user")
   contactMessages       ContactMessage[]
   Comment               Comment[]
   Like                  Like[]
@@ -129,4 +129,9 @@ model Notification {
 enum NotificationType {
   LIKE
   REPLY
+}
+
+enum Role {
+  user
+  admin
 }

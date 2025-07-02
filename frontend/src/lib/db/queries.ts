@@ -78,6 +78,7 @@ export async function getUserByUsername(
   ||                                           BLOG DATABASE QUERIES                                           ||
   ++===========================================================================================================++*/
 
+// Doesn't need secured
 export async function getFeaturedBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(
@@ -91,6 +92,7 @@ export async function getFeaturedBlogs(): Promise<Blog[] | null> {
   }
 }
 
+// Doesn't need secured
 export async function getAllBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`);
@@ -105,6 +107,7 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
   }
 }
 
+// Needs secured
 export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
@@ -127,6 +130,7 @@ export async function createNewBlog(blogData: NewBlog): Promise<Blog | null> {
   }
 }
 
+// Doesn't need secured
 export async function getBlogById(id: string) {
   try {
     const response = await fetch(
@@ -151,30 +155,15 @@ export async function getBlogById(id: string) {
   ||                                       MESSAGES DATABASE QUERIES                                           ||
   ++===========================================================================================================++*/
 
-export async function fetchUnreadCount() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/messages/unread/count`
-    );
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Error fetching unread count:", err);
-  }
-}
-
 export const markMessageAsRead = async (id: string) => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/messages/mark-read`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-      }
-    );
+    const res = await fetch("/api/admin/messages/mark-read", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
     const data = await res.json();
     return data;
   } catch (error) {
