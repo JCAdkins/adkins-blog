@@ -1,3 +1,4 @@
+import { verifyToken } from "../middleware.ts";
 import {
   fetchBlogCommentsPaginated,
   fetchCommentReplies,
@@ -13,10 +14,10 @@ router.get("/", fetchBlogCommentsPaginated);
 
 router.get("/:commentId/replies", fetchCommentReplies);
 
-router.post("/", postNewComment);
+router.post("/", verifyToken, postNewComment);
 
-router.post("/like", likeComment);
+router.post("/like", verifyToken, likeComment);
 
-router.delete("/:commentId", deleteComment);
+router.delete("/:commentId", verifyToken, deleteComment);
 
 export default router;
