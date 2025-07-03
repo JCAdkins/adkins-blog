@@ -6,6 +6,7 @@ import MobileHeader from "../ui/mobile-header";
 import LoginButton from "../buttons/login-button";
 import { UserMenu } from "../menus/user-menu";
 import localFont from "next/font/local";
+import { NotificationBadge } from "../badges/notification-badge";
 
 const biancha = localFont({
   src: "../../fonts/Resillia.ttf",

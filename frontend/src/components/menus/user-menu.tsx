@@ -10,6 +10,9 @@ import { User } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import UserAvatar from "../ui/avatar";
+import Image from "next/image";
+import { NotificationBadge } from "../badges/notification-badge";
 
 export function UserMenu({ user }: { user: User }) {
   const router = useRouter();
@@ -18,9 +21,25 @@ export function UserMenu({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="bg-login hover:bg-login-hover cursor-pointer rounded-full px-3 py-1 text-sm font-medium">
-          {user.username}
-        </button>
+        <div className="flex flex-row items-center justify-center gap-2">
+          <NotificationBadge />
+          <button className=" cursor-pointer rounded-full text-sm font-medium">
+            {user.image ? (
+              <UserAvatar
+                src={user.image}
+                alt={user.username[0].toUpperCase()}
+              />
+            ) : (
+              <Image
+                width={6}
+                height={6}
+                src="/generic-prof-pic.webp"
+                alt="Generic profile"
+                className="rounded-full h-8 w-8"
+              />
+            )}
+          </button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => console.log("Settings clicked")}>
