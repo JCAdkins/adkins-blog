@@ -11,7 +11,6 @@ export async function getBlogMessagesPaginated(
   page = 1,
   limit = 10
 ) {
-  console.log("limite service: ", typeof limit);
   if (!postId) {
     return { error: "Post ID is required." };
   }

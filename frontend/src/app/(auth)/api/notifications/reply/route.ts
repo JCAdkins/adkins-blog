@@ -21,7 +21,6 @@ export async function POST(req: Request) {
     const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
 
     const formData = await req.json();
-    console.log("formData: ", formData);
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/reply`,

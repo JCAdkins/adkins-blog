@@ -62,3 +62,30 @@ export async function createReplyNotificationServ(
     return { error: error };
   }
 }
+
+export async function fetchUnreadUserNotifications(userId: string) {
+  try {
+    const notifications = await db.notification.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        actor: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        comment: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return notifications;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return [];
+  }
+}
