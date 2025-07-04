@@ -339,7 +339,7 @@ export async function fetchNotifications(userId: string) {
 
 export async function getUserNotifications(userId: string, page: number = 1) {
   try {
-    const limit = 15;
+    const limit = 10;
     const offset = page * limit;
     console.log("offset: ", offset);
 

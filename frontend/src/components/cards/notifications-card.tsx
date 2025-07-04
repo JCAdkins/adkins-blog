@@ -6,10 +6,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn, formatDateToShortDateTime } from "@/lib/utils";
 
 type NotificationCardProps = {
-  className: string;
+  className?: string;
   notification: {
     id: string;
     message: string;
@@ -44,7 +44,7 @@ export default function NotificationCard({
       )}
       footer={
         <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>{new Date(notification.createdAt).toLocaleString()}</span>
+          <span>{formatDateToShortDateTime(notification.createdAt)}</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="p-1 hover:text-foreground text-muted-foreground">
