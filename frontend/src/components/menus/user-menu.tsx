@@ -21,25 +21,19 @@ export function UserMenu({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex flex-row items-center justify-center gap-2">
-          <NotificationBadge />
-          <button className=" cursor-pointer rounded-full text-sm font-medium">
-            {user.image ? (
-              <UserAvatar
-                src={user.image}
-                alt={user.username[0].toUpperCase()}
-              />
-            ) : (
-              <Image
-                width={6}
-                height={6}
-                src="/generic-prof-pic.webp"
-                alt="Generic profile"
-                className="rounded-full h-8 w-8"
-              />
-            )}
-          </button>
-        </div>
+        <button className=" cursor-pointer rounded-full text-sm font-medium">
+          {user.image ? (
+            <UserAvatar src={user.image} alt={user.username[0].toUpperCase()} />
+          ) : (
+            <Image
+              width={6}
+              height={6}
+              src="/generic-prof-pic.webp"
+              alt="Generic profile"
+              className="rounded-full h-8 w-8"
+            />
+          )}
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => console.log("Settings clicked")}>

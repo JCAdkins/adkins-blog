@@ -68,6 +68,7 @@ export async function fetchUnreadUserNotifications(userId: string) {
     const notifications = await db.notification.findMany({
       where: {
         userId,
+        read: false,
       },
       include: {
         actor: {
@@ -84,6 +85,48 @@ export async function fetchUnreadUserNotifications(userId: string) {
     });
 
     return notifications;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return [];
+  }
+}
+
+export async function fetchAllUserNotifications({
+  userId,
+  offset = 0,
+  limit = 15,
+}: {
+  userId: string;
+  offset: number;
+  limit: number;
+}) {
+  try {
+    const [notifications, totalCount] = await Promise.all([
+      db.notification.findMany({
+        where: { userId },
+        include: {
+          actor: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+          comment: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: offset,
+        take: limit,
+      }),
+      db.notification.count({
+        where: { userId },
+      }),
+    ]);
+
+    const canLoadMore = offset + limit < totalCount;
+
+    return { notifications, canLoadMore };
   } catch (error) {
     console.error("Error fetching notifications:", error);
     return [];

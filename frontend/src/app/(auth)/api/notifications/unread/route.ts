@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import jwt from "jsonwebtoken";
 import { NextResponse, NextRequest } from "next/server";
 
-// Fetch all messages from db
+// Fetch all unread User notifications from db
 export async function GET(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token) {

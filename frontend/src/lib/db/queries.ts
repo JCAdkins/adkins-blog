@@ -335,6 +335,38 @@ export async function fetchNotifications(userId: string) {
   }
 }
 
+// src/lib/api/notifications.ts
+
+export async function getUserNotifications(userId: string, page: number = 1) {
+  try {
+    const limit = 15;
+    const offset = page * limit;
+    console.log("offset: ", offset);
+
+    const response = await fetch(
+      `/api/notifications/${encodeURIComponent(userId)}?offset=${offset}&limit=${limit}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to fetch notifications");
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return [];
+  }
+}
+
+export async function markAllAsRead(id: string) {}
 /**
  * Creates a like notification for a user's comment.
  *

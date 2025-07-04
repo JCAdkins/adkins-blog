@@ -18,7 +18,6 @@ export function NotificationBadge() {
           `/api/notifications/unread?id=${session?.user.id}`
         );
         const data = await res.json();
-        console.log("data: ", data);
         setUnreadCount(data.length);
       } catch (err) {
         console.error("Failed to fetch unread notifications", err);

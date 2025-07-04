@@ -31,7 +31,10 @@ export default function MainHeader() {
 
   const rightContent = session?.user ? (
     // <Alert
-    <UserMenu user={session.user} />
+    <div className="flex flex-row items-center justify-center gap-2">
+      <NotificationBadge />
+      <UserMenu user={session.user} />
+    </div>
   ) : (
     <LoginButton />
   );
