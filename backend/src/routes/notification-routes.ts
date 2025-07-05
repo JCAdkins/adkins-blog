@@ -4,6 +4,7 @@ import {
   getUnreadUserNotifications,
   getAllUserNotifications,
   markNotificationAsRead,
+  markAllNotificationsAsRead,
 } from "../controllers/notificationController.ts";
 import { verifyToken } from "../middleware.ts";
 import express from "express";
@@ -17,6 +18,8 @@ router.post("/like", verifyToken, createLikeNotification);
 router.post("/reply", verifyToken, createReplyNotification);
 
 router.post("/mark-read", verifyToken, markNotificationAsRead);
+
+router.post("/mark-all-read", markAllNotificationsAsRead);
 
 // Fetch
 router.get("/unread/:userId", verifyToken, getUnreadUserNotifications);

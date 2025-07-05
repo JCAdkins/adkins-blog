@@ -4,6 +4,7 @@ import {
   fetchUnreadUserNotifications,
   fetchAllUserNotifications,
   markNotificationReadServ,
+  markAllNotificationsAsReadServ,
 } from "../services/notificationService.ts";
 
 import express from "express";
@@ -113,7 +114,27 @@ export async function markNotificationAsRead(
   }
   try {
     const result = await markNotificationReadServ(id);
-    res.status(200).json(result);
+    const data = await result.json();
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Failed to mark notification as read: ", error);
+    res.status(500).json({ error: "Failed to mark notification as read." });
+  }
+}
+
+export async function markAllNotificationsAsRead(
+  req: express.Request,
+  res: express.Response
+) {
+  const { id } = req.body;
+  if (!id) {
+    res.status(400).json({ error: "User ID was not included." });
+    return;
+  }
+  try {
+    const result = await markAllNotificationsAsReadServ(id);
+    const data = await result.json();
+    res.status(200).json(data);
   } catch (error) {
     console.error("Failed to mark notification as read: ", error);
     res.status(500).json({ error: "Failed to mark notification as read." });

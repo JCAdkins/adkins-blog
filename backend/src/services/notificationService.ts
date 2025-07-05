@@ -154,3 +154,21 @@ export async function markNotificationReadServ(id: string) {
     );
   }
 }
+
+export async function markAllNotificationsAsReadServ(userId: string) {
+  try {
+    const result = await db.notification.updateMany({
+      where: { userId },
+      data: {
+        read: true,
+      },
+    });
+    return Response.json(result);
+  } catch (error) {
+    console.error("Failed to mark notification as read in db: ", error);
+    return Response.json(
+      { error: "Failed to mark notification as read" },
+      { status: 500 }
+    );
+  }
+}
