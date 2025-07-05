@@ -1,7 +1,7 @@
 // lib/db/queries.ts
 
 import axios from "axios";
-import { Blog, NewBlog, User } from "next-auth";
+import { Blog, BlogComment, NewBlog, User } from "next-auth";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
@@ -203,7 +203,7 @@ export async function fetchBlogCommentsPaginated({
   page?: number;
   pageSize?: number;
 }): Promise<{
-  comments: Comment[];
+  comments: BlogComment[];
   allCommentCount: number;
   topLevelCount: number;
 }> {
@@ -238,6 +238,21 @@ export async function fetchBlogCommentsPaginated({
       allCommentCount: 0,
       topLevelCount: 0,
     };
+  }
+}
+
+export async function fetchCommentByIdWithAncestors({ id }: { id: string }) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${id}?recurse=true`
+    );
+    if (!res.ok) throw new Error("Failed to fetch replies");
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("There was an error fething the comment tree: ", error);
+    return { error: "There was an error fetching the comment tree." };
   }
 }
 
@@ -278,6 +293,7 @@ export async function deleteComment(commentId: string, type: string) {
     return data;
   } catch (err) {
     console.error("Failed to delete comment", err);
+    return { error: "Failed to delete comment." };
   }
 }
 
@@ -297,7 +313,7 @@ export async function fetchRepliesForComment(
     return data;
   } catch (error) {
     console.error("Error fetching more replies:", error);
-    throw error;
+    return { error: "There was an error fetching more replies." };
   }
 }
 
@@ -316,7 +332,7 @@ export async function likeComment(
     return res.data;
   } catch (error) {
     console.error("Error posting comment:", error);
-    throw error;
+    return { error: "There was an error posting the comment" };
   }
 }
 
@@ -335,13 +351,23 @@ export async function fetchNotifications(userId: string) {
   }
 }
 
-// src/lib/api/notifications.ts
+export async function markNotificationAsRead(notifId: string) {
+  try {
+    const res = await fetch("api/notifications/mark-read", {
+      method: "POST",
+      body: JSON.stringify(notifId),
+    });
+    return await res.json();
+  } catch (error) {
+    console.error("Error: ", error);
+    return { error: "There was an issue marking the notification as read" };
+  }
+}
 
 export async function getUserNotifications(userId: string, page: number = 1) {
   try {
     const limit = 10;
     const offset = page * limit;
-    console.log("offset: ", offset);
 
     const response = await fetch(
       `/api/notifications/${encodeURIComponent(userId)}?offset=${offset}&limit=${limit}`,
@@ -414,11 +440,13 @@ export async function createLikeNotification({
  */
 export async function createReplyNotification({
   commentId,
+  replyId,
   authorName,
   userId,
   actorId,
 }: {
   commentId: string;
+  replyId: string;
   authorName: string;
   userId: string;
   actorId: string;
@@ -426,6 +454,7 @@ export async function createReplyNotification({
   try {
     const res = await axios.post("/api/notifications/reply", {
       commentId,
+      replyId,
       authorName,
       userId,
       actorId,

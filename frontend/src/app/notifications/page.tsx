@@ -30,8 +30,6 @@ export default function NotificationsPage() {
       setNotifications((prev) => [...prev, ...newNotifications]);
       page.current += 1;
     }
-
-    console.log("newNotifs: ", newNotifications);
     // Always update `hasMore` based on backend result
     setHasMore(canLoadMore);
     setLoading(false);
@@ -115,7 +113,7 @@ export default function NotificationsPage() {
             return (
               <div key={notif.id} ref={isLast ? lastNotificationRef : null}>
                 <NotificationCard
-                  className="bg-header rounded-md"
+                  className={`${notif.read ? "bg-header/60" : "bg-header"} rounded-md`}
                   notification={notif}
                 />
               </div>

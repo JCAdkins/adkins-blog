@@ -1,4 +1,5 @@
 // utils/comments-utils.ts
+import type { CommentWithRelations } from "../types/types.ts";
 import { db } from "./prisma.ts";
 
 export async function getTopLevelComments(
@@ -71,4 +72,56 @@ export async function getTopLevelCount(postId: string) {
       parentId: null,
     },
   });
+}
+
+export type CommentNode = Omit<CommentWithRelations, "replies"> & {
+  replies: CommentNode[];
+};
+
+// export function buildThreadTree(
+//   flatComments: CommentWithRelations[]
+// ): CommentNode | null {
+//   if (flatComments.length === 0) return null;
+
+//   let root = { ...flatComments[0], replies: [] } as CommentNode;
+//   let current = root;
+
+//   for (let i = 1; i < flatComments.length; i++) {
+//     const next = { ...flatComments[i], replies: [] } as CommentNode;
+//     current.replies.push(next);
+//     current = next;
+//   }
+
+//   return root;
+// }
+
+export function buildThreadTree(
+  comments: CommentWithRelations[]
+): CommentNode[] {
+  const commentMap = new Map<string, CommentNode>();
+
+  // First pass: initialize map entries
+  for (const comment of comments) {
+    commentMap.set(comment.id, {
+      ...comment,
+      replies: [],
+    });
+  }
+
+  const roots: CommentNode[] = [];
+
+  // Second pass: link children to their parents
+  for (const comment of comments) {
+    const node = commentMap.get(comment.id)!;
+    if (comment.parentId) {
+      const parent = commentMap.get(comment.parentId);
+      if (parent) {
+        parent.replies.push(node);
+      }
+    } else {
+      roots.push(node); // top-level comment
+    }
+  }
+
+  return roots;
 }

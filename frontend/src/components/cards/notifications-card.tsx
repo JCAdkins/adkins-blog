@@ -1,3 +1,5 @@
+"use client";
+
 import { MoreHorizontal } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import {
@@ -7,6 +9,9 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { cn, formatDateToShortDateTime } from "@/lib/utils";
+import { BlogComment } from "next-auth";
+import { markNotificationAsRead } from "@/lib/db/queries";
+import { useRouter } from "next/navigation";
 
 type NotificationCardProps = {
   className?: string;
@@ -16,6 +21,9 @@ type NotificationCardProps = {
     read: boolean;
     createdAt: string;
     actorId?: string;
+    comment?: BlogComment;
+    type: "LIKE" | "REPLY";
+    reply?: BlogComment;
   };
 };
 
@@ -26,6 +34,7 @@ export default function NotificationCard({
   const handleHide = () => {
     console.log("Hide", notification.id);
   };
+  const router = useRouter();
 
   const handleDisable = () => {
     console.log("Disable notifications from", notification.actorId);
@@ -34,6 +43,26 @@ export default function NotificationCard({
   const handleAdvanced = () => {
     console.log("Advanced options for", notification.id);
   };
+
+  {
+    /* slice(0,30) ensures the entire comment will not be displayed, rather only the
+          first 30 characters. If the user wants to see full comment they can click on 
+          the notification 
+      */
+  }
+  let content;
+  if (notification.type === "LIKE")
+    content = notification.comment?.content
+      ? notification.comment.content.length > 30
+        ? `"${notification.comment.content.slice(0, 30)}..."`
+        : `"${notification.comment.content}"`
+      : null;
+  else
+    content = notification.reply?.content
+      ? notification.reply.content.length > 30
+        ? `"${notification.reply.content.slice(0, 30)}..."`
+        : `"${notification.reply.content}"`
+      : null;
 
   return (
     <Card
@@ -47,7 +76,7 @@ export default function NotificationCard({
           <span>{formatDateToShortDateTime(notification.createdAt)}</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-1 hover:text-foreground text-muted-foreground">
+              <button className="p-1 hover:text-foreground text-muted-foreground cursor-pointer">
                 <MoreHorizontal className="h-4 w-4" />
               </button>
             </DropdownMenuTrigger>
@@ -64,7 +93,24 @@ export default function NotificationCard({
         </div>
       }
     >
-      <p className="text-sm text-black">{notification.message}</p>
+      <div
+        className="text-sm text-black cursor-pointer"
+        onClick={() => {
+          if (!notification.read) markNotificationAsRead(notification.id);
+          const commentId = notification.comment?.id;
+          const replyId = notification.reply?.id;
+          const postId = notification.comment?.postId;
+
+          if (notification.type === "LIKE") {
+            // Redirect to post and scroll to comment anchor
+            router.push(`/blogs/${postId}?commentId=${commentId}`);
+          } else {
+            router.push(`blogs/${postId}?commentId=${replyId}`);
+          }
+        }}
+      >
+        <b>{notification.message}:</b> {content}
+      </div>
     </Card>
   );
 }

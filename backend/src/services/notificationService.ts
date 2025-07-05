@@ -6,7 +6,6 @@ export async function createLikeNotificationServ(
   userId: string,
   actorId: string
 ) {
-  console.log("userId: ", userId);
   try {
     const exists = await db.notification.findFirst({
       where: {
@@ -30,8 +29,9 @@ export async function createLikeNotificationServ(
         userId: userId,
         actorId: actorId,
         type: "LIKE",
-        message: `${authorName} liked your comment.`,
+        message: `${authorName} liked your comment`,
         commentId: commentId,
+        replyId: null,
       },
     });
     return { ...response, operation: "CREATE" };
@@ -43,6 +43,7 @@ export async function createLikeNotificationServ(
 
 export async function createReplyNotificationServ(
   commentId: string,
+  replyId: string,
   authorName: string,
   userId: string,
   actorId: string
@@ -53,8 +54,9 @@ export async function createReplyNotificationServ(
         userId: userId,
         actorId: actorId,
         type: "REPLY",
-        message: `${authorName} replied to your comment.`,
+        message: `${authorName} replied to your comment`,
         commentId: commentId,
+        replyId: replyId,
       },
     });
   } catch (error) {
@@ -78,6 +80,7 @@ export async function fetchUnreadUserNotifications(userId: string) {
           },
         },
         comment: true,
+        reply: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -112,6 +115,7 @@ export async function fetchAllUserNotifications({
             },
           },
           comment: true,
+          reply: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -130,5 +134,23 @@ export async function fetchAllUserNotifications({
   } catch (error) {
     console.error("Error fetching notifications:", error);
     return [];
+  }
+}
+
+export async function markNotificationReadServ(id: string) {
+  try {
+    const result = await db.notification.update({
+      where: { id },
+      data: {
+        read: true,
+      },
+    });
+    return Response.json(result);
+  } catch (error) {
+    console.error("Failed to mark notification as read in db: ", error);
+    return Response.json(
+      { error: "Failed to mark notification as read" },
+      { status: 500 }
+    );
   }
 }
