@@ -12,6 +12,7 @@ import { cn, formatDateToShortDateTime } from "@/lib/utils";
 import { BlogComment } from "next-auth";
 import { markNotificationAsRead } from "@/lib/db/queries";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type NotificationCardProps = {
   className?: string;
@@ -95,8 +96,14 @@ export default function NotificationCard({
     >
       <div
         className="text-sm text-black cursor-pointer"
-        onClick={() => {
-          if (!notification.read) markNotificationAsRead(notification.id);
+        onClick={async () => {
+          if (!notification.read) {
+            const { error } = await markNotificationAsRead(notification.id);
+            if (error) {
+              toast.error(error);
+              return;
+            }
+          }
           const commentId = notification.comment?.id;
           const replyId = notification.reply?.id;
           const postId = notification.comment?.postId;

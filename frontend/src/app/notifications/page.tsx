@@ -4,10 +4,14 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import NotificationCard from "@/components/cards/notifications-card";
-import { getUserNotifications, markAllAsRead } from "@/lib/db/queries";
+import {
+  getUserNotifications,
+  markAllNotificationsAsRead,
+} from "@/lib/db/queries";
 import { isToday, isThisWeek, isThisYear } from "date-fns";
 import { SettingsIcon } from "lucide-react";
 import { Notification } from "../../../next-auth";
+import { toast } from "sonner";
 
 export default function NotificationsPage() {
   const { data: session } = useSession();
@@ -79,7 +83,13 @@ export default function NotificationsPage() {
 
   const handleMarkAllAsRead = async () => {
     if (!session?.user?.id) return;
-    await markAllAsRead(session.user.id);
+    const { error } = await markAllNotificationsAsRead(session.user.id);
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    toast.success("All notifications marked as read!");
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 

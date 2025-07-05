@@ -364,6 +364,19 @@ export async function markNotificationAsRead(notifId: string) {
   }
 }
 
+export async function markAllNotificationsAsRead(userId: string) {
+  try {
+    const res = await fetch("/api/notifications/mark-all-read", {
+      method: "POST",
+      body: JSON.stringify(userId),
+    });
+    return await res.json();
+  } catch (error) {
+    console.error("Error: ", error);
+    return { error: "There was an issue marking all notifications as read" };
+  }
+}
+
 export async function getUserNotifications(userId: string, page: number = 1) {
   try {
     const limit = 10;
@@ -392,7 +405,6 @@ export async function getUserNotifications(userId: string, page: number = 1) {
   }
 }
 
-export async function markAllAsRead(id: string) {}
 /**
  * Creates a like notification for a user's comment.
  *
