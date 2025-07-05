@@ -14,12 +14,18 @@ import {
 } from "@/lib/db/queries";
 import { ConfirmDeleteModal } from "../modals/confirm-delete-modal";
 import { ThumbUpIcon, TrashIcon } from "../ui/icons";
-import { Comment } from "next-auth";
+import { BlogComment } from "next-auth";
 import { Like } from "next-auth";
 import { PlusCircleIcon } from "lucide-react";
-import { formatDateToShortDateTime } from "@/lib/utils";
+import { cn, formatDateToShortDateTime } from "@/lib/utils";
 
-export const CommentCard = ({ comment }: { comment: Comment }) => {
+export const CommentCard = ({
+  comment,
+  highlightedCommentId,
+}: {
+  comment: BlogComment;
+  highlightedCommentId?: string;
+}) => {
   const { data: session } = useSession();
   const [likes, setLikes] = useState(comment.likes?.length || 0);
   const [reply, setReply] = useState(false);
@@ -30,6 +36,7 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
     (comment.repliesCount || 0) > (comment.replies?.length || 0)
   );
   const [replyPage, setReplyPage] = useState(0);
+  const isHighlighted = comment.id === highlightedCommentId;
 
   const { refreshComments } = useComments();
 
@@ -84,7 +91,7 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
       setVisibleReplies((prev) => {
         const existingIds = new Set(prev.map((r) => r.id));
         const filteredNew = data.repliesWithCounts.filter(
-          (r: Comment) => !existingIds.has(r.id)
+          (r: BlogComment) => !existingIds.has(r.id)
         );
         return [...prev, ...filteredNew];
       });
@@ -97,7 +104,13 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
   };
 
   return (
-    <Card className="py-2 px-4 bg-header text-foreground rounded-md">
+    <Card
+      id={`comment-${comment.id}`}
+      className={cn(
+        "py-2 px-4 bg-header text-foreground rounded-md",
+        isHighlighted && "bg-yellow-100 ring-2 ring-header"
+      )}
+    >
       <div className="flex justify-between">
         <p className="text-sm font-xs">
           {comment.isDeleted ? "[deleted]" : comment.author?.username}
@@ -109,9 +122,7 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
         </p>
       </div>
 
-      <p className="bg-header">
-        {comment.isDeleted ? "[DELETED]" : comment.content}
-      </p>
+      <p className="">{comment.isDeleted ? "[DELETED]" : comment.content}</p>
 
       <div className="flex gap-2">
         <Button
@@ -164,7 +175,11 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
       {visibleReplies.length > 0 && (
         <div className="flex flex-col gap-4 border-l pl-4">
           {visibleReplies.map((reply) => (
-            <CommentCard key={reply.id} comment={reply} />
+            <CommentCard
+              key={reply.id}
+              comment={reply}
+              highlightedCommentId={highlightedCommentId}
+            />
           ))}
         </div>
       )}

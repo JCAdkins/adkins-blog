@@ -3,6 +3,7 @@ import {
   createReplyNotificationServ,
   fetchUnreadUserNotifications,
   fetchAllUserNotifications,
+  markNotificationReadServ,
 } from "../services/notificationService.ts";
 
 import express from "express";
@@ -37,17 +38,18 @@ export async function createReplyNotification(
   req: express.Request,
   res: express.Response
 ) {
-  const { commentId, authorName, userId, actorId } = req.body;
-  if (!commentId || !authorName || !userId || !actorId) {
+  const { commentId, replyId, authorName, userId, actorId } = req.body;
+  if (!commentId || !replyId || !authorName || !userId || !actorId) {
     res.status(400).json({
       error:
-        "Comment ID, Author Name, UserId, and ActorId are required. One or more were missing.",
+        "Comment ID, Reply ID, Author Name, UserId, and ActorId are required. One or more were missing.",
     });
     return;
   }
   try {
     const data = await createReplyNotificationServ(
       commentId as string,
+      replyId as string,
       authorName as string,
       userId as string,
       actorId as string
@@ -95,7 +97,25 @@ export async function getAllUserNotifications(
     const result = await fetchAllUserNotifications({ userId, offset, limit });
     res.status(200).json(result);
   } catch (error) {
-    console.error("Failed to fetch replies", error);
+    console.error("Failed to fetch replies:", error);
     res.status(500).json({ error: "Failed to fetch replies" });
+  }
+}
+
+export async function markNotificationAsRead(
+  req: express.Request,
+  res: express.Response
+) {
+  const { id } = req.body;
+  if (!id) {
+    res.status(400).json({ error: "Notification ID was not included." });
+    return;
+  }
+  try {
+    const result = await markNotificationReadServ(id);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Failed to mark notification as read: ", error);
+    res.status(500).json({ error: "Failed to mark notification as read." });
   }
 }

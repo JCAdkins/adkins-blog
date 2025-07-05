@@ -2,10 +2,14 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { fetchBlogCommentsPaginated } from "@/lib/db/queries";
+import {
+  fetchBlogCommentsPaginated,
+  fetchCommentByIdWithAncestors,
+} from "@/lib/db/queries";
+import { BlogComment } from "next-auth";
 
 interface CommentsContextType {
-  comments: globalThis.Comment[];
+  comments: BlogComment[];
   allCommentCount: number;
   topLevelCount: number;
   isLoading: boolean;
@@ -19,13 +23,15 @@ const CommentsContext = createContext<CommentsContextType | undefined>(
 
 export const CommentsProvider = ({
   blogId,
+  highlightedCommentId,
   children,
 }: {
   blogId: string;
+  highlightedCommentId?: string;
   children: React.ReactNode;
 }) => {
   const PAGE_SIZE = 5;
-  const [comments, setComments] = useState<globalThis.Comment[]>([]);
+  const [comments, setComments] = useState<BlogComment[]>([]);
   const [page, setPage] = useState(1);
   const [allCommentCount, setAllCommentCount] = useState(0);
   const [topLevelCount, setTopLevelCount] = useState(0);
@@ -39,11 +45,31 @@ export const CommentsProvider = ({
         page: reset ? 1 : page,
         pageSize: PAGE_SIZE,
       });
-      if (reset) {
-        setComments(response.comments);
+
+      let baseComments = reset
+        ? response.comments
+        : [...comments, ...response.comments];
+
+      // Inject highlighted comment chain if needed
+      if (highlightedCommentId && reset) {
+        const highlightedChain = await fetchCommentByIdWithAncestors({
+          id: highlightedCommentId,
+        });
+
+        // Filter out duplicates if any already in baseComments
+        const existingIds = new Set(baseComments.map((c) => c.id));
+        const merged = [
+          ...highlightedChain,
+          ...baseComments.filter(
+            (c) => !highlightedChain.some((h: BlogComment) => h.id === c.id)
+          ),
+        ];
+
+        setComments(merged);
       } else {
-        setComments((prev) => [...prev, ...response.comments]);
+        setComments(baseComments);
       }
+
       setAllCommentCount(response.allCommentCount);
       setTopLevelCount(response.topLevelCount);
     } catch (error) {

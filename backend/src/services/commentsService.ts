@@ -1,10 +1,12 @@
 import {
   attachRepliesCountToComments,
+  buildThreadTree,
   getTopLevelComments,
   getTopLevelCount,
   getTotalCommentCountForPost,
 } from "../lib/utils.ts";
 import { db } from "../lib/prisma.ts";
+import type { CommentWithRelations } from "../types/types.ts";
 
 export async function getBlogMessagesPaginated(
   postId: string,
@@ -37,6 +39,58 @@ export async function getBlogMessagesPaginated(
     console.error("Error in getBlogMessagesPaginated:", error);
     throw error;
   }
+}
+
+export async function fetchCommentById(id: string) {
+  const comment = await db.comment.findUnique({
+    where: { id },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+        },
+      },
+      post: true,
+      replies: true,
+    },
+  });
+  return comment;
+}
+
+// Fetch a comment and all its parent comments, ordered from root → leaf
+export async function fetchCommentByIdWithAncestors(
+  id: string
+): Promise<CommentWithRelations[]> {
+  const thread: CommentWithRelations[] = [];
+  let currentId: string | null = id;
+
+  while (currentId) {
+    const comment: CommentWithRelations | null = await db.comment.findUnique({
+      where: { id: currentId },
+      include: {
+        author: {
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            role: true,
+          },
+        },
+        post: true,
+        replies: true,
+      },
+    });
+
+    if (!comment) break;
+
+    thread.unshift(comment); // insert at the beginning
+    currentId = comment.parentId;
+  }
+
+  return buildThreadTree(thread);
 }
 
 export async function fetchCommentRepliesService(

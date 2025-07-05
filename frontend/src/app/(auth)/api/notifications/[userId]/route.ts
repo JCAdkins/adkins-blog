@@ -16,7 +16,9 @@ export async function GET(
     );
   }
 
-  const userId = await params.userId;
+  // Await added to remove pesky params must be awaited warning.
+  const data = await params;
+  const userId = data.userId;
   const token = await getToken({ req, secret });
   if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

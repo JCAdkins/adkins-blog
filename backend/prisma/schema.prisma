@@ -51,7 +51,7 @@ model User {
   last_name             String
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
-  role                  String             @default("user")
+  role                  String           @default("user")
   contactMessages       ContactMessage[]
   Comment               Comment[]
   Like                  Like[]
@@ -89,8 +89,11 @@ model Comment {
   parentId String?
   replies  Comment[] @relation("CommentReplies")
 
-  likes        Like[]         @relation("CommentLikes")
-  Notification Notification[]
+  likes Like[] @relation("CommentLikes")
+
+  // Reverse relations
+  targetedByNotifications Notification[] @relation("CommentTarget")
+  repliedInNotifications  Notification[] @relation("ReplyTarget")
 }
 
 model Like {
@@ -112,16 +115,19 @@ model Notification {
   message String
   read    Boolean          @default(false)
 
-  /// This is the recipient of the notification
   user   User   @relation("NotificationRecipient", fields: [userId], references: [id])
   userId String
 
-  /// This is the actor who triggered the notification (e.g., someone who liked or replied)
   actor   User   @relation("NotificationActor", fields: [actorId], references: [id])
   actorId String
 
-  comment   Comment? @relation(fields: [commentId], references: [id])
+  // The main comment that the notification is about (liked or replied-to)
+  comment   Comment? @relation("CommentTarget", fields: [commentId], references: [id])
   commentId String?
+
+  // If this is a reply notification, store the reply comment separately
+  reply   Comment? @relation("ReplyTarget", fields: [replyId], references: [id])
+  replyId String?
 
   createdAt DateTime @default(now())
 }

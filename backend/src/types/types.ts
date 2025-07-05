@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export interface ImmichImage {
   id: string; // e.g. '04f57ec0-da1d-4ade-b82c-00b040680f87'
   status: string; // e.g. 'created'
@@ -20,6 +22,22 @@ export interface NewUserInput {
   last_name?: string;
   role: "user" | "admin"; // optional if you default to "user"
 }
+
+// Define the shape of a comment with author, post, replies, and parentId
+export type CommentWithRelations = Prisma.CommentGetPayload<{
+  include: {
+    author: {
+      select: {
+        id: true;
+        email: true;
+        username: true;
+        role: true;
+      };
+    };
+    post: true;
+    replies: true;
+  };
+}>;
 
 export const genreOptions = [
   "educational",

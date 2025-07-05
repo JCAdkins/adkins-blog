@@ -20,11 +20,11 @@ export async function POST(req: Request) {
     // Sign the decoded token to create a raw JWT string
     const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
 
-    const formData = await req.json();
+    const data = await req.json();
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/reply`,
-      formData,
+      data,
       { headers: { Authorization: `Bearer ${signedToken}` } }
     );
 

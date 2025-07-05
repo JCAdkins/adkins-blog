@@ -4,15 +4,17 @@ import { CommentsProvider } from "@/contexts/comments-context";
 
 type Props = {
   params: { id: string };
+  searchParams: { [key: string]: string | undefined };
 };
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params, searchParams }: Props) {
+  const { commentId } = await searchParams;
   const { id } = await params;
   return (
-    <CommentsProvider blogId={id}>
+    <CommentsProvider blogId={id} highlightedCommentId={commentId}>
       <div className="mx-auto max-w-3xl px-4 py-12">
         <BlogPostContent id={id} />
-        <CommentsSection blogId={id} />
+        <CommentsSection blogId={id} highlightedCommentId={commentId} />
       </div>
     </CommentsProvider>
   );

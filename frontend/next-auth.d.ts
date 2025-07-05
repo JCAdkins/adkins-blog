@@ -69,7 +69,7 @@ declare module "next-auth" {
     imageId: string;
   }
 
-  interface Comment {
+  interface BlogComment {
     id: string;
     content: string;
     author: User;
@@ -78,7 +78,7 @@ declare module "next-auth" {
     createdAt: string;
     updatedAt: string;
     parentId?: number;
-    replies?: Comment[];
+    replies?: BlogComment[];
     repliesCount: number;
     likes: Like[];
     isDeleted: boolean;
@@ -103,8 +103,6 @@ type Notification = {
     username: string;
     image?: string;
   };
-  comment?: {
-    id: string;
-    content: string;
-  };
+  comment?: BlogComment;
+  type: "LIKE" | "REPLY";
 };

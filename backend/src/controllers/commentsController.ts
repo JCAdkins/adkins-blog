@@ -5,6 +5,8 @@ import {
   softDeleteComment,
   hardDeleteComment,
   fetchCommentRepliesService,
+  fetchCommentById,
+  fetchCommentByIdWithAncestors,
 } from "../services/commentsService.ts";
 import express from "express";
 
@@ -85,6 +87,31 @@ export async function likeComment(req: express.Request, res: express.Response) {
     res.status(200).json(result);
   } catch (error) {
     console.error("Error creating new comment: ", error);
-    res.status(500).json(error);
+    res.status(500).json({ error: "Error creating new comment." });
+  }
+}
+
+export async function getCommentById(
+  req: express.Request,
+  res: express.Response
+) {
+  // Recurse is whether we want to fetch all parent replies/comments
+  const { commentId } = req.params;
+  console.log("commentId: ", commentId);
+  const recurse = req.query.recurse === "true";
+  if (!commentId) {
+    res.status(400).json({ error: "Comment Id was not supplied" });
+    return;
+  }
+
+  console.log("recurse: ", recurse);
+  try {
+    const result = recurse
+      ? await fetchCommentByIdWithAncestors(commentId)
+      : fetchCommentById(commentId);
+    res.status(200).json(result); // or include hasMore etc if needed
+  } catch (error) {
+    console.error("Error fetching comment: ", error);
+    res.status(500).json({ error: "Error fetching comment." });
   }
 }
