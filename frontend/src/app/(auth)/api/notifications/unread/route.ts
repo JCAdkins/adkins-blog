@@ -13,6 +13,8 @@ export async function GET(req: NextRequest) {
   const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
   const id = req.nextUrl.searchParams.get("id");
 
+  if (!id) return NextResponse.json({ error: "No user ID was provided." });
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/unread/${id}`,
     {
