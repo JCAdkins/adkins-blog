@@ -241,11 +241,18 @@ export async function fetchBlogCommentsPaginated({
   }
 }
 
-export async function fetchCommentByIdWithAncestors({ id }: { id: string }) {
+export async function fetchCommentByIdWithAncestors({
+  commentId,
+  postId,
+}: {
+  commentId: string;
+  postId?: string;
+}) {
+  const url = postId
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}?postId=${postId}`
+    : `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}`;
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${id}?recurse=true`
-    );
+    const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch replies");
 
     const data = await res.json();

@@ -45,6 +45,7 @@ export const CommentsSection = ({
 
         setTimeout(() => {
           el.classList.remove("ring-2", "ring-header", "bg-yellow-100");
+          el.classList.add("bg-header");
         }, 4000);
       }
     }, 1000); // 100–300ms usually works

@@ -97,17 +97,15 @@ export async function getCommentById(
 ) {
   // Recurse is whether we want to fetch all parent replies/comments
   const { commentId } = req.params;
-  console.log("commentId: ", commentId);
-  const recurse = req.query.recurse === "true";
+  const postId = req.query.postId;
   if (!commentId) {
     res.status(400).json({ error: "Comment Id was not supplied" });
     return;
   }
 
-  console.log("recurse: ", recurse);
   try {
-    const result = recurse
-      ? await fetchCommentByIdWithAncestors(commentId)
+    const result = postId
+      ? await fetchCommentByIdWithAncestors(postId as string, commentId)
       : fetchCommentById(commentId);
     res.status(200).json(result); // or include hasMore etc if needed
   } catch (error) {

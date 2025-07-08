@@ -53,11 +53,11 @@ export const CommentsProvider = ({
       // Inject highlighted comment chain if needed
       if (highlightedCommentId && reset) {
         const highlightedChain = await fetchCommentByIdWithAncestors({
-          id: highlightedCommentId,
+          commentId: highlightedCommentId,
+          postId: blogId,
         });
 
         // Filter out duplicates if any already in baseComments
-        const existingIds = new Set(baseComments.map((c) => c.id));
         const merged = [
           ...highlightedChain,
           ...baseComments.filter(
