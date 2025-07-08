@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
 import { Pacifico, Caveat } from "next/font/google";
+import { NotificationsProvider } from "@/contexts/notifications-context";
 
 const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
@@ -80,9 +81,11 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            <MainHeader />
-            <Toaster richColors position="top-center" />
-            {children}
+            <NotificationsProvider>
+              <MainHeader />
+              <Toaster richColors position="top-center" />
+              {children}
+            </NotificationsProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>

@@ -189,7 +189,7 @@ export const CommentCard = ({
             className="text-sm cursor-pointer"
           >
             <PlusCircleIcon />
-            replies
+            {comment.repliesCount - (visibleReplies.length ?? 0)} replies
           </Button>
         </div>
       )}

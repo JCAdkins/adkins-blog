@@ -1,33 +1,10 @@
-// src/components/notifications/notification-badge.tsx
-"use client";
-
 import { BellIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useNotifications } from "@/contexts/notifications-context";
 
 export function NotificationBadge() {
-  const [unreadCount, setUnreadCount] = useState<number>(0);
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    const fetchUnread = async () => {
-      try {
-        const res = await fetch(
-          `/api/notifications/unread?id=${session?.user.id}`
-        );
-        const data = await res.json();
-        setUnreadCount(data.length);
-      } catch (err) {
-        console.error("Failed to fetch unread notifications", err);
-      }
-    };
-
-    fetchUnread();
-    const interval = setInterval(fetchUnread, 30000); // Poll every 30s
-    return () => clearInterval(interval);
-  }, []);
+  const { unreadCount } = useNotifications();
 
   return (
     <Link href="/notifications" className="relative">

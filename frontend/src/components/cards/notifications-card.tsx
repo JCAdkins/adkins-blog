@@ -13,6 +13,7 @@ import { BlogComment } from "next-auth";
 import { markNotificationAsRead } from "@/lib/db/queries";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useNotifications } from "@/contexts/notifications-context";
 
 type NotificationCardProps = {
   className?: string;
@@ -65,6 +66,8 @@ export default function NotificationCard({
         : `"${notification.reply.content}"`
       : null;
 
+  const { setUnreadCount } = useNotifications();
+
   return (
     <Card
       className={cn(
@@ -99,6 +102,7 @@ export default function NotificationCard({
         onClick={async () => {
           if (!notification.read) {
             const { error } = await markNotificationAsRead(notification.id);
+            setUnreadCount((prev) => prev - 1);
             if (error) {
               toast.error(error);
               return;

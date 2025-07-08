@@ -12,9 +12,11 @@ import { isToday, isThisWeek, isThisYear } from "date-fns";
 import { SettingsIcon } from "lucide-react";
 import { Notification } from "../../../next-auth";
 import { toast } from "sonner";
+import { useNotifications } from "@/contexts/notifications-context";
 
 export default function NotificationsPage() {
   const { data: session } = useSession();
+  const { setUnreadCount } = useNotifications();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -91,6 +93,7 @@ export default function NotificationsPage() {
 
     toast.success("All notifications marked as read!");
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setUnreadCount(0);
   };
 
   const allNotificationsFlat = notifications;
