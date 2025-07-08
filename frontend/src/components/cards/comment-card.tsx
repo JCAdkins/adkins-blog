@@ -32,9 +32,7 @@ export const CommentCard = ({
   const [showConfirm, setShowConfirm] = useState(false);
   const [userLiked, setUserLiked] = useState(false);
   const [visibleReplies, setVisibleReplies] = useState(comment.replies || []);
-  const [hasMoreReplies, setHasMoreReplies] = useState(
-    (comment.repliesCount || 0) > (comment.replies?.length || 0)
-  );
+  const [hasMoreReplies, setHasMoreReplies] = useState(comment.hasMore);
   const [replyPage, setReplyPage] = useState(0);
   const isHighlighted = comment.id === highlightedCommentId;
 

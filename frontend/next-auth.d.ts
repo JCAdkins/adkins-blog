@@ -82,6 +82,7 @@ declare module "next-auth" {
     repliesCount: number;
     likes: Like[];
     isDeleted: boolean;
+    hasMore?: boolean;
   }
 
   type Like = {

@@ -1,6 +1,8 @@
 import {
   attachRepliesCountToComments,
-  buildThreadTree,
+  buildCommentMap,
+  buildThreadSubtree,
+  findThreadPath,
   getTopLevelComments,
   getTopLevelCount,
   getTotalCommentCountForPost,
@@ -60,37 +62,32 @@ export async function fetchCommentById(id: string) {
   return comment;
 }
 
-// Fetch a comment and all its parent comments, ordered from root → leaf
 export async function fetchCommentByIdWithAncestors(
-  id: string
+  postId: string,
+  targetCommentId: string
 ): Promise<CommentWithRelations[]> {
-  const thread: CommentWithRelations[] = [];
-  let currentId: string | null = id;
-
-  while (currentId) {
-    const comment: CommentWithRelations | null = await db.comment.findUnique({
-      where: { id: currentId },
-      include: {
-        author: {
-          select: {
-            id: true,
-            email: true,
-            username: true,
-            role: true,
-          },
+  // 1. Fetch all comments from DB
+  const comments = await db.comment.findMany({
+    where: { postId },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
         },
-        post: true,
-        replies: true,
       },
-    });
+      post: true,
+      replies: true,
+      likes: true,
+    },
+  });
 
-    if (!comment) break;
-
-    thread.unshift(comment); // insert at the beginning
-    currentId = comment.parentId;
-  }
-
-  return buildThreadTree(thread);
+  const map = buildCommentMap(comments);
+  const path = findThreadPath(map, targetCommentId);
+  const threadSubtree = buildThreadSubtree(map, path);
+  return threadSubtree;
 }
 
 export async function fetchCommentRepliesService(
