@@ -8,7 +8,7 @@ import {
   getUserNotifications,
   markAllNotificationsAsRead,
 } from "@/lib/db/queries";
-import { isToday, isThisWeek, isThisYear } from "date-fns";
+import { isToday, isThisWeek, isThisYear, isThisMonth } from "date-fns";
 import { SettingsIcon } from "lucide-react";
 import { Notification } from "../../../next-auth";
 import { toast } from "sonner";
@@ -69,6 +69,7 @@ export default function NotificationsPage() {
     const createdAt = new Date(notification.createdAt);
     if (isToday(createdAt)) return "Today";
     if (isThisWeek(createdAt)) return "This Week";
+    if (isThisMonth(createdAt)) return "This Month";
     if (isThisYear(createdAt)) return "This Year";
     return "Earlier";
   };

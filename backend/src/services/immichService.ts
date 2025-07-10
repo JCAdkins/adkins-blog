@@ -2,7 +2,7 @@ import {
   uploadAsset,
   downloadAsset,
   downloadThumbnail,
-} from "../models/immichModel.ts";
+} from "../models/immichModel.js";
 
 export async function postNewImageService(bFile: any, file: any) {
   return await uploadAsset(bFile, file);

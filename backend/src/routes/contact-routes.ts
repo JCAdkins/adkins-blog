@@ -1,8 +1,8 @@
-import { verifyToken } from "../middleware.ts";
+import { verifyToken } from "../middleware.js";
 import {
   contactAdmin,
   welcomeNewUser,
-} from "../controllers/contactController.ts";
+} from "../controllers/contactController.js";
 import express from "express";
 
 const router = express.Router();

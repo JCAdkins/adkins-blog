@@ -6,7 +6,7 @@ import {
   getAllUsersController,
   loginUserController,
   createNewUserController,
-} from "../controllers/usersController.ts";
+} from "../controllers/usersController.js";
 
 const router = express.Router();
 

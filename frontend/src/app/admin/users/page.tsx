@@ -1,12 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import { promoteUser, deleteUser, banUser, getUsers } from "@/lib/actions";
+// import { promoteUser, deleteUser, banUser, getUsers } from "@/lib/actions";
+
+const promoteUser = (id: string) => console.log("Promoiting user: ", id);
+const deleteUser = (id: string) => console.log("Deleting user: ", id);
+const banUser = (id: string) => console.log("Banning user: ", id);
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    getUsers().then(setUsers);
+    // getUsers().then(setUsers);
   }, []);
 
   return (

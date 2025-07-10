@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node dist/server.js",
-    "dev": "ts-node src/server.ts",
+    "start": "node dist/src/server.js",
+    "dev": "node --loader ts-node/esm src/server.ts",
+    "postinstall": "prisma generate",
     "db:generate": "pnpm prisma migrate dev --name",
     "db:deploy": "pnpm prisma migrate deploy",
     "clear-images": "ts-node prisma/scripts/clearImage.ts",

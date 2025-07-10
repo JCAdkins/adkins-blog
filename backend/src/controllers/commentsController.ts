@@ -7,7 +7,7 @@ import {
   fetchCommentRepliesService,
   fetchCommentById,
   fetchCommentByIdWithAncestors,
-} from "../services/commentsService.ts";
+} from "../services/commentsService.js";
 import express from "express";
 
 export async function fetchBlogCommentsPaginated(

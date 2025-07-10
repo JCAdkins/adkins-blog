@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { db } from "../lib/prisma.ts"; // adjust based on your DB client
+import { db } from "../lib/prisma.js"; // adjust based on your DB client
 // import { Prisma, User } from "@prisma/client"; // or your custom type
 import { Prisma } from "@prisma/client";
 

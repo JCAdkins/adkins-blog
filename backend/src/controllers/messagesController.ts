@@ -2,7 +2,7 @@ import {
   getAllMessages,
   getUnreadMessageCount,
   markMsgAsRead,
-} from "../services/messagesService.ts";
+} from "../services/messagesService.js";
 import express from "express";
 
 export async function unreadMessageCount(

@@ -1,4 +1,4 @@
-import { db } from "../lib/prisma.ts"; // adjust based on your DB client
+import { db } from "../lib/prisma.js"; // adjust based on your DB client
 
 export const getAdminListFromDb = async (): Promise<string[]> => {
   try {

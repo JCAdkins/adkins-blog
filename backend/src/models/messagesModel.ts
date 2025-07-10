@@ -1,4 +1,4 @@
-import { db } from "../lib/prisma.ts";
+import { db } from "../lib/prisma.js";
 
 export const fetchUnreadMessageCount = async () => {
   try {

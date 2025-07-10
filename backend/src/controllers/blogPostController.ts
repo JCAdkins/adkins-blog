@@ -4,10 +4,9 @@ import {
   getFeaturedBlogs,
   getBlogPostById,
   getAllBlogPosts,
-  updateBlogPost,
   deleteBlogPost,
-} from "../services/blogPostService.ts";
-import { BlogPostInputSchema } from "../schemas/validation.ts";
+} from "../services/blogPostService.js";
+import { BlogPostInputSchema } from "../schemas/validation.js";
 import z, { ZodError } from "zod";
 
 // Get all featured blog posts
@@ -87,35 +86,6 @@ export async function createNewBlogPost(
     }
     console.error("Error creating blog post:", error);
     res.status(500).json({ message: "Internal server error" });
-  }
-}
-
-// Update a blog post
-export async function updateBlogPostController(
-  req: express.Request,
-  res: express.Response
-) {
-  const { id } = req.params;
-  const data = req.body;
-
-  // Validate the incoming data using Zod
-  const validation = BlogPostInputSchema.safeParse(data);
-
-  if (!validation.success) {
-    // If validation fails, send an error response
-    res.status(400).json({
-      message: "Invalid data",
-      errors: validation.error.errors,
-    });
-    return;
-  }
-
-  try {
-    const updatedPost = await updateBlogPost(id, validation.data);
-    res.json(updatedPost);
-  } catch (error) {
-    console.error("Error updating blog post:", error);
-    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 

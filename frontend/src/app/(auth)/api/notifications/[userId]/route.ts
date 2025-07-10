@@ -6,7 +6,7 @@ import axios from "axios";
 // Fetch all user notifications from db
 export async function GET(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   const secret = process.env.NEXTAUTH_SECRET;
   if (!secret) {

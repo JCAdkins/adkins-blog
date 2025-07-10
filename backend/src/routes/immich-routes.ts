@@ -3,9 +3,9 @@ import {
   getImmichImage,
   getImmichThumbnail,
   postNewImage,
-} from "../controllers/immichController.ts";
+} from "../controllers/immichController.js";
 import multer from "multer";
-import { verifyToken } from "../middleware.ts";
+import { verifyToken } from "../middleware.js";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });

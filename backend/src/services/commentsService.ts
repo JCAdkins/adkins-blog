@@ -6,9 +6,9 @@ import {
   getTopLevelComments,
   getTopLevelCount,
   getTotalCommentCountForPost,
-} from "../lib/utils.ts";
-import { db } from "../lib/prisma.ts";
-import type { CommentWithRelations } from "../types/types.ts";
+} from "../lib/utils.js";
+import { db } from "../lib/prisma.js";
+import type { CommentWithRelations } from "../types/types.js";
 
 export async function getBlogMessagesPaginated(
   postId: string,

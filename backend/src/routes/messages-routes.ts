@@ -1,9 +1,9 @@
-import { verifyToken } from "../middleware.ts";
+import { verifyToken } from "../middleware.js";
 import {
   fetchAllMessages,
   unreadMessageCount,
   markMessageAsRead,
-} from "../controllers/messagesController.ts";
+} from "../controllers/messagesController.js";
 import express from "express";
 
 const router = express.Router();

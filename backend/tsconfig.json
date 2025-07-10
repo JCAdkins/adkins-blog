@@ -6,8 +6,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
     "sourceMap": true,
     "strict": true,
     "outDir": "./dist",
@@ -15,6 +13,9 @@
     "paths": {
       "@/*": ["src/*"]
     }
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": [
     "next-env.d.ts",

@@ -1,21 +1,21 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import userRoutes from "./routes/user-routes.ts";
-import immichRoutes from "./routes/immich-routes.ts";
-import commentsRoutes from "./routes/comment-routes.ts";
-import blogRoutes from "./routes/blog-routes.ts";
-import contactRoutes from "./routes/contact-routes.ts";
-import messagesRoutes from "./routes/messages-routes.ts";
-import notificationRoutes from "./routes/notification-routes.ts";
+import userRoutes from "./routes/user-routes.js";
+import immichRoutes from "./routes/immich-routes.js";
+import commentsRoutes from "./routes/comment-routes.js";
+import blogRoutes from "./routes/blog-routes.js";
+import contactRoutes from "./routes/contact-routes.js";
+import messagesRoutes from "./routes/messages-routes.js";
+import notificationRoutes from "./routes/notification-routes.js";
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(
   cors({
-    origin: "http://localhost:3001", // your Next.js frontend
+    origin: "http://localhost:3000", // your Next.js frontend
     credentials: true,
   })
 );
