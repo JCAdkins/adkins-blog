@@ -1,9 +1,9 @@
-import { saveContactMessageToDb } from "../models/contactModel.ts";
+import { saveContactMessageToDb } from "../models/contactModel.js";
 import {
   contactAdminEmail,
   getAdminsList,
   welcomeNewUserEmail,
-} from "../services/contactService.ts";
+} from "../services/contactService.js";
 import express from "express";
 
 // Get all featured blog posts

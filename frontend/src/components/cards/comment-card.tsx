@@ -101,6 +101,10 @@ export const CommentCard = ({
     }
   };
 
+  console.log("comment: ", comment.content);
+  console.log("coment replies: ", comment.repliesCount);
+  console.log("visible replies: ", visibleReplies.length);
+
   return (
     <Card
       id={`comment-${comment.id}`}

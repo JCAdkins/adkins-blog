@@ -5,7 +5,7 @@ import {
   postNewImageService,
   getImmichImageService,
   getImmichThumbnailService,
-} from "../services/immichService.ts";
+} from "../services/immichService.js";
 // You might need to declare the Multer types globally or import them if not already done
 // For simplicity, let's redefine CustomRequest or ensure it's imported from a shared type file
 interface CustomRequest extends express.Request {

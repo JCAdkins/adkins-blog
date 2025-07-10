@@ -5,8 +5,8 @@ import {
   getAllUserNotifications,
   markNotificationAsRead,
   markAllNotificationsAsRead,
-} from "../controllers/notificationController.ts";
-import { verifyToken } from "../middleware.ts";
+} from "../controllers/notificationController.js";
+import { verifyToken } from "../middleware.js";
 import express from "express";
 
 const router = express.Router();

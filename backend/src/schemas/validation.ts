@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { genreOptions } from "../types/types.ts";
+import { genreOptions } from "../types/types.js";
 
 // Define the schema for a single Immich image
 const ImmichImageSchema = z.object({

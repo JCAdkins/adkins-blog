@@ -3,7 +3,7 @@ import {
   createUserInDb,
   findUserInDb,
   getAllUsersInDb,
-} from "../models/userModel.ts";
+} from "../models/userModel.js";
 
 interface UserInput {
   email: string;

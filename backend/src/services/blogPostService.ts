@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import type { BlogPostInput, ImmichImage } from "../types/types.ts";
+import type { BlogPostInput } from "../types/types.js";
 
 const prisma = new PrismaClient();
 
@@ -87,60 +87,6 @@ export async function createBlogPost(input: BlogPostInput) {
     images: blogPost.blogPostImages.map((bpImage) => bpImage.image),
   };
 }
-
-export const updateBlogPost = async (id: string, data: BlogPostInput) => {
-  const imageData = JSON.parse(data.images as unknown as string) as {
-    id: string;
-    status: string;
-  }[];
-  // Fetch the existing post with associated images
-  const existingPost = await prisma.blogPost.findUnique({
-    where: { id },
-    include: { images: true },
-  });
-
-  if (!existingPost) {
-    throw new Error("Blog post not found");
-  }
-
-  // Prepare new image URLs from the request body
-  const newImageUrls = data.images?.map((img) => img.id) || [];
-
-  // Step 1: Remove old images that are no longer in the request body
-  const imagesToDelete = existingPost.images.filter(
-    (img) => !newImageUrls.includes(img.id)
-  );
-
-  // Step 2: Delete the images that are no longer part of the post
-  if (imagesToDelete.length > 0) {
-    await prisma.image.deleteMany({
-      where: { id: { in: imagesToDelete.map((img) => img.id) } },
-    });
-  }
-
-  // Step 3: Add new images that are not already part of the post
-  const existingImageUrls = existingPost.images.map((img) => img.id);
-  const imagesToAdd = newImageUrls.filter(
-    (url) => !existingImageUrls.includes(url as string)
-  );
-
-  // Step 4: Add the new images (if any)
-  const updatedPost = await prisma.blogPost.update({
-    where: { id },
-    data: {
-      title: data.title,
-      description: data.description,
-      content: data.content,
-      featured: data.featured,
-      images: {
-        // Create new image records for the provided image URLs
-        create: imageData,
-      },
-    },
-  });
-
-  return updatedPost;
-};
 
 // Delete a blog post by ID
 export async function deleteBlogPost(id: string) {

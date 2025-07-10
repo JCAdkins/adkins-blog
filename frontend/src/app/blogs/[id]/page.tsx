@@ -3,8 +3,8 @@ import { CommentsSection } from "@/components/containers/comments-section";
 import { CommentsProvider } from "@/contexts/comments-context";
 
 type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
 export default async function BlogPostPage({ params, searchParams }: Props) {

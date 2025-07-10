@@ -6,7 +6,7 @@ import axios from "axios";
 // Fetch all messages from db
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const secret = process.env.NEXTAUTH_SECRET;
   if (!secret) {

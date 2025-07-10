@@ -5,7 +5,7 @@ import {
   fetchAllUserNotifications,
   markNotificationReadServ,
   markAllNotificationsAsReadServ,
-} from "../services/notificationService.ts";
+} from "../services/notificationService.js";
 
 import express from "express";
 

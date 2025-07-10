@@ -4,9 +4,9 @@ import {
   findUserByEmail,
   findUserByUsername,
   getAllUsers,
-} from "../services/usersService.ts";
-import { verifyPassword } from "../models/userModel.ts";
-import { userSchema } from "../schemas/validation.ts";
+} from "../services/usersService.js";
+import { verifyPassword } from "../models/userModel.js";
+import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
 
 export const createNewUserController = async (

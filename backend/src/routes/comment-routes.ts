@@ -1,4 +1,4 @@
-import { verifyToken } from "../middleware.ts";
+import { verifyToken } from "../middleware.js";
 import {
   fetchBlogCommentsPaginated,
   fetchCommentReplies,
@@ -6,7 +6,7 @@ import {
   likeComment,
   deleteComment,
   getCommentById,
-} from "../controllers/commentsController.ts";
+} from "../controllers/commentsController.js";
 import express from "express";
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 // utils/comments-utils.ts
-import type { CommentWithRelations } from "../types/types.ts";
-import { db } from "./prisma.ts";
+import type { CommentWithRelations } from "../types/types.js";
+import { db } from "./prisma.js";
 
 export async function getTopLevelComments(
   postId: string,

@@ -4,11 +4,10 @@ import {
   createNewBlogPost,
   getBlogById,
   getBlogPosts,
-  updateBlogPostController,
   deleteBlogPostController,
   getFeaturedBlogPosts,
-} from "../controllers/blogPostController.ts";
-import { verifyToken } from "../middleware.ts";
+} from "../controllers/blogPostController.js";
+import { verifyToken } from "../middleware.js";
 
 const router = express.Router();
 
@@ -23,9 +22,6 @@ router.get("/featured", getFeaturedBlogPosts);
 
 // Get a single blog post by ID
 router.get("/:id", getBlogById);
-
-// Update a blog post by ID
-router.put("/:id", updateBlogPostController);
 
 // Delete a blog post by ID
 router.delete("/:id", deleteBlogPostController);
