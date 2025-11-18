@@ -67,10 +67,7 @@ export default async function Home() {
               key={ind}
               blog={blog}
               CardComponent={BlogCard}
-              extraProps={{
-                className:
-                  "border-none shadow-none bg-transparent hover:backdrop-blur rounded-md",
-              }}
+              className="border-none shadow-none bg-transparent hover:backdrop-blur rounded-md"
             />
           ))}
         </div>

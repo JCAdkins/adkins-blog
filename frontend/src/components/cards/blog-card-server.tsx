@@ -12,12 +12,14 @@ type BlogCardPropsBase = {
 type BlogCardServerProps<T extends BlogCardPropsBase> = {
   blog: Blog;
   CardComponent: React.ComponentType<T>;
+  className?: string;
   extraProps?: Omit<T, keyof BlogCardPropsBase>; // any other props to forward
 };
 
 export default async function BlogCardServer<T extends BlogCardPropsBase>({
   blog,
   CardComponent,
+  className,
   extraProps,
 }: BlogCardServerProps<T>) {
   const imageUrl = await getImmichAsset({
@@ -30,6 +32,7 @@ export default async function BlogCardServer<T extends BlogCardPropsBase>({
     blog,
     imageUrl,
     ...(extraProps || {}),
+    className,
   } as T;
 
   return <CardComponent {...props} />;

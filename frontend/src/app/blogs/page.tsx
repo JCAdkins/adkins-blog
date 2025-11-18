@@ -35,13 +35,12 @@ export default async function BlogsPage() {
                 blog={blog}
                 CardComponent={BlogCard}
                 extraProps={{
-                  className:
-                    "bg-transparent border-none shadow-none hover:shadow-none",
                   childProps: {
                     className:
                       "bg-header border-white border-1 rounded-md hover:shadow-md",
                   },
                 }}
+                className="bg-transparent border-none shadow-none hover:shadow-none"
               />
             </li>
           ))}
@@ -69,13 +68,12 @@ export default async function BlogsPage() {
                     blog={blog}
                     CardComponent={BlogCard}
                     extraProps={{
-                      className:
-                        "bg-transparent border-none shadow-none hover:shadow-none",
                       childProps: {
                         className:
-                          "bg-header border-white border-2 rounded-md hover:shadow-md",
+                          "bg-header border-white border-1 rounded-md hover:shadow-md",
                       },
                     }}
+                    className="bg-transparent border-none shadow-none hover:shadow-none"
                   />
                 </li>
               ))}
@@ -98,13 +96,12 @@ export default async function BlogsPage() {
                 blog={blog}
                 CardComponent={BlogCard}
                 extraProps={{
-                  className:
-                    "bg-transparent border-none shadow-none hover:shadow-none",
                   childProps: {
                     className:
-                      "bg-header border-white border-2 rounded-md hover:shadow-md",
+                      "bg-header border-white border-1 rounded-md hover:shadow-md",
                   },
                 }}
+                className="bg-transparent border-none shadow-none hover:shadow-none"
               />
             </li>
           ))}

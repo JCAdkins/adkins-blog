@@ -27,7 +27,7 @@ export default function BlogCard({
       )}
     >
       <div {...childProps}>
-        <Link href={`/blogs/${blog.id}`} className="block">
+        <Link href={`/blog/${blog.id}`} className="block">
           <Image
             src={
               imageUrl ||
