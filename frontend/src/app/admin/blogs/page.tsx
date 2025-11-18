@@ -6,13 +6,13 @@ import { Blog } from "next-auth";
 const AdminPosts = async () => {
   const blogs: Blog[] | null = await getAllBlogs();
   return (
-    <div className="grid grid-cols-1 gap-6 text-amber-300 md:grid-cols-2">
+    <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-6">
       {blogs?.map((blog, ind) => (
         <BlogCardServer
           key={ind}
           blog={blog}
           CardComponent={BlogAdminCard}
-          extraProps={{ canEdit: true }}
+          extraProps={{ canEdit: true, className: "rounded-md border-none" }}
         />
       ))}
     </div>

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ["www.lvvr.com"],
+    remotePatterns: [{ protocol: "https", hostname: "www.lvvr.com" }],
   },
 };
 

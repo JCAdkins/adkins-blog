@@ -46,7 +46,7 @@ export async function getImmichImage(
   res: express.Response
 ) {
   const immichId = req.query.id as string;
-  console.log("downloading immich image at controller...");
+  console.log(`downloading immich image id:${immichId} at controller...`);
   try {
     const result = await getImmichImageService(immichId);
 

@@ -12,7 +12,9 @@ const Admin = async () => {
           key={ind}
           blog={blog}
           CardComponent={BlogAdminCard}
-          extraProps={{ canEdit: true }}
+          extraProps={{
+            className: "rounded-md border-none",
+          }}
         />
       ))}
     </div>

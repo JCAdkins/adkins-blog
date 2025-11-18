@@ -19,7 +19,6 @@ export const verifyToken = (
 ): void => {
   const authHeader = req.headers.authorization;
 
-  console.log("authHeader: ", authHeader);
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ error: "Unauthorized: No token provided" });
     return;

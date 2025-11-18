@@ -22,8 +22,8 @@ export default function AdminMobileSidebar({
           <Link href="/admin" onClick={() => onOpenChange(false)}>
             <li className="hover:bg-header w-full rounded-sm p-2">Dashboard</li>
           </Link>
-          <Link href="/admin/posts" onClick={() => onOpenChange(false)}>
-            <li className="hover:bg-header w-full rounded-sm p-2">Posts</li>
+          <Link href="/admin/blogs" onClick={() => onOpenChange(false)}>
+            <li className="hover:bg-header w-full rounded-sm p-2">Blogs</li>
           </Link>
           <Link href="/admin/users" onClick={() => onOpenChange(false)}>
             <li className="hover:bg-header w-full rounded-sm p-2">Users</li>

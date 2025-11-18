@@ -8,7 +8,7 @@ type AdminHeaderProps = {
 };
 
 export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
-  const showCreateButton = usePathname() === "/admin/posts";
+  const showCreateButton = usePathname() === "/admin/blogs";
 
   return (
     <header className="flex items-center justify-between  px-6 py-4 shadow">

@@ -43,7 +43,6 @@ export const login = async (
   formData: FormData
 ): Promise<LoginActionState> => {
   try {
-    console.log("loggin in...");
     const validatedData = authLogInFormSchema.parse({
       email: formData.get("email"),
       password: formData.get("password"),

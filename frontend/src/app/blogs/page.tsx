@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import BlogCard from "@/components/cards/blog-card";
 import BlogCardServer from "@/components/cards/blog-card-server";
 import { getAllBlogs } from "@/lib/db/queries";
@@ -23,7 +22,7 @@ export default async function BlogsPage() {
       {/* Fixed full background (only on sm and up) */}
       <div className="hidden sm:block fixed inset-0 -z-10 bg-[url('/hummingbird.webp')] min-h-screen bg-cover bg-center bg-no-repeat bg-fixed" />
       {/* Newest Posts */}
-      <section className="min-h-1/2 py-10 px-6">
+      <section className="min-h-1/2 py-10 px-6 bg-gray-400">
         <h2 className="text-4xl font-extrabold text-shadow-glow text-center text-nowrap flex items-center flex-row space-x-2 mb-12">
           <div className="w-full border-1 border-black h-1 bg-header" />
           <p>🆕 New Posts</p>
@@ -54,7 +53,7 @@ export default async function BlogsPage() {
         return (
           <section
             key={genre}
-            className="min-h-1/2 py-10 px-6 bg-gradient-to-b gap-8"
+            className="min-h-1/2 py-10 px-6 bg-gray-400 mt-[300px] gap-8"
           >
             <h2 className="text-4xl font-extrabold text-shadow-glow text-center text-nowrap flex flex-row items-center space-x-2 mb-12">
               <div className="w-full border-1 border-black h-1 bg-header" />
@@ -86,7 +85,7 @@ export default async function BlogsPage() {
       })}
 
       {/* All Posts */}
-      <section className="min-h-1/2 py-10 px-6">
+      <section className="min-h-1/2 py-10 px-6 bg-gray-400 mt-[300px]">
         <h2 className="text-4xl font-extrabold text-shadow-glow text-center text-nowrap space-x-2 mb-12 flex flex-row items-center">
           <div className="w-full border-1 border-black h-1 bg-header" />
           <Link href="blogs/all">📚 All Blog Posts</Link>

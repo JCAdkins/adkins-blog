@@ -141,34 +141,3 @@ export function buildThreadSubtree(
 
   return child ? [child] : [];
 }
-
-// export function buildThreadTree(
-//   comments: CommentWithRelations[]
-// ): CommentNode[] {
-//   const commentMap = new Map<string, CommentNode>();
-
-//   // First pass: initialize map entries
-//   for (const comment of comments) {
-//     commentMap.set(comment.id, {
-//       ...comment,
-//       replies: [],
-//     });
-//   }
-
-//   const roots: CommentNode[] = [];
-
-//   // Second pass: link children to their parents
-//   for (const comment of comments) {
-//     const node = commentMap.get(comment.id)!;
-//     if (comment.parentId) {
-//       const parent = commentMap.get(comment.parentId);
-//       if (parent) {
-//         parent.replies.push(node);
-//       }
-//     } else {
-//       roots.push(node); // top-level comment
-//     }
-//   }
-
-//   return roots;
-// }

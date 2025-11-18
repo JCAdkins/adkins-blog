@@ -13,5 +13,6 @@ export async function getImmichImageService(id: string) {
 }
 
 export async function getImmichThumbnailService(id: string) {
-  return await downloadThumbnail(id);
+  const data = await downloadThumbnail(id);
+  return data;
 }

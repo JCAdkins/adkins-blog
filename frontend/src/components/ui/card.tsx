@@ -31,7 +31,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
             <h3 className="text-center text-lg font-medium">{header}</h3>
           </div>
         )}
-        <div>{children}</div>
+        <div className="h-full flex flex-col">{children}</div>
         {footer && <div className="mt-4 border-t pt-2 text-sm">{footer}</div>}
       </RadixCard>
     );
