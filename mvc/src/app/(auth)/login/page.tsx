@@ -50,7 +50,7 @@ const Page = () => {
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
           <SubmitButton
-            className="border-1 border-black shadow-md hover:shadow-amber-700"
+            className="border border-black shadow-md hover:shadow-amber-700"
             isSuccessful={isSuccessful}
           >
             Sign in

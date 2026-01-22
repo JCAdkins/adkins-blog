@@ -59,9 +59,15 @@ export const login = async (
     }
 
     return { status: "success" };
-  } catch (error) {
+  } catch (error: any) {
+    console.log("Login error:", error);
     if (error instanceof z.ZodError) {
       return { status: "invalid_data" };
+    }
+    if (error?.name === "CredentialsSignin") {
+      return {
+        status: "failed",
+      };
     }
 
     return { status: "idle" };
@@ -101,7 +107,6 @@ export const register = async (
     if (user) return { status: "username_taken" };
 
     user = await createUser(userData);
-    console.log("user after create: ", user);
     await signIn("credentials", {
       email: userData.email,
       password: userData.password,

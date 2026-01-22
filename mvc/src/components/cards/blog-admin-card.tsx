@@ -31,10 +31,7 @@ export default function BlogCard({
     >
       <div {...childProps} className="h-full flex flex-col">
         <Image
-          src={
-            imageUrl ||
-            "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
-          }
+          src={imageUrl || "/placeholder-img.png"}
           width={30}
           height={10}
           alt={blog.title}
