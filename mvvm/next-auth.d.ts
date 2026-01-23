@@ -39,6 +39,11 @@ declare module "next-auth" {
     updatedAt: string;
   };
 
+  export type Term = {
+    word: string;
+    definition: string;
+  };
+
   const genreOptions = [
     "educational",
     "excursion",
@@ -49,11 +54,6 @@ declare module "next-auth" {
   ] as const;
 
   export type BlogGenre = (typeof genreOptions)[number];
-
-  export type Term = {
-    term: string;
-    definition: string;
-  };
 
   export type NewBlog = {
     title: string;

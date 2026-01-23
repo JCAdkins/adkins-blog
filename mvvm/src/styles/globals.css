@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+:root {
+  /* --background: #fcf5e5; */
+  --background: #e4e1f9;
+  --foreground: #171717;
+}
+
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-pacifico: "Pacifico", cursive;
+  --font-caveat: "Caveat", cursive;
+}
+
+@theme {
+  --color-header: #ffd3c4;
+  --color-accent: #c8c5de;
+  --color-destructive: #a63939;
+  --color-sidebar: #e8b8a7;
+  --color-header-text: #f2e2d8;
+  --color-login: #e09f89;
+  --color-login-hover: #c2826d;
+  --color-login-bg: #d2826d;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+#admin-sidebar-overlay[data-state="open"] {
+  animation: fadeIn 200ms ease-out;
+}
+
+#admin-sidebar-overlay[data-state="closed"] {
+  animation: fadeOut 200ms ease-in;
+}
+
+#admin-sidebar-content[data-state="open"] {
+  animation: slideInFromLeft 200ms ease-out forwards;
+}
+
+#admin-sidebar-content[data-state="closed"] {
+  animation: slideOutToLeft 200ms ease-in forwards;
+}
+
+.text-shadow-glow {
+  text-shadow: 0 0 2px rgb(252, 252, 252);
+}
