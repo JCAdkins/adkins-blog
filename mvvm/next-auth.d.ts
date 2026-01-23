@@ -39,6 +39,11 @@ declare module "next-auth" {
     updatedAt: string;
   };
 
+  export type Term = {
+    word: string;
+    definition: string;
+  };
+
   const genreOptions = [
     "educational",
     "excursion",

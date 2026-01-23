@@ -50,6 +50,11 @@ declare module "next-auth" {
 
   export type BlogGenre = (typeof genreOptions)[number];
 
+  export type Term = {
+    term: string;
+    definition: string;
+  };
+
   export type NewBlog = {
     title: string;
     description: string;
