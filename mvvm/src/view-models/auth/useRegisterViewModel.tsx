@@ -50,10 +50,10 @@ export const useRegisterViewModel = () => {
     }
   }, [state.status, router]);
 
-  const handleSubmit = (formData: FormData) => {
+  const onSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
     setUsername(formData.get("username") as string);
     formAction(formData);
   };
-  return { email, username, isSuccessful, state, handleSubmit };
+  return { email, username, isSuccessful, state, onSubmit };
 };

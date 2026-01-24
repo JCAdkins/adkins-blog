@@ -1,18 +1,10 @@
 "use client";
 
-import { useRegisterViewModel } from "@/view-models/useRegisterViewModel";
+import { useRegisterViewModel } from "@/view-models/auth/useRegisterViewModel";
 import { RegisterView } from "@/views/auth/RegisterView";
 
 export default function Page() {
-  const { email, username, isSuccessful, handleSubmit } =
-    useRegisterViewModel();
+  const vm = useRegisterViewModel();
 
-  return (
-    <RegisterView
-      email={email}
-      username={username}
-      isSuccessful={isSuccessful}
-      onSubmit={handleSubmit}
-    />
-  );
+  return <RegisterView {...vm} />;
 }

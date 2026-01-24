@@ -1,3 +1,5 @@
+"use client";
+
 import { SubmitButton } from "@/components/buttons/submit-button";
 import { AuthForm } from "@/components/forms/auth-form";
 

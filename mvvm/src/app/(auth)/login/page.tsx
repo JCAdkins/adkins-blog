@@ -1,19 +1,13 @@
 // app/(auth)/login/page.tsx
 "use client";
 
-import { useLoginViewModel } from "@/view-models/useLoginViewModel";
+import { useLoginViewModel } from "@/view-models/auth/useLoginViewModel";
 import { LoginView } from "@/views/auth/LoginView";
 
 const Page = () => {
-  const { email, isSuccessful, handleSubmit } = useLoginViewModel();
+  const vm = useLoginViewModel();
 
-  return (
-    <LoginView
-      email={email}
-      isSuccessful={isSuccessful}
-      onSubmit={handleSubmit}
-    />
-  );
+  return <LoginView {...vm} />;
 };
 
 export default Page;

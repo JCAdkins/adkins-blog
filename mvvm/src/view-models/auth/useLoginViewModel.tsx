@@ -33,10 +33,10 @@ export const useLoginViewModel = () => {
     }
   }, [state.status, router]);
 
-  const handleSubmit = (formData: FormData) => {
+  const onSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
     formAction(formData);
   };
 
-  return { email, isSuccessful, state, handleSubmit };
+  return { email, isSuccessful, state, onSubmit };
 };
