@@ -1,49 +1,43 @@
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Description,
-} from "@headlessui/react";
-import { Button } from "../ui/button";
+// src/components/modals/ConfirmModal.tsx
+"use client";
 
-export const ConfirmDeleteModal = ({
-  isOpen,
-  onConfirm,
-  onCancel,
-}: {
-  isOpen: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) => {
+import { Button } from "@/components/ui/button";
+import { BaseModal } from "@/components/ui/modal";
+import { useModalContext } from "@/contexts/modals-context";
+
+export function ConfirmModal() {
+  const { confirmOptions, close } = useModalContext();
+
+  if (!confirmOptions) return null;
+
+  const {
+    title,
+    description,
+    confirmText = "Confirm",
+    cancelText = "Cancel",
+    onConfirm,
+  } = confirmOptions;
+
   return (
-    <Dialog open={isOpen} onClose={onCancel} className="relative z-50">
-      <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="w-full max-w-sm rounded bg-white p-6 text-black shadow-lg space-y-4">
-          <DialogTitle className="text-lg font-bold text-red-600">
-            Confirm Deletion
-          </DialogTitle>
-          <Description>
-            Are you sure you want to delete this comment?
-          </Description>
-          <div className="flex justify-end gap-4">
-            <Button
-              variant="outline"
-              onClick={onCancel}
-              className="hover:cursor-pointer"
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={onConfirm}
-              className="hover:cursor-pointer"
-            >
-              Delete
-            </Button>
-          </div>
-        </DialogPanel>
+    <BaseModal isOpen onClose={close} title={title}>
+      {description && <p>{description}</p>}
+
+      <div className="flex justify-end gap-3 pt-4">
+        <Button variant="outline" className="cursor-pointer" onClick={close}>
+          {cancelText}
+        </Button>
+
+        <Button
+          variant="destructive"
+          className="cursor-pointer"
+          onClick={() => {
+            onConfirm();
+            close();
+          }}
+        >
+          {confirmText}
+        </Button>
       </div>
-    </Dialog>
+    </BaseModal>
   );
-};
+}
