@@ -73,7 +73,7 @@ export default function NotificationCard({
       className={cn(
         "relative border px-4 py-3 transition-all",
         !notification.read && "bg-muted",
-        className
+        className,
       )}
       footer={
         <div className="flex items-center justify-between text-xs text-gray-500">
@@ -114,9 +114,9 @@ export default function NotificationCard({
 
           if (notification.type === "LIKE") {
             // Redirect to post and scroll to comment anchor
-            router.push(`/blogs/${postId}?commentId=${commentId}`);
+            router.push(`/blog/${postId}?commentId=${commentId}`);
           } else {
-            router.push(`blogs/${postId}?commentId=${replyId}`);
+            router.push(`/blog/${postId}?commentId=${replyId}`);
           }
         }}
       >
