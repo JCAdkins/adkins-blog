@@ -17,6 +17,7 @@ export function ReportCommentModal() {
   const submitReport = async () => {
     // TODO: wire backend call
     console.log("Reporting comment:", commentId, "Reason:", reason);
+    setReason("");
     close();
   };
 
@@ -36,7 +37,14 @@ export function ReportCommentModal() {
         />
 
         <div className="flex justify-end gap-3">
-          <Button className="cursor-pointer" variant="outline" onClick={close}>
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={() => {
+              setReason("");
+              close();
+            }}
+          >
             Cancel
           </Button>
           <Button
