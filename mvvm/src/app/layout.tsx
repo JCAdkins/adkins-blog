@@ -7,6 +7,9 @@ import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
 import { Pacifico, Caveat } from "next/font/google";
 import { NotificationsProvider } from "@/contexts/notifications-context";
+import { ModalProvider } from "@/contexts/modals-context";
+import { ConfirmModal } from "@/components/modals/confirm-delete-modal";
+import { ReportCommentModal } from "@/components/modals/report-comment-modal";
 
 const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
@@ -81,11 +84,15 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            <NotificationsProvider>
-              <MainHeader />
-              <Toaster richColors position="top-center" />
-              {children}
-            </NotificationsProvider>
+            <ModalProvider>
+              <NotificationsProvider>
+                <MainHeader />
+                <Toaster richColors position="top-center" />
+                {children}
+                <ConfirmModal />
+                <ReportCommentModal />
+              </NotificationsProvider>
+            </ModalProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>

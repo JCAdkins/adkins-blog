@@ -42,7 +42,7 @@ export async function welcomeNewUser({
 }) {
   // Have to use these until the app is up and running on our actual domain.
   const testEmail = "jordan.adkins111@gmail.com";
-  const testUsername = "JCAdkins24";
+  const testUsername = username || "New User";
   try {
     const response = await fetch("api/contact/greeting", {
       method: "POST",

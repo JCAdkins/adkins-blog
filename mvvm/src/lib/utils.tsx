@@ -15,7 +15,7 @@ export const fetcher = async (url: string) => {
 
   if (!res.ok) {
     const error = new Error(
-      "An error occurred while fetching the data."
+      "An error occurred while fetching the data.",
     ) as ApplicationError;
 
     error.info = await res.json();
@@ -79,7 +79,6 @@ export function getRandomColor() {
     .padStart(6, "0")}`;
 }
 
-import { getSession } from "next-auth/react";
 import { auth } from "@/app/(auth)/auth";
 
 export const getAuthToken = async (): Promise<string | null> => {
