@@ -22,7 +22,7 @@ export default function ContactForm({ user }: Props) {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

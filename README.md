@@ -14,7 +14,7 @@ Leverage Immich's API to store and manage images, enhancing the user experience 
 There are a lot of ideas planned for future features, including exploring the AI capabilities and facial recognition that Immich provides.
 
 ## **Progress and Updates**
-While the project is still in the early stages, I’m excited to explore and expand the app’s functionality. Regular updates are expected, with new features being added frequently—aiming for daily or at least bi-daily progress.
+I have decided to move from an MVC-style architecture to MVVM-style. This should allow me to more easily debug the application right now, but provide for easier testing when I eventually get around to that in the future.
 
 ## **Future Plans**
 Experiment with Immich's AI and facial recognition features.

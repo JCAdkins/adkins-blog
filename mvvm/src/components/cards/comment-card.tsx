@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useReportModal } from "@/hooks/useReportModal";
+import { useConfirmModal } from "@/hooks/useConfirmModal";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CommentInput } from "../inputs/comment-input";
@@ -12,11 +14,10 @@ import {
   createLikeNotification,
   deleteComment,
 } from "@/lib/db/queries";
-import { ConfirmDeleteModal } from "../modals/confirm-delete-modal";
 import { ThumbUpIcon, TrashIcon } from "../ui/icons";
 import { BlogComment } from "next-auth";
 import { Like } from "next-auth";
-import { PlusCircleIcon } from "lucide-react";
+import { FlagIcon, PlusCircleIcon } from "lucide-react";
 import { cn, formatDateToShortDateTime } from "@/lib/utils";
 
 export const CommentCard = ({
@@ -34,6 +35,8 @@ export const CommentCard = ({
   const [visibleReplies, setVisibleReplies] = useState(comment.replies || []);
   const [hasMoreReplies, setHasMoreReplies] = useState(comment.hasMore);
   const [replyPage, setReplyPage] = useState(0);
+  const { open: openReport } = useReportModal();
+  const { open: openConfirm } = useConfirmModal();
   const isHighlighted = comment.id === highlightedCommentId;
 
   const { refreshComments } = useComments();
@@ -41,7 +44,7 @@ export const CommentCard = ({
   useEffect(() => {
     if (session?.user?.id && comment.likes) {
       const liked = comment.likes.some(
-        (like: Like) => like.userId === session.user.id
+        (like: Like) => like.userId === session.user.id,
       );
       setUserLiked(liked);
     }
@@ -52,7 +55,7 @@ export const CommentCard = ({
       const res = await likeComment(
         comment.id,
         comment.authorId,
-        session?.user?.id!
+        session?.user?.id!,
       );
       if (comment.authorId != session?.user?.id)
         await createLikeNotification({
@@ -89,7 +92,7 @@ export const CommentCard = ({
       setVisibleReplies((prev) => {
         const existingIds = new Set(prev.map((r) => r.id));
         const filteredNew = data.repliesWithCounts.filter(
-          (r: BlogComment) => !existingIds.has(r.id)
+          (r: BlogComment) => !existingIds.has(r.id),
         );
         return [...prev, ...filteredNew];
       });
@@ -101,16 +104,12 @@ export const CommentCard = ({
     }
   };
 
-  console.log("comment: ", comment.content);
-  console.log("coment replies: ", comment.repliesCount);
-  console.log("visible replies: ", visibleReplies.length);
-
   return (
     <Card
       id={`comment-${comment.id}`}
       className={cn(
         "py-2 px-4 bg-header text-foreground rounded-md",
-        isHighlighted && "bg-yellow-100 ring-2 ring-header"
+        isHighlighted && "bg-yellow-100 ring-2 ring-header",
       )}
     >
       <div className="flex justify-between">
@@ -119,7 +118,7 @@ export const CommentCard = ({
         </p>
         <p className="text-end">
           {formatDateToShortDateTime(
-            new Date(comment.createdAt).toLocaleString()
+            new Date(comment.createdAt).toLocaleString(),
           )}
         </p>
       </div>
@@ -148,20 +147,33 @@ export const CommentCard = ({
             Reply
           </Button>
         )}
+        {session && comment.authorId !== session.user.id && (
+          <>
+            <Button
+              className="hover:scale-[1.05]"
+              size="xs"
+              onClick={() => openReport(comment.id)}
+            >
+              <FlagIcon />
+            </Button>
+          </>
+        )}
         {session && comment.authorId === session.user.id && (
           <>
             <Button
               className="hover:scale-[1.05]"
               size="xs"
-              onClick={() => setShowConfirm(true)}
+              onClick={() =>
+                openConfirm({
+                  title: "Delete Comment",
+                  description: "Are you sure? This action cannot be undone.",
+                  confirmText: "Delete",
+                  onConfirm: confirmDelete,
+                })
+              }
             >
               <TrashIcon />
             </Button>
-            <ConfirmDeleteModal
-              isOpen={showConfirm}
-              onCancel={() => setShowConfirm(false)}
-              onConfirm={confirmDelete}
-            />
           </>
         )}
       </div>
