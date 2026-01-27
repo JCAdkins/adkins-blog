@@ -18,7 +18,7 @@ interface CommentsContextType {
 }
 
 const CommentsContext = createContext<CommentsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const CommentsProvider = ({
@@ -61,7 +61,7 @@ export const CommentsProvider = ({
         const merged = [
           ...highlightedChain,
           ...baseComments.filter(
-            (c) => !highlightedChain.some((h: BlogComment) => h.id === c.id)
+            (c) => !highlightedChain.some((h: BlogComment) => h.id === c.id),
           ),
         ];
 
