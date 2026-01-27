@@ -8,7 +8,7 @@ import {
   getTotalCommentCountForPost,
 } from "../lib/utils.js";
 import { db } from "../lib/prisma.js";
-import type { CommentWithRelations } from "../types/types.js";
+import { CommentWithRelations } from "../models/commentModel.js";
 
 export async function getBlogMessagesPaginated(
   postId: string,

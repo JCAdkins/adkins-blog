@@ -5,13 +5,13 @@ import {
   findUserByUsername,
   getAllUsers,
 } from "../services/usersService.js";
-import { verifyPassword } from "../models/userModel.js";
+import { verifyPassword } from "../services/usersService.js";
 import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
 
 export const createNewUserController = async (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) => {
   try {
     console.log("creating new user...");
@@ -34,7 +34,7 @@ export const createNewUserController = async (
 
 export const getAllUsersController = async (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) => {
   try {
     const users = await getAllUsers();
@@ -48,7 +48,7 @@ export const getAllUsersController = async (
 // GET /api/users/email/:email
 export const getUserByEmailController = async (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) => {
   try {
     const email = req.params.email;
@@ -73,7 +73,7 @@ export const getUserByEmailController = async (
 // GET /api/users/email/:email
 export const getUserByUsernameController = async (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) => {
   try {
     const username = req.params.username;
@@ -96,7 +96,7 @@ export const getUserByUsernameController = async (
 
 export const loginUserController = async (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) => {
   console.log("attempting to log in");
   const { email, password } = req.body;

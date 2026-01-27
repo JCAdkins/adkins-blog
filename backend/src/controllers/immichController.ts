@@ -1,11 +1,11 @@
 // src/controllers/immichController.ts
+import {
+  downloadImmichImage,
+  downloadImmichImageThumbnail,
+  PostNewImmichImage,
+} from "../services/immichService.js";
 import express from "express"; // Ensure Request, Response are imported
 import fs from "fs"; // Use fs/promises for async/await file operations
-import {
-  postNewImageService,
-  getImmichImageService,
-  getImmichThumbnailService,
-} from "../services/immichService.js";
 // You might need to declare the Multer types globally or import them if not already done
 // For simplicity, let's redefine CustomRequest or ensure it's imported from a shared type file
 interface CustomRequest extends express.Request {
@@ -14,7 +14,7 @@ interface CustomRequest extends express.Request {
 
 export async function postNewImage(
   req: CustomRequest, // IMPORTANT: Use CustomRequest here
-  res: express.Response
+  res: express.Response,
 ) {
   try {
     console.log("Creating new image.");
@@ -30,8 +30,8 @@ export async function postNewImage(
       uploadedFiles.map(async (file: any) => {
         const filePathOnServer = file.path;
         const binaryData = fs.createReadStream(filePathOnServer);
-        return await postNewImageService(binaryData, file);
-      })
+        return await PostNewImmichImage(binaryData, file);
+      }),
     );
 
     res.status(200).json(urls);
@@ -43,12 +43,12 @@ export async function postNewImage(
 
 export async function getImmichImage(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   const immichId = req.query.id as string;
   console.log(`downloading immich image id:${immichId} at controller...`);
   try {
-    const result = await getImmichImageService(immichId);
+    const result = await downloadImmichImage(immichId);
 
     if (result) {
       // If the result is the binary data, send it as a response
@@ -66,12 +66,12 @@ export async function getImmichImage(
 
 export async function getImmichThumbnail(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   const immichId = req.query.id as string;
 
   try {
-    const result = await getImmichThumbnailService(immichId);
+    const result = await downloadImmichImageThumbnail(immichId);
 
     if (result) {
       // If the result is the binary data, send it as a response
