@@ -8,6 +8,7 @@ import { useComments } from "@/contexts/comments-context";
 import { Loader2 } from "lucide-react";
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import { BlogComment } from "next-auth";
 
 export const CommentsSection = ({
   blogId,
@@ -26,7 +27,7 @@ export const CommentsSection = ({
   };
 
   useEffect(() => {
-    const shouldLoad = comments.length < topLevelCount;
+    const shouldLoad: boolean = comments.length < topLevelCount;
     setCanLoadMore((prev) => {
       if (prev !== shouldLoad) return shouldLoad;
       return prev;
@@ -58,7 +59,7 @@ export const CommentsSection = ({
       <h3 className="text-2xl font-bold mb-6">Comments ({allCommentCount})</h3>
       {session && <CommentInput blogId={blogId} authorId={session.user.id} />}
       <div className="flex flex-col mt-6 gap-4">
-        {comments.map((comment: any) => (
+        {comments.map((comment: BlogComment) => (
           <CommentCard
             key={comment.id}
             comment={comment}

@@ -4,15 +4,21 @@ import { CommentsProvider } from "@/contexts/comments-context";
 
 interface BlogPostViewProps {
   id: string;
-  commentId?: string;
+  highlightedCommentId?: string;
 }
 
-export const BlogPostView = ({ id, commentId }: BlogPostViewProps) => {
+export const BlogPostView = ({
+  id,
+  highlightedCommentId,
+}: BlogPostViewProps) => {
   return (
-    <CommentsProvider blogId={id} highlightedCommentId={commentId}>
+    <CommentsProvider blogId={id} highlightedCommentId={highlightedCommentId}>
       <div className="mx-auto max-w-3xl px-4 py-12">
         <BlogPostContent id={id} />
-        <CommentsSection blogId={id} highlightedCommentId={commentId} />
+        <CommentsSection
+          blogId={id}
+          highlightedCommentId={highlightedCommentId}
+        />
       </div>
     </CommentsProvider>
   );

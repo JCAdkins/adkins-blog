@@ -26,7 +26,7 @@ export async function createUser(userData: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
-      }
+      },
     );
 
     if (!res.ok) {
@@ -44,10 +44,10 @@ export async function createUser(userData: {
 
 export async function getUserByEmail(
   email: string,
-  include?: boolean
+  include?: boolean,
 ): Promise<User | null> {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/users/email/${encodeURIComponent(email)}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/email/${encodeURIComponent(email)}`,
   );
 
   if (include) {
@@ -62,10 +62,10 @@ export async function getUserByEmail(
 
 export async function getUserByUsername(
   username: string,
-  include?: boolean
+  include?: boolean,
 ): Promise<User | null> {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/users/username/${encodeURIComponent(username)}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/username/${encodeURIComponent(username)}`,
   );
 
   if (include) {
@@ -84,7 +84,7 @@ export async function getUserByUsername(
 export async function getFeaturedBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/featured`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/featured`,
     );
     if (!response.ok) return null;
     return await response.json();
@@ -156,7 +156,7 @@ export async function getBlogById(id: string) {
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${id}`,
       {
         cache: "no-store",
-      }
+      },
     );
     if (!response.ok) {
       const errText = await response.text();
@@ -215,7 +215,7 @@ export async function fetchBlogCommentsPaginated({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -294,7 +294,7 @@ export async function deleteComment(commentId: string, type: string) {
       `/api/comment/delete-comment/${commentId}?hard=${type}`,
       {
         method: "DELETE",
-      }
+      },
     );
     const data = await res.json();
     return data;
@@ -307,11 +307,11 @@ export async function deleteComment(commentId: string, type: string) {
 export async function fetchRepliesForComment(
   commentId: string,
   page = 1,
-  limit = 3
+  limit = 3,
 ) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}/replies?page=${page}&limit=${limit}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}/replies?page=${page}&limit=${limit}`,
     );
 
     if (!res.ok) throw new Error("Failed to fetch replies");
@@ -327,7 +327,7 @@ export async function fetchRepliesForComment(
 export async function likeComment(
   commentId: string,
   authorId: string,
-  userId: string
+  userId: string,
 ) {
   try {
     const res = await axios.post("/api/comment/like-comment", {
@@ -350,7 +350,7 @@ export async function likeComment(
 export async function fetchNotifications(userId: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications?userId=${userId}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications?userId=${userId}`,
     );
     return await res.json();
   } catch (error) {
@@ -396,7 +396,7 @@ export async function getUserNotifications(userId: string, page: number = 1) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (!response.ok) {
