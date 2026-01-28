@@ -1,5 +1,5 @@
+import { BlogPostInput } from "../models/blogPostModel.js";
 import { PrismaClient } from "@prisma/client";
-import type { BlogPostInput } from "../types/types.js";
 
 const prisma = new PrismaClient();
 

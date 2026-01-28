@@ -1,11 +1,11 @@
 // utils/comments-utils.ts
-import type { CommentWithRelations } from "../types/types.js";
+import { CommentWithRelations } from "../models/commentModel.js";
 import { db } from "./prisma.js";
 
 export async function getTopLevelComments(
   postId: string,
   page = 1,
-  limit = 10
+  limit = 10,
 ) {
   const offset = (page - 1) * limit;
 
@@ -51,7 +51,7 @@ export async function attachRepliesCountToComments(comments: any[]) {
             repliesCount: nestedRepliesCount,
             hasMore: nestedRepliesCount > (reply.replies?.length ?? 0), // usually 0 unless you preload deeper
           };
-        })
+        }),
       );
 
       return {
@@ -60,7 +60,7 @@ export async function attachRepliesCountToComments(comments: any[]) {
         repliesCount,
         hasMore: repliesCount > comment.replies.length,
       };
-    })
+    }),
   );
 
   return withCounts;
@@ -82,7 +82,7 @@ export type CommentNode = Omit<CommentWithRelations, "replies"> & {
 
 // 1. Full comment tree from flat list
 export function buildCommentMap(
-  comments: CommentWithRelations[]
+  comments: CommentWithRelations[],
 ): Map<string, CommentNode> {
   const map = new Map<string, CommentNode>();
   for (const comment of comments) {
@@ -100,7 +100,7 @@ export function buildCommentMap(
 
 export function findThreadPath(
   map: Map<string, CommentNode>,
-  targetId: string
+  targetId: string,
 ): string[] {
   const path: string[] = [];
   let current = map.get(targetId);
@@ -114,7 +114,7 @@ export function findThreadPath(
 
 export function buildThreadSubtree(
   map: Map<string, CommentNode>,
-  path: string[]
+  path: string[],
 ): CommentNode[] {
   let child: CommentNode | undefined;
 

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/src/server.js",
-    "dev": "node --loader ts-node/esm src/server.ts",
+    "dev": "tsx src/server.ts",
     "postinstall": "prisma generate",
     "db:generate": "pnpm prisma migrate dev --name",
     "db:deploy": "pnpm prisma migrate deploy",
@@ -43,6 +43,7 @@
     "@types/cors": "^2.8.19",
     "prisma": "^6.9.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.2"
   }
 }

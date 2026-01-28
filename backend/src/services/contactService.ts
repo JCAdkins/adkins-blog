@@ -1,13 +1,8 @@
-import { getAdminListFromDb } from "../models/contactModel.js";
+import { db } from "../lib/prisma.js";
+import { ContactInput, EmailParams } from "../models/contactModel.js";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-type EmailParams = {
-  to: string[];
-  subject: string;
-  html: string;
-};
 
 export async function contactAdminEmail({ to, subject, html }: EmailParams) {
   try {
@@ -77,6 +72,38 @@ export async function welcomeNewUserEmail(to: string, username: string) {
 }
 
 export async function getAdminsList() {
-  const adminList = await getAdminListFromDb();
-  return adminList;
+  try {
+    const admins = await db.user.findMany({
+      where: {
+        role: "admin",
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    return admins.map((admin) => admin.email);
+  } catch (error) {
+    console.error("Error fetching admin list:", error);
+    return [];
+  }
 }
+
+export const saveContactMessageToDb = async (data: ContactInput) => {
+  try {
+    const newMessage = await db.contactMessage.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        userId: data.userId ?? null, // attach if exists, else leave null
+      },
+    });
+
+    return { newMessage };
+  } catch (error) {
+    console.error("Error saving contact message:", error);
+    throw error;
+  }
+};
