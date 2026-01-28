@@ -1,7 +1,7 @@
-import { saveContactMessageToDb } from "../models/contactModel.js";
 import {
   contactAdminEmail,
   getAdminsList,
+  saveContactMessageToDb,
   welcomeNewUserEmail,
 } from "../services/contactService.js";
 import express from "express";
@@ -9,7 +9,7 @@ import express from "express";
 // Get all featured blog posts
 export async function contactAdmin(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   const admins = await getAdminsList();
 
@@ -58,7 +58,7 @@ export async function contactAdmin(
 
 export async function welcomeNewUser(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   try {
     const { email, username } = req.body;
