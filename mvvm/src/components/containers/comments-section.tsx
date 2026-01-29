@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { CommentCard } from "../cards/comment-card";
+import { CommentCard } from "../cards/comment/comment-card";
 import { CommentInput } from "../inputs/comment-input";
 import { useComments } from "@/contexts/comments-context";
 import { Loader2 } from "lucide-react";
