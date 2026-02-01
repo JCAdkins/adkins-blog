@@ -1,3 +1,4 @@
+// src/components/inputs/comment-input.tsx
 "use client";
 
 import { useSession } from "next-auth/react";
@@ -6,28 +7,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createReplyNotification, postNewComment } from "@/lib/db/queries";
 import { useComments } from "@/contexts/comments-context";
-import { BlogComment } from "next-auth";
 
 export const CommentInput = ({
   blogId,
   authorId,
   parentId,
   closeReply,
-  onCommentPosted,
 }: {
   blogId: string;
   authorId: string;
   parentId?: string;
   closeReply?: () => void;
-  onCommentPosted?: (comment: BlogComment) => void;
 }) => {
   const { data: session } = useSession();
   const [content, setContent] = useState("");
-  const { refreshComments } = useComments();
+  const { addComment } = useComments();
 
   const handleSubmit = async () => {
-    if (!session?.user?.id) return;
-    if (!content.trim()) return;
+    if (!session?.user?.id || !content.trim()) return;
 
     try {
       const newComment = await postNewComment({
@@ -36,22 +33,19 @@ export const CommentInput = ({
         authorId: session.user.id,
         parentId,
       });
-      // If the reply is not to a users own comment/reply create a notification
-      if (authorId !== session.user.id)
+      addComment(newComment); // Update context
+
+      if (authorId !== session.user.id && parentId) {
         createReplyNotification({
-          commentId: parentId as string,
+          commentId: parentId,
           replyId: newComment.id,
           authorName: session.user.username,
           userId: authorId,
           actorId: session.user.id,
         });
-
-      if (parentId && onCommentPosted) {
-        onCommentPosted(newComment);
       }
 
       setContent("");
-      refreshComments();
       if (closeReply) closeReply();
     } catch (error) {
       console.error("Failed to post comment", error);
