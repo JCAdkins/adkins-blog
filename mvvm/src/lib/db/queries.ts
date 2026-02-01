@@ -288,7 +288,7 @@ export async function postNewComment({
   }
 }
 
-export async function deleteComment(commentId: string, type: string) {
+export async function deleteCommentLib(commentId: string, type: string) {
   try {
     const res = await fetch(
       `/api/comment/delete-comment/${commentId}?hard=${type}`,

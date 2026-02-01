@@ -68,13 +68,13 @@ declare module "next-auth" {
     status: string;
   };
 
-  interface BlogPostImage {
+  export interface BlogPostImage {
     blogPostId: string;
     id: string;
     imageId: string;
   }
 
-  interface BlogComment {
+  export interface BlogComment {
     id: string;
     content: string;
     author: User;
@@ -82,15 +82,18 @@ declare module "next-auth" {
     postId: string;
     createdAt: string;
     updatedAt: string;
-    parentId?: number;
-    replies?: BlogComment[];
+    parentId?: string;
+    replies: BlogComment[];
     repliesCount: number;
     likes: Like[];
     isDeleted: boolean;
-    hasMore?: boolean;
+    hasMore: boolean;
+    childrenIds: string[];
+    likesCount: number;
+    userHasLiked: boolean;
   }
 
-  type Like = {
+  export type Like = {
     id: string;
     commentId: string;
     userId: string;
@@ -98,7 +101,7 @@ declare module "next-auth" {
   };
 }
 
-type Notification = {
+export type Notification = {
   id: string;
   message: string;
   read: boolean;
