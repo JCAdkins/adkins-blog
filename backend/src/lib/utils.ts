@@ -23,6 +23,9 @@ export async function getTopLevelComments(
         include: {
           author: true,
           likes: true,
+          replies: {
+            take: 0,
+          },
         },
       },
     },

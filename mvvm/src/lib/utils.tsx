@@ -85,3 +85,12 @@ export const getAuthToken = async (): Promise<string | null> => {
   const session = await auth();
   return session?.token ?? null; // or session?.accessToken depending on your config
 };
+
+// Simple shallow array equality (or use lodash isEqual if you prefer)
+export function arraysEqual(a: string[], b: string[]): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
