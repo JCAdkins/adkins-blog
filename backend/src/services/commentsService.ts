@@ -8,12 +8,12 @@ import {
   getTotalCommentCountForPost,
 } from "../lib/utils.js";
 import { db } from "../lib/prisma.js";
-import type { CommentWithRelations } from "../types/types.js";
+import { CommentWithRelations } from "../models/commentModel.js";
 
 export async function getBlogMessagesPaginated(
   postId: string,
   page = 1,
-  limit = 10
+  limit = 10,
 ) {
   if (!postId) {
     return { error: "Post ID is required." };
@@ -25,9 +25,8 @@ export async function getBlogMessagesPaginated(
     const topLevelCount = await getTopLevelCount(postId);
 
     // Attach repliesCount to each top-level comment and its one reply
-    const commentsWithCounts = await attachRepliesCountToComments(
-      topLevelComments
-    );
+    const commentsWithCounts =
+      await attachRepliesCountToComments(topLevelComments);
 
     // Get total count of all comments for the post
     const totalCount = await getTotalCommentCountForPost(postId);
@@ -57,6 +56,7 @@ export async function fetchCommentById(id: string) {
       },
       post: true,
       replies: true,
+      likes: true,
     },
   });
   return comment;
@@ -64,7 +64,7 @@ export async function fetchCommentById(id: string) {
 
 export async function fetchCommentByIdWithAncestors(
   postId: string,
-  targetCommentId: string
+  targetCommentId: string,
 ): Promise<CommentWithRelations[]> {
   // 1. Fetch all comments from DB
   const comments = await db.comment.findMany({
@@ -87,13 +87,14 @@ export async function fetchCommentByIdWithAncestors(
   const map = buildCommentMap(comments);
   const path = findThreadPath(map, targetCommentId);
   const threadSubtree = buildThreadSubtree(map, path);
-  return threadSubtree;
+  const subTreeWithCounts = await attachRepliesCountToComments(threadSubtree);
+  return subTreeWithCounts;
 }
 
 export async function fetchCommentRepliesService(
   parentId: string,
   page = 1,
-  limit = 3
+  limit = 3,
 ) {
   if (!parentId) throw new Error("parentId is required");
 

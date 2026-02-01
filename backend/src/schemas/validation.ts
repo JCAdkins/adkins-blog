@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { genreOptions } from "../types/types.js";
+import { genreOptions } from "../models/blogPostModel.js";
 
 // Define the schema for a single Immich image
 const ImmichImageSchema = z.object({
@@ -32,7 +32,7 @@ export const userSchema = z.object({
     .regex(/[0-9]/, "Password must contain at least one number")
     .regex(
       /[!@#$%^&*(),.?":{}|<>]/,
-      "Password must contain at least one special character"
+      "Password must contain at least one special character",
     ),
   username: z.string().min(6, "Username must be at least 6 characters"),
   first_name: z.string().optional(),

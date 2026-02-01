@@ -6,17 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createReplyNotification, postNewComment } from "@/lib/db/queries";
 import { useComments } from "@/contexts/comments-context";
+import { BlogComment } from "next-auth";
 
 export const CommentInput = ({
   blogId,
   authorId,
   parentId,
   closeReply,
+  onCommentPosted,
 }: {
   blogId: string;
   authorId: string;
   parentId?: string;
   closeReply?: () => void;
+  onCommentPosted?: (comment: BlogComment) => void;
 }) => {
   const { data: session } = useSession();
   const [content, setContent] = useState("");
@@ -42,6 +45,10 @@ export const CommentInput = ({
           userId: authorId,
           actorId: session.user.id,
         });
+
+      if (parentId && onCommentPosted) {
+        onCommentPosted(newComment);
+      }
 
       setContent("");
       refreshComments();

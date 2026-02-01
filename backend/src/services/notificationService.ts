@@ -1,18 +1,16 @@
+import { NotificationInput } from "@/models/notificationsModel.js";
 import { db } from "../lib/prisma.js";
 
 export async function createLikeNotificationServ(
-  commentId: string,
-  authorName: string,
-  userId: string,
-  actorId: string
+  likeNotification: NotificationInput,
 ) {
   try {
     const exists = await db.notification.findFirst({
       where: {
         type: "LIKE",
-        userId,
-        actorId,
-        commentId,
+        userId: likeNotification.userId,
+        actorId: likeNotification.actorId,
+        commentId: likeNotification.commentId,
       },
     });
 
@@ -26,11 +24,11 @@ export async function createLikeNotificationServ(
     }
     const response = await db.notification.create({
       data: {
-        userId: userId,
-        actorId: actorId,
+        userId: likeNotification.userId,
+        actorId: likeNotification.actorId,
         type: "LIKE",
-        message: `${authorName} liked your comment`,
-        commentId: commentId,
+        message: `${likeNotification.authorName} liked your comment`,
+        commentId: likeNotification.commentId,
         replyId: null,
       },
     });
@@ -46,7 +44,7 @@ export async function createReplyNotificationServ(
   replyId: string,
   authorName: string,
   userId: string,
-  actorId: string
+  actorId: string,
 ) {
   try {
     return await db.notification.create({
@@ -150,7 +148,7 @@ export async function markNotificationReadServ(id: string) {
     console.error("Failed to mark notification as read in db: ", error);
     return Response.json(
       { error: "Failed to mark notification as read" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -168,7 +166,7 @@ export async function markAllNotificationsAsReadServ(userId: string) {
     console.error("Failed to mark notification as read in db: ", error);
     return Response.json(
       { error: "Failed to mark notification as read" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
