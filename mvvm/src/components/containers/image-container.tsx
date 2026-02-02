@@ -20,7 +20,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   const showNext = () =>
     setSelectedIndex((prev) =>
-      prev !== null && prev < images.length - 1 ? prev + 1 : prev
+      prev !== null && prev < images.length - 1 ? prev + 1 : prev,
     );
 
   const closeModal = () => {
@@ -83,6 +83,11 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 z-50 bg-black/80" />
           <Dialog.Content className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <VisuallyHidden>
+              <Dialog.Description>
+                This is an image viewer to view blog photos.
+              </Dialog.Description>
+            </VisuallyHidden>
             <Dialog.Title asChild>
               <VisuallyHidden>Image viewer</VisuallyHidden>
             </Dialog.Title>
