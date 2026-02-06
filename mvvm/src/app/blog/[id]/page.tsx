@@ -1,5 +1,7 @@
+import BlogPostContent from "@/components/containers/blog-post-content";
+import { CommentsSection } from "@/components/containers/comments-section";
+import { CommentsProvider } from "@/contexts/comments-context";
 import { getBlogPostPageViewModel } from "@/view-models/blog/useBlogPostViewModel";
-import { BlogPostView } from "@/views/blog/BlogPostView";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -7,6 +9,19 @@ type Props = {
 };
 
 export default async function BlogPostPage({ params, searchParams }: Props) {
-  const vm = await getBlogPostPageViewModel({ params, searchParams });
-  return <BlogPostView {...vm} />;
+  const { id, highlightedCommentId } = await getBlogPostPageViewModel({
+    params,
+    searchParams,
+  });
+  return (
+    <CommentsProvider blogId={id} highlightedCommentId={highlightedCommentId}>
+      <div className="mx-auto max-w-3xl px-4 py-12">
+        <BlogPostContent id={id} />
+        <CommentsSection
+          blogId={id}
+          highlightedCommentId={highlightedCommentId}
+        />
+      </div>
+    </CommentsProvider>
+  );
 }
