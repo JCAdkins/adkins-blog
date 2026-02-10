@@ -8,6 +8,7 @@ import blogRoutes from "./routes/blog-routes.js";
 import contactRoutes from "./routes/contact-routes.js";
 import messagesRoutes from "./routes/messages-routes.js";
 import notificationRoutes from "./routes/notification-routes.js";
+import adminRoutes from "./routes/admin-routes.js";
 
 dotenv.config();
 const app = express();
@@ -17,7 +18,7 @@ app.use(
   cors({
     origin: "http://localhost:3001", // your Next.js frontend
     credentials: true,
-  })
+  }),
 );
 
 // Routes that deal with immich image creation and retrieval
@@ -43,6 +44,9 @@ app.use("/api/messages", messagesRoutes);
 
 // Notification routes
 app.use("/api/notifications", notificationRoutes);
+
+// Admin routes
+app.use("/api/admin", adminRoutes);
 
 // Start the server
 app.listen(PORT, () => {

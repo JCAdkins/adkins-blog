@@ -51,6 +51,7 @@ model User {
   last_name             String
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
+  lastLoginAt           DateTime?
   role                  String           @default("user")
   contactMessages       ContactMessage[]
   Comment               Comment[]

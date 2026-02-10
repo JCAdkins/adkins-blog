@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import Break from "../ui/break";
 
 type Term = {
   word: string;
@@ -44,14 +45,17 @@ export default function WordOfTheDayCard({ term }: Props) {
               </div>
             }
           >
-            <p className="mt-4 text-gray-700">
-              {term.definition.split("\n").map((line, i) => (
-                <React.Fragment key={i}>
-                  {line} <br />
-                  <br />
-                </React.Fragment>
-              ))}
-            </p>
+            <>
+              <Break />
+              <p className="mt-4 text-gray-700">
+                {term.definition.split("\n").map((line, i) => (
+                  <React.Fragment key={i}>
+                    {line} <br />
+                    <br />
+                  </React.Fragment>
+                ))}
+              </p>
+            </>
           </Card>
         </div>
       )}

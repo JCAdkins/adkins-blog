@@ -5,6 +5,7 @@ import { Blog, BlogComment, NewBlog, User } from "next-auth";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { getAuthToken } from "../utils";
 
 /*++===========================================================================================================++
   ||                                           USER DATABASE QUERIES                                           ||
@@ -74,6 +75,38 @@ export async function getUserByUsername(
   const res = await fetch(url.toString());
   if (!res.ok) return null;
   return await res.json();
+}
+
+export async function getUserStats(): Promise<
+  | {
+      totalUsers: number;
+      activeUsers: number;
+      newUsersThisWeek: number;
+      newUsersThisMonth: number;
+      usersPerDay: any[];
+      usersPerMonth: any[];
+      topActiveUsers: User[];
+    }
+  | { error: string }
+> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/users/stats`;
+    const token = await getAuthToken();
+    if (!token) {
+      console.error("No auth token found");
+      return { error: "Unauthorized" };
+    }
+    const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${signedToken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching user stats:", error);
+    return { error: "There was an error fetching user stats" };
+  }
 }
 
 /*++===========================================================================================================++
@@ -340,6 +373,39 @@ export async function likeComment(
   } catch (error) {
     console.error("Error posting comment:", error);
     return { error: "There was an error posting the comment" };
+  }
+}
+
+export async function getCommentStats(): Promise<
+  | {
+      totalComments: number;
+      totalReplies: number;
+      totalTopLevelComments: number;
+      avgCommentsPerBlog: number;
+      topCommentedBlogs: any[];
+      commentsPerDay: any[];
+      commentsPerMonth: any[];
+    }
+  | { error: string }
+> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/comments/stats`;
+    const token = await getAuthToken();
+    console.log("Token in getCommentStats: ", token);
+    if (!token) {
+      console.error("No auth token found");
+      return { error: "Unauthorized" };
+    }
+    const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${signedToken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching comment stats:", error);
+    return { error: "There was an error fetching comment stats" };
   }
 }
 
