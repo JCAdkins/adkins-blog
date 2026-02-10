@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "50mb",
     },
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "www.lvvr.com" }],
   },

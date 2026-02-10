@@ -22,25 +22,6 @@ const config = {
       }
       return session;
     },
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isAdmin = auth?.user.role === "admin";
-      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
-      const isOnRegister = nextUrl.pathname.startsWith("/register");
-      const isOnLogin = nextUrl.pathname.startsWith("/login");
-
-      if (isLoggedIn && (isOnLogin || isOnRegister))
-        return Response.redirect(new URL("/", nextUrl));
-
-      if (isOnAdmin && !isLoggedIn)
-        return Response.redirect(new URL("/login", nextUrl));
-
-      if (isOnAdmin && !isAdmin) {
-        return Response.redirect(new URL("/", nextUrl));
-      }
-
-      return true;
-    },
   },
 } satisfies NextAuthConfig;
 
