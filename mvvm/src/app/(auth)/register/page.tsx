@@ -20,9 +20,8 @@ export default function Page() {
           <SubmitButton
             className="border border-black shadow-md hover:shadow-amber-700"
             isSuccessful={isSuccessful}
-          >
-            Sign Up
-          </SubmitButton>
+            isRegisterForm={true}
+          />
         </AuthForm>
       </div>
     </div>

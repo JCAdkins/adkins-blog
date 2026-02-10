@@ -8,11 +8,13 @@ import { cn } from "@/lib/utils";
 export function SubmitButton({
   children,
   isSuccessful,
+  isRegisterForm,
   className,
   disabled,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   isSuccessful: boolean;
+  isRegisterForm?: boolean;
   className?: string;
   disabled?: boolean;
 }) {
@@ -26,9 +28,9 @@ export function SubmitButton({
       className={cn("relative", className)}
     >
       {children}
-
+      {!pending && isRegisterForm ? "Register" : "Sign in"}
       {(pending || isSuccessful) && (
-        <span className="absolute right-4 animate-spin">
+        <span className="animate-spin">
           <LoaderIcon />
         </span>
       )}

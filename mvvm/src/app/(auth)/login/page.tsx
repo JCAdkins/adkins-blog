@@ -19,11 +19,11 @@ const Page = () => {
         </div>
         <AuthForm action={onSubmit} defaultEmail={email}>
           <SubmitButton
-            className="border border-black shadow-md hover:shadow-amber-700"
+            className="border border-black shadow-md hover:shadow-amber-700 flex flex-justify-between"
+            disabled={state.status === "in_progress"}
             isSuccessful={isSuccessful}
-          >
-            Sign in
-          </SubmitButton>
+            isRegisterForm={false}
+          />
         </AuthForm>
       </div>
     </div>
