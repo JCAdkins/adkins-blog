@@ -2,6 +2,7 @@ import bcrypt, { hash } from "bcryptjs";
 import { db } from "../lib/prisma.js";
 import { Prisma } from "@prisma/client";
 import { NewUserInput } from "../models/userModel.js";
+import { UUID } from "crypto";
 
 export const createUserService = async (userData: NewUserInput) => {
   const hashedPassword = await hash(userData.password, 10);
@@ -75,6 +76,14 @@ export const getAllUsers = async () => {
     },
   });
   return users;
+};
+
+export const updateUserLastLogin = async (userId: UUID) => {
+  console.log("Updating last login for user ID:", userId);
+  await db.user.update({
+    where: { id: userId },
+    data: { lastLoginAt: new Date() },
+  });
 };
 
 export const verifyPassword = async (

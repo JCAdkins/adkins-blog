@@ -4,10 +4,12 @@ import {
   findUserByEmail,
   findUserByUsername,
   getAllUsers,
+  updateUserLastLogin,
 } from "../services/usersService.js";
 import { verifyPassword } from "../services/usersService.js";
 import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
+import { UUID } from "crypto";
 
 export const createNewUserController = async (
   req: express.Request,
@@ -98,35 +100,7 @@ export const loginUserController = async (
   req: express.Request,
   res: express.Response,
 ) => {
-  console.log("attempting to log in");
-  const { email, password } = req.body;
-
-  try {
-    const user = await findUserByEmail(email);
-    if (!user) {
-      res.status(401).json({ message: "Invalid credentials" });
-      return;
-    }
-
-    const isValid = await verifyPassword(password, user.password);
-    if (!isValid) {
-      res.status(401).json({ message: "Invalid credentials" });
-      return;
-    }
-
-    console.log("login successful.");
-    // Optionally generate a session or token here
-    res.status(200).json({
-      message: "Login successful",
-      user: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        role: user.role,
-      },
-    });
-  } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ message: "Something went wrong during login." });
-  }
+  const { userId } = req.body;
+  await updateUserLastLogin(userId as UUID);
+  res.status(200).json({ message: "User login time updated." });
 };

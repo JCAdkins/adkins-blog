@@ -54,18 +54,41 @@ export async function getUsersPerDay() {
       DATE("createdAt") AS date,
       COUNT(*) AS count
     FROM "User"
-    WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days'
+    WHERE "createdAt" >= NOW() - INTERVAL '30 days'
     GROUP BY DATE("createdAt")
     ORDER BY date ASC;
   `);
 
-  // Convert to nicer format for frontend charting (e.g. Recharts)
-  const usersPerDay = usersPerDayRaw.map((row) => ({
-    date: row.date.toString().split("T")[0], // '2025-12-01'
-    users: Number(row.count),
-  }));
+  // Create lookup map
+  const map = new Map<string, number>();
 
-  return usersPerDay;
+  usersPerDayRaw.forEach((row) => {
+    const tKey = new Date(row.date.toString().split(" GMT")[0])
+      .toISOString()
+      .slice(0, 10)
+      .split("-");
+    const key = `${tKey[1]}-${tKey[2]}`;
+    map.set(key, Number(row.count));
+  });
+
+  // Generate last 30 days
+  const result = [];
+  const today = new Date();
+
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(today.getDate() - i);
+
+    const tKey = d.toISOString().slice(0, 10).split("-");
+    const key = `${tKey[1]}-${tKey[2]}`;
+
+    result.push({
+      date: key,
+      users: map.get(key) || 0,
+    });
+  }
+
+  return result;
 }
 
 export async function getUsersPerMonth() {
@@ -79,15 +102,32 @@ export async function getUsersPerMonth() {
     FROM "User"
     WHERE "createdAt" >= CURRENT_DATE - INTERVAL '12 months'
     GROUP BY year, month
-    ORDER BY year DESC, month DESC;
+    ORDER BY year, month;
   `);
 
-  const usersPerMonth = usersPerMonthRaw.map((row) => ({
-    month: `${row.year}-${String(row.month).padStart(2, "0")}`,
-    users: Number(row.count),
-  }));
+  // Convert to map for quick lookup
+  const map = new Map<string, number>();
 
-  return usersPerMonth;
+  usersPerMonthRaw.forEach((row) => {
+    const key = `${row.year}-${String(row.month).padStart(2, "0")}`;
+    map.set(key, Number(row.count));
+  });
+
+  // Generate last 12 months
+  const result = [];
+  const now = new Date();
+
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.toISOString().slice(0, 7);
+
+    result.push({
+      month: key,
+      users: map.get(key) || 0,
+    });
+  }
+
+  return result;
 }
 
 export async function getTopActiveUsers() {
@@ -165,16 +205,37 @@ export const getCommentsPerDay = async () => {
       DATE("createdAt") AS date,
       COUNT(*) AS count
     FROM "Comment"
-    WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days'
+    WHERE "createdAt" >= NOW() - INTERVAL '30 days'
     GROUP BY DATE("createdAt")
     ORDER BY date ASC;
   `);
 
-  const commentsPerDay = commentsPerDayRaw.map((row) => ({
-    date: row.date.toString().split("T")[0],
-    comments: Number(row.count),
-  }));
-  return commentsPerDay;
+  // Map raw results for easy lookup
+  const map = new Map<string, number>();
+  commentsPerDayRaw.forEach((row) => {
+    const tKey = new Date(row.date.toString().split(" GMT")[0])
+      .toISOString()
+      .slice(0, 10)
+      .split("-");
+    const key = `${tKey[1]}-${tKey[2]}`;
+    map.set(key, Number(row.count));
+  });
+
+  // Generate last 30 days
+  const result = [];
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(today.getDate() - i);
+    const tKey = d.toISOString().slice(0, 10).split("-");
+    const key = `${tKey[1]}-${tKey[2]}`;
+    result.push({
+      date: key,
+      comments: map.get(key) || 0,
+    });
+  }
+
+  return result;
 };
 
 export const getCommentsPerMonth = async () => {
@@ -188,12 +249,27 @@ export const getCommentsPerMonth = async () => {
     FROM "Comment"
     WHERE "createdAt" >= CURRENT_DATE - INTERVAL '12 months'
     GROUP BY year, month
-    ORDER BY year DESC, month DESC;
+    ORDER BY year ASC, month ASC;
   `);
 
-  const commentsPerMonth = commentsPerMonthRaw.map((row) => ({
-    month: `${row.year}-${String(row.month).padStart(2, "0")}`,
-    comments: Number(row.count),
-  }));
-  return commentsPerMonth;
+  // Map raw results for easy lookup
+  const map = new Map<string, number>();
+  commentsPerMonthRaw.forEach((row) => {
+    const key = `${row.year}-${String(row.month).padStart(2, "0")}`;
+    map.set(key, Number(row.count));
+  });
+
+  // Generate last 12 months
+  const result = [];
+  const today = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    result.push({
+      month: key,
+      comments: map.get(key) || 0,
+    });
+  }
+
+  return result;
 };

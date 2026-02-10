@@ -1,96 +1,149 @@
-// No 'use client' here — stays server-rendered
-import { getAllBlogs, getUserStats, getCommentStats } from "@/lib/db/queries";
-import BlogCardServer from "@/components/cards/blog-card-server";
-import { DashboardCharts } from "@/components/charts/dashboard-charts"; // ← import the client component
 import { Card } from "@/components/ui/card";
-import BlogCard from "@/components/cards/blog-admin-card";
-import { Blog } from "next-auth";
+import { Table } from "@radix-ui/themes";
+import { Badge } from "@/components/ui/badge";
+import { getCommentStats, getUserStats } from "@/lib/db/queries";
+import { DashboardCharts } from "@/components/charts/dashboard-charts";
 
-const Admin = async () => {
-  const blogs = await getAllBlogs();
-  const userStatsRes = await getUserStats();
-  if ("error" in userStatsRes) {
-    console.error("Error fetching user stats:", userStatsRes.error);
-    return <div className="p-6">Error loading user stats</div>;
-  }
-  const {
-    totalUsers,
-    activeUsers,
-    newUsersThisWeek,
-    newUsersThisMonth,
-    usersPerDay,
-    usersPerMonth,
-    topActiveUsers,
-  } = userStatsRes;
-  const userStats = userStatsRes;
-  const commentStatsRes = await getCommentStats();
-  if ("error" in commentStatsRes) {
-    console.error("Error fetching comment stats:", commentStatsRes.error);
-    return <div className="p-6">Error loading comment stats</div>;
-  }
-  const {
-    totalComments,
-    totalReplies,
-    totalTopLevelComments,
-    avgCommentsPerBlog,
-    topCommentedBlogs,
-    commentsPerDay,
-    commentsPerMonth,
-  } = commentStatsRes;
+export default async function AdminDashboard() {
+  const userStats = await getUserStats();
+  const commentStats = await getCommentStats();
 
-  const blogGrowthData = [
-    { name: "Jan", blogs: 12 },
-    { name: "Feb", blogs: 19 },
-  ];
+  if ("error" in commentStats || "error" in userStats) {
+    return <div className="p-6 text-red-600">Error loading dashboard data</div>;
+  }
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="container mx-auto p-6 space-y-10">
+      {/* ── Overview KPIs ── */}
       <section>
-        <h2 className="text-2xl font-bold mb-4">Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="text-black border-none">
-            <p className="flex justify-center">
-              Total Users: {totalUsers ?? 0}
-            </p>
+        <h2 className="text-2xl font-semibold mb-6">Overview</h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="text-black h-fit" header="Total Users">
+            <div className="flex justify-center text-3xl font-bold pb-2">
+              {userStats.totalUsers}
+            </div>
           </Card>
-          <Card className="text-black border-none">
-            <p className="flex justify-center">
-              Total Blogs: {blogs?.length ?? 0}
-            </p>
+
+          <Card className="text-black h-fit" header="Active Users (30d)">
+            <div className="flex justify-center text-3xl font-bold pb-2">
+              {userStats.activeUsers}
+            </div>
           </Card>
-          <Card className="text-black border-none">
-            <p className="flex justify-center">
-              Total Comments: {totalComments ?? 0}
-            </p>
+
+          <Card className="text-black h-fit" header="Total Comments">
+            <div className="pb-2">
+              <div className="flex justify-center text-3xl font-bold">
+                {commentStats.totalComments}
+              </div>
+              <p className="flex justify-center text-md text-muted-foreground">
+                {commentStats.totalReplies} replies
+              </p>
+            </div>
+          </Card>
+
+          <Card className="text-black h-fit" header="Avg Comments/Blog">
+            <div className="flex justify-center text-3xl font-bold pb-2">
+              {commentStats.avgCommentsPerBlog.toFixed(1)}
+            </div>
           </Card>
         </div>
       </section>
 
-      {/* Client-side charts */}
-      <DashboardCharts blogGrowthData={blogGrowthData} />
-
+      {/* ── Growth Charts ── */}
       <section>
-        <h2 className="text-2xl font-bold mb-4">Recent Blogs</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogs
-            ?.filter((blog: Blog) => {
-              const oneWeekAgo = new Date();
-              oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-              return new Date(blog.createdAt) >= oneWeekAgo;
-            })
-            .map((blog: Blog) => (
-              <BlogCardServer
-                key={blog.id}
-                blog={blog}
-                CardComponent={BlogCard} // assuming you meant this
-                extraProps={{ canEdit: true }} // adjust as needed
-                className="rounded-md border-none cursor-pointer"
-              />
-            ))}
-        </div>
+        <h2 className="text-2xl text-black font-semibold mb-6">
+          Growth & Activity
+        </h2>
+        <DashboardCharts
+          usersPerDay={userStats.usersPerDay}
+          usersPerMonth={userStats.usersPerMonth}
+          commentsPerDay={commentStats.commentsPerDay}
+          commentsPerMonth={commentStats.commentsPerMonth}
+        />
       </section>
+
+      {/* ── Top Users & Blogs ── */}
+      <section className="grid gap-8 md:grid-cols-2">
+        {/* Top Active Users */}
+        <Card className="text-black" header="Top Active Users">
+          <div className="flex justify-center">
+            <Table.Root variant="surface" size="2">
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeaderCell className="px-2">
+                    Username
+                  </Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell className="px-2" align="right">
+                    Comments
+                  </Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell className="px-2" align="right">
+                    Blogs
+                  </Table.ColumnHeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {userStats.topActiveUsers.map(
+                  ({ id, username, _count }: any) => (
+                    <Table.Row className="even:bg-gray-300 px-2" key={id}>
+                      <Table.Cell className="font-medium px-2 text-center">
+                        {username}
+                      </Table.Cell>
+                      <Table.Cell className="px-2 text-center" align="right">
+                        {_count?.Comment ?? 0}
+                      </Table.Cell>
+                      <Table.Cell className="px-2 text-center" align="right">
+                        {_count?.Like ?? 0}
+                      </Table.Cell>
+                    </Table.Row>
+                  ),
+                )}
+              </Table.Body>
+            </Table.Root>
+          </div>
+        </Card>
+
+        {/* Top Commented Blogs */}
+        <Card className="text-black" header="Most Commented Blogs">
+          <div className="flex justify-center">
+            <Table.Root>
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell align="right">
+                    Comments
+                  </Table.ColumnHeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {commentStats.topCommentedBlogs.map(
+                  ({ id, title, _count }: any) => (
+                    <Table.Row className="even:bg-gray-300" key={id}>
+                      <Table.Cell className="font-medium px-2">
+                        {title}
+                      </Table.Cell>
+                      <Table.Cell className="px-2 text-center" align="right">
+                        <Badge variant="secondary">
+                          {_count?.Comment ?? 0}
+                        </Badge>
+                      </Table.Cell>
+                    </Table.Row>
+                  ),
+                )}
+              </Table.Body>
+            </Table.Root>
+          </div>
+        </Card>
+      </section>
+
+      {/* Quick stats line */}
+      <Card className="text-muted-foreground text-center" header="Quick Stats">
+        <p>
+          New users this week: <strong>{userStats.newUsersThisWeek}</strong>
+        </p>
+        <p>
+          This month: <strong>{userStats.newUsersThisMonth}</strong>
+        </p>
+      </Card>
     </div>
   );
-};
-
-export default Admin;
+}

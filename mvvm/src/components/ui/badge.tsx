@@ -3,13 +3,14 @@ import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "default" | "destructive" | "success" | "warning";
+  variant?: "default" | "secondary" | "destructive" | "success" | "warning";
   size?: "sm" | "md" | "lg";
   asChild?: boolean;
 }
 
 const badgeVariants = {
   default: "bg-gray-200 text-gray-900",
+  secondary: "bg-gray-100 text-gray-800",
   destructive: "bg-red-500 text-white",
   success: "bg-green-500 text-white",
   warning: "bg-yellow-400 text-black",
@@ -24,7 +25,7 @@ const sizeVariants = {
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   (
     { className, variant = "default", size = "md", asChild = false, ...props },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "span";
     return (
@@ -34,11 +35,11 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           "inline-flex items-center justify-center rounded-full font-semibold",
           badgeVariants[variant],
           sizeVariants[size],
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 Badge.displayName = "Badge";
