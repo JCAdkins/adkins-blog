@@ -2,7 +2,11 @@ import { compare } from "bcrypt-ts";
 import NextAuth, { type User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import Google from "next-auth/providers/google";
-import { getUserByEmail, getUserByUsername } from "@/lib/db/queries";
+import {
+  getUserByEmail,
+  getUserByUsername,
+  updateUserLoginAt,
+} from "@/lib/db/queries";
 import config from "./auth.config";
 
 // Extend NextAuth's User and Session interfaces to include the role field
@@ -39,11 +43,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const passwordsMatch = await compare(
           credentials.password,
-          user.password
+          user.password,
         );
         if (!passwordsMatch) return null;
 
         // Add role to the user object returned after successful login
+        await updateUserLoginAt(user.id); // Log the user in (update last login time)
         return {
           id: user.id,
           role: user.role, // Ensure the role is included

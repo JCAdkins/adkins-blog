@@ -77,6 +77,20 @@ export async function getUserByUsername(
   return await res.json();
 }
 
+export async function updateUserLoginAt(userId: string) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }),
+    });
+  } catch (error) {
+    console.error("Error logging in user:", error);
+  }
+}
+
 export async function getUserStats(): Promise<
   | {
       totalUsers: number;
@@ -391,7 +405,6 @@ export async function getCommentStats(): Promise<
   try {
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/comments/stats`;
     const token = await getAuthToken();
-    console.log("Token in getCommentStats: ", token);
     if (!token) {
       console.error("No auth token found");
       return { error: "Unauthorized" };
