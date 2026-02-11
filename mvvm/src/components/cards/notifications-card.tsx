@@ -75,6 +75,7 @@ export default function NotificationCard({
         !notification.read && "bg-muted",
         className,
       )}
+      border
       footer={
         <div className="flex items-center justify-between text-xs text-gray-500">
           <span>{formatDateToShortDateTime(notification.createdAt)}</span>

@@ -11,31 +11,43 @@ interface CardProps extends RadixCardProps {
   className?: string;
   header?: React.ReactNode;
   footer?: React.ReactNode;
+  border?: boolean;
 }
 
 // Create the Card component
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ children, className, header, footer, ...props }, ref) => {
+  ({ children, className, header, footer, border, ...props }, ref) => {
     return (
       <RadixCard
         ref={ref}
         className={cn(
           "border bg-white text-white shadow-md transition-shadow hover:shadow-lg sm:m-0",
           "space-y-4",
-          className
+          className,
         )}
         {...props}
       >
         {header && (
-          <div className="mb-4 border-b pb-2">
+          <div
+            className={cn("mb-4 pb-2", border ? "border-b border-black" : "")}
+          >
             <h3 className="text-center text-lg font-medium">{header}</h3>
           </div>
         )}
         <div className="h-full flex flex-col">{children}</div>
-        {footer && <div className="mt-4 border-t pt-2 text-sm">{footer}</div>}
+        {footer && (
+          <div
+            className={cn(
+              "mt-4 pt-2 text-sm",
+              border ? "border-t border-black" : "",
+            )}
+          >
+            {footer}
+          </div>
+        )}
       </RadixCard>
     );
-  }
+  },
 );
 
 Card.displayName = "Card";

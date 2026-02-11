@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { getAuthToken } from "../utils";
+import { compare } from "bcrypt-ts";
 
 /*++===========================================================================================================++
   ||                                           USER DATABASE QUERIES                                           ||
@@ -89,6 +90,95 @@ export async function updateUserLoginAt(userId: string) {
   } catch (error) {
     console.error("Error logging in user:", error);
   }
+}
+
+type UpdateUserProfileData = {
+  name?: string;
+  email?: string;
+  username?: string;
+};
+
+export async function updateUserProfile(
+  userId: string,
+  updatedData: UpdateUserProfileData,
+) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}/profile`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    },
+  );
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || "Failed to update profile");
+  }
+
+  return res;
+}
+
+type UpdateUserPasswordData = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export async function updateUserPassword(
+  user: { id: string; email: string; username: string },
+  data: UpdateUserPasswordData,
+) {
+  const { currentPassword, newPassword } = data;
+
+  const fUser = user.email
+    ? await getUserByEmail(user.email)
+    : user.username
+      ? await getUserByUsername(user.username)
+      : null;
+
+  if (!fUser) throw new Error("User not found");
+
+  const passwordsMatch = await compare(currentPassword, fUser.password);
+  if (!passwordsMatch) throw new Error("Current password is incorrect");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${user.id}/password`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newPassword }),
+    },
+  );
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || "Failed to update password");
+  }
+
+  return res;
+}
+
+export async function getUserProfile(userId: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}/profile`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || "Failed to fetch profile");
+  }
+
+  return await res.json();
 }
 
 export async function getUserStats(): Promise<
