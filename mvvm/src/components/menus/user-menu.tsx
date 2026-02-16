@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import UserAvatar from "../ui/avatar";
 import Image from "next/image";
-import { NotificationBadge } from "../badges/notification-badge";
 
 export function UserMenu({ user }: { user: User }) {
   const router = useRouter();
@@ -36,7 +35,7 @@ export function UserMenu({ user }: { user: User }) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => console.log("Settings clicked")}>
+        <DropdownMenuItem onClick={() => router.push("/settings")}>
           Settings
         </DropdownMenuItem>
 
