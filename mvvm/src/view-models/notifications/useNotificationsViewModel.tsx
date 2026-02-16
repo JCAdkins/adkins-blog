@@ -7,7 +7,7 @@ import {
   getUserNotifications,
   markAllNotificationsAsRead,
 } from "@/lib/db/queries";
-import { Notification } from "../../../next-auth";
+import { Notification } from "@/models/notificationModel";
 import { toast } from "sonner";
 import { useNotifications } from "@/contexts/notifications-context";
 

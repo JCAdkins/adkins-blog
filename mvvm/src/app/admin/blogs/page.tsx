@@ -1,7 +1,7 @@
 import BlogAdminCard from "@/components/cards/blog-admin-card";
 import BlogCardServer from "@/components/cards/blog-card-server";
 import { getAllBlogs } from "@/lib/db/queries";
-import { Blog } from "next-auth";
+import { Blog } from "@/models/blog/blogModel";
 
 const AdminPosts = async () => {
   const blogs: Blog[] | null = await getAllBlogs();
