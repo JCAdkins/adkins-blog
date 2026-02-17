@@ -1,11 +1,6 @@
 // app/settings/page.tsx
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { toast } from "sonner";
 import {
   Camera,
   LogOut,
@@ -37,150 +32,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-// ── Validation Schemas ──
-const profileSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters." }),
-  lastName: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters." }),
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters." })
-    .max(20),
-  email: z.string().email({ message: "Please enter a valid email." }),
-});
-
-const passwordSchema = z
-  .object({
-    currentPassword: z
-      .string()
-      .min(1, { message: "Current password is required." }),
-    newPassword: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters." }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
-const privacySchema = z.object({
-  profileVisibility: z.enum(["public", "friends", "private"]),
-  activityVisible: z.boolean(),
-  connectionsVisible: z.boolean(),
-});
-
-// ── Mock data ── (replace with your real API calls)
-const mockUser = {
-  firstName: "Jordan",
-  lastName: "Adkins",
-  username: "jordydev",
-  email: "jordan@example.com",
-  avatar: "/avatar.png", // or your upload URL
-};
-
-const mockSessions = [
-  {
-    id: "1",
-    device: "MacBook Pro • Chrome",
-    location: "East Highland Park, VA",
-    lastActive: "Just now",
-    current: true,
-  },
-  {
-    id: "2",
-    device: "iPhone 15 • Safari",
-    location: "Virginia, US",
-    lastActive: "2 hours ago",
-  },
-  {
-    id: "3",
-    device: "Windows PC • Edge",
-    location: "Unknown",
-    lastActive: "3 days ago",
-  },
-];
-
-type ProfileFormValues = z.infer<typeof profileSchema>;
-type PasswordFormValues = z.infer<typeof passwordSchema>;
-type PrivacyFormValues = z.infer<typeof privacySchema>;
+import { useSettingsViewModel } from "@/view-models/settings/useSettignsViewModel";
 
 export default function SettingsPage() {
-  const [avatarPreview, setAvatarPreview] = useState(mockUser.avatar);
-
-  console.log("avatarPreview:", avatarPreview);
-
-  // Profile Form
-  const profileForm = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      firstName: mockUser.firstName,
-      lastName: mockUser.lastName,
-      username: mockUser.username,
-      email: mockUser.email,
-    },
-  });
-
-  // Password Form
-  const passwordForm = useForm<PasswordFormValues>({
-    resolver: zodResolver(passwordSchema),
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
-
-  // Privacy Form
-  const privacyForm = useForm<PrivacyFormValues>({
-    resolver: zodResolver(privacySchema),
-    defaultValues: {
-      profileVisibility: "friends",
-      activityVisible: true,
-      connectionsVisible: true,
-    },
-  });
-
-  // Handle avatar upload preview
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Handle form submissions (replace with real API calls)
-  const onProfileSubmit = async (data: ProfileFormValues) => {
-    toast.promise(
-      new Promise((resolve) => setTimeout(resolve, 1500)), // mock API delay
-      {
-        loading: "Updating profile...",
-        success: "Profile updated successfully!",
-        error: "Failed to update profile",
-      },
-    );
-  };
-
-  const onPasswordSubmit = async (data: PasswordFormValues) => {
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
-      loading: "Changing password...",
-      success: "Password changed successfully!",
-      error: "Failed to change password",
-    });
-    passwordForm.reset();
-  };
-
-  const onPrivacySubmit = async (data: PrivacyFormValues) => {
-    toast.success("Privacy settings saved!");
-  };
+  const {
+    avatarPreview,
+    isUpdating,
+    profileForm,
+    passwordForm,
+    privacyForm,
+    sessions,
+    onProfileSubmit,
+    onPasswordSubmit,
+    onPrivacySubmit,
+    handleAvatarChange,
+  } = useSettingsViewModel();
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background to-muted/30 py-12 px-4 sm:px-6 lg:px-8">
@@ -232,11 +98,10 @@ export default function SettingsPage() {
                       variant="outline"
                       type="submit"
                       className="cursor-pointer"
-                      disabled={profileForm.formState.isSubmitting}
+                      disabled={isUpdating}
+                      onClick={profileForm.handleSubmit(onProfileSubmit)}
                     >
-                      {profileForm.formState.isSubmitting
-                        ? "Saving..."
-                        : "Save Profile"}
+                      {isUpdating ? "Saving..." : "Save Profile"}
                     </Button>
                   </div>
                 }
@@ -369,11 +234,10 @@ export default function SettingsPage() {
                         type="submit"
                         variant="outline"
                         className="cursor-pointer"
-                        disabled={passwordForm.formState.isSubmitting}
+                        disabled={isUpdating}
+                        onClick={passwordForm.handleSubmit(onPasswordSubmit)}
                       >
-                        {passwordForm.formState.isSubmitting
-                          ? "Updating..."
-                          : "Update Password"}
+                        {isUpdating ? "Updating..." : "Update Password"}
                       </Button>
                     </div>
                   }
@@ -486,7 +350,7 @@ export default function SettingsPage() {
                 >
                   <div>
                     <div className="space-y-4 px-4">
-                      {mockSessions.map((session) => (
+                      {sessions.map((session) => (
                         <div
                           key={session.id}
                           className="flex items-center justify-between bg-gray-200 rounded-lg border p-4"
@@ -515,7 +379,7 @@ export default function SettingsPage() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="text-destructive hover:text-destructive"
+                              className="text-destructive hover:text-destructive cursor-pointer"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -546,11 +410,10 @@ export default function SettingsPage() {
                       type="submit"
                       variant="outline"
                       className="cursor-pointer"
-                      disabled={privacyForm.formState.isSubmitting}
+                      disabled={isUpdating}
+                      onClick={privacyForm.handleSubmit(onPrivacySubmit)}
                     >
-                      {privacyForm.formState.isSubmitting
-                        ? "Saving..."
-                        : "Save Privacy Settings"}
+                      {isUpdating ? "Saving..." : "Save Privacy Settings"}
                     </Button>
                   </div>
                 }
