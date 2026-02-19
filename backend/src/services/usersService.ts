@@ -1,8 +1,8 @@
 import bcrypt, { hash } from "bcryptjs";
 import { db } from "../lib/prisma.js";
-import { Prisma } from "@prisma/client";
 import { NewUserInput } from "../models/userModel.js";
 import { UUID } from "crypto";
+import { Prisma } from "prisma/generated/prisma/client.js";
 
 export const createUserService = async (userData: NewUserInput) => {
   const hashedPassword = await hash(userData.password, 10);
@@ -12,8 +12,8 @@ export const createUserService = async (userData: NewUserInput) => {
       username: userData.username,
       password: hashedPassword,
       role: userData.role,
-      first_name: userData.first_name ?? "",
-      last_name: userData.last_name ?? "",
+      firstName: userData.firstName ?? "",
+      lastName: userData.lastName ?? "",
     },
   });
 };
@@ -33,9 +33,9 @@ export const findUserByEmail = async (email: string, include = false) => {
     user = await _findUserInDb({
       where: { email },
       include: {
-        Comment: true,
+        comments: true,
         contactMessages: true,
-        Like: true,
+        likes: true,
         receivedNotifications: true,
         sentNotifications: true,
       },
@@ -51,9 +51,9 @@ export const findUserByUsername = async (username: string, include = false) => {
     user = await _findUserInDb({
       where: { username },
       include: {
-        Comment: true,
+        comments: true,
         contactMessages: true,
-        Like: true,
+        likes: true,
         receivedNotifications: true,
         sentNotifications: true,
       },
@@ -68,8 +68,8 @@ export const getAllUsers = async () => {
       id: true,
       email: true,
       username: true,
-      first_name: true,
-      last_name: true,
+      firstName: true,
+      lastName: true,
       role: true,
       createdAt: true,
       updatedAt: true,

@@ -53,7 +53,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id,
           role: user.role, // Ensure the role is included
           username: user.username,
-          name: `${user.first_name} ${user.last_name}`,
+          name: `${user.firstName} ${user.lastName}`,
           email: user.email,
           image: user.image,
         } as ExtendedUser;

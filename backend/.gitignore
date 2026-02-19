@@ -9,3 +9,6 @@ uploads/
 backup.sql
 
 dist/
+
+prisma/generated/prisma
+prisma/migrations

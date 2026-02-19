@@ -1,13 +1,30 @@
-import { PrismaClient } from "@prisma/client";
+// src/lib/prisma.ts
+import "dotenv/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "prisma/generated/prisma/client.js";
+import pg from "pg";
+
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not defined in .env");
+}
+
+const pool = new pg.Pool({
+  connectionString: connectionString,
+  // ssl: { rejectUnauthorized: false }, // if needed
+});
+
+const adapter = new PrismaPg(pool);
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
 export const db =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: ["query"], // Optional: logs every query to the console for debugging
-  });
+  globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ["query"] });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+// Store in global for hot-reload in dev
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = db;
+}

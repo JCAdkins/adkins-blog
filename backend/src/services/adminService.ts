@@ -1,18 +1,16 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { db } from "@/lib/prisma.js";
 
 /*** =====================================================================*
  *  Users Stats Service Functions
  * ======================================================================*/
 
 export async function getTotalUsers() {
-  const totalUsers = await prisma.user.count();
+  const totalUsers = await db.user.count();
   return totalUsers;
 }
 
 export async function getActiveUsers() {
-  const activeUsers = await prisma.user.count({
+  const activeUsers = await db.user.count({
     where: {
       lastLoginAt: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
     },
@@ -23,7 +21,7 @@ export async function getActiveUsers() {
 export async function getNewUsersThisWeek() {
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  const newUsersThisWeek = await prisma.user.count({
+  const newUsersThisWeek = await db.user.count({
     where: {
       createdAt: {
         gte: oneWeekAgo,
@@ -36,7 +34,7 @@ export async function getNewUsersThisWeek() {
 export async function getNewUsersThisMonth() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-  const newUsersThisMonth = await prisma.user.count({
+  const newUsersThisMonth = await db.user.count({
     where: {
       createdAt: {
         gte: oneMonthAgo,
@@ -47,7 +45,7 @@ export async function getNewUsersThisMonth() {
 }
 
 export async function getUsersPerDay() {
-  const usersPerDayRaw = await prisma.$queryRawUnsafe<
+  const usersPerDayRaw = await db.$queryRawUnsafe<
     Array<{ date: string; count: number }>
   >(`
     SELECT 
@@ -92,7 +90,7 @@ export async function getUsersPerDay() {
 }
 
 export async function getUsersPerMonth() {
-  const usersPerMonthRaw = await prisma.$queryRawUnsafe<
+  const usersPerMonthRaw = await db.$queryRawUnsafe<
     Array<{ year: number; month: number; count: number }>
   >(`
     SELECT 
@@ -131,10 +129,10 @@ export async function getUsersPerMonth() {
 }
 
 export async function getTopActiveUsers() {
-  const topActiveUsers = await prisma.user.findMany({
+  const topActiveUsers = await db.user.findMany({
     take: 5,
     orderBy: {
-      Comment: { _count: "desc" },
+      comments: { _count: "desc" },
     },
     select: {
       id: true,
@@ -142,7 +140,7 @@ export async function getTopActiveUsers() {
       email: true,
       lastLoginAt: true,
       _count: {
-        select: { Comment: true, Like: true },
+        select: { comments: true, likes: true },
       },
     },
   });
@@ -154,19 +152,19 @@ export async function getTopActiveUsers() {
  * ======================================================================*/
 
 export const getTotalComments = async () => {
-  const totalComments = await prisma.comment.count();
+  const totalComments = await db.comment.count();
   return totalComments;
 };
 
 export const getTotalReplies = async () => {
-  const totalReplies = await prisma.comment.count({
+  const totalReplies = await db.comment.count({
     where: { parentId: { not: null } },
   });
   return totalReplies;
 };
 
 export const getAverageCommentsPerBlog = async () => {
-  const result = await prisma.comment.groupBy({
+  const result = await db.comment.groupBy({
     by: ["postId"],
     _count: {
       postId: true,
@@ -183,7 +181,7 @@ export const getAverageCommentsPerBlog = async () => {
 };
 
 export const getTopCommentedBlogs = async () => {
-  const topCommentedBlogs = await prisma.blogPost.findMany({
+  const topCommentedBlogs = await db.blogPost.findMany({
     take: 5,
     orderBy: {
       Comment: { _count: "desc" },
@@ -198,7 +196,7 @@ export const getTopCommentedBlogs = async () => {
 };
 
 export const getCommentsPerDay = async () => {
-  const commentsPerDayRaw = await prisma.$queryRawUnsafe<
+  const commentsPerDayRaw = await db.$queryRawUnsafe<
     Array<{ date: string; count: number }>
   >(`
     SELECT 
@@ -239,7 +237,7 @@ export const getCommentsPerDay = async () => {
 };
 
 export const getCommentsPerMonth = async () => {
-  const commentsPerMonthRaw = await prisma.$queryRawUnsafe<
+  const commentsPerMonthRaw = await db.$queryRawUnsafe<
     Array<{ year: number; month: number; count: number }>
   >(`
     SELECT 

@@ -1,6 +1,7 @@
 // src/middleware/verifyToken.ts
 import express from "express";
 import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 const JWT_SECRET = process.env.NEXT_AUTH_SECRET;
 
@@ -15,7 +16,7 @@ export interface AuthenticatedRequest extends express.Request {
 export const verifyToken = (
   req: AuthenticatedRequest,
   res: express.Response,
-  next: express.NextFunction
+  next: express.NextFunction,
 ): void => {
   const authHeader = req.headers.authorization;
 
