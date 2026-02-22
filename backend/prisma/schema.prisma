@@ -49,8 +49,11 @@ model User {
   location    String?
   isVerified  Boolean @default(false)
 
+  // Security
+  twoFactorEnabled  Boolean @default(false)
+
   // Privacy / visibility
-  profileVisibility  String  @default("friends")
+  profileVisibility  String  @default("users")
   activityVisible    Boolean @default(true)
 
   role        String   @default("user")

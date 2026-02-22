@@ -100,3 +100,57 @@ export async function downloadImmichImageThumbnail(id: string) {
     return null;
   }
 }
+
+export async function addAssetToAlbum(albumId: string, assetId: string) {
+  await axios.put(
+    `${BASE_URL}/albums/${albumId}/assets`,
+    {
+      ids: [assetId],
+    },
+    {
+      headers: {
+        "x-api-key": API_KEY,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+}
+
+export async function getOrCreateAvatarsAlbum(): Promise<string> {
+  // Get all albums
+  const res = await axios.get(`${BASE_URL}/albums`, {
+    headers: { "x-api-key": API_KEY },
+  });
+
+  const existing = res.data.find((album: any) => album.albumName === "avatars");
+  if (existing) return existing.id;
+
+  // Create if it doesn't exist
+  const created = await axios.post(
+    `${BASE_URL}/albums`,
+    {
+      albumName: "avatars",
+    },
+    {
+      headers: {
+        "x-api-key": API_KEY,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return created.data.id;
+}
+
+export async function uploadAvatarToImmich(
+  bFile: any,
+  file: any,
+): Promise<string> {
+  const asset = await PostNewImmichImage(bFile, file);
+  if (!asset?.id) throw new Error("Failed to upload avatar to Immich");
+
+  const albumId = await getOrCreateAvatarsAlbum();
+  await addAssetToAlbum(albumId, asset.id);
+
+  return asset.id; // store this in your User.image column
+}

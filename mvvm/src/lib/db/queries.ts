@@ -1,12 +1,23 @@
 // lib/db/queries.ts
 
 import axios from "axios";
-import { Blog, BlogComment, NewBlog, User } from "next-auth";
+import { User } from "next-auth";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { getAuthToken } from "../utils";
-import { compare } from "bcrypt-ts";
+import { UserDb } from "@/models/userDb";
+import { Blog } from "@/models/blog/blogModel";
+import { NewBlog } from "@/models/blog/newBlogModel";
+import { BlogComment } from "@/models/blog/blogCommentModel";
+import {
+  PasswordFormValues,
+  PrivacyFormValues,
+  ProfileFormValues,
+} from "@/schemas/settings";
+import { UUID } from "crypto";
+
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 /*++===========================================================================================================++
   ||                                           USER DATABASE QUERIES                                           ||
@@ -47,7 +58,7 @@ export async function createUser(userData: {
 export async function getUserByEmail(
   email: string,
   include?: boolean,
-): Promise<User | null> {
+): Promise<UserDb | null> {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_BASE_URL}/users/email/${encodeURIComponent(email)}`,
   );
@@ -65,7 +76,7 @@ export async function getUserByEmail(
 export async function getUserByUsername(
   username: string,
   include?: boolean,
-): Promise<User | null> {
+): Promise<UserDb | null> {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_BASE_URL}/users/username/${encodeURIComponent(username)}`,
   );
@@ -90,76 +101,6 @@ export async function updateUserLoginAt(userId: string) {
   } catch (error) {
     console.error("Error logging in user:", error);
   }
-}
-
-type UpdateUserProfileData = {
-  name?: string;
-  email?: string;
-  username?: string;
-};
-
-export async function updateUserProfile(
-  userId: string,
-  updatedData: UpdateUserProfileData,
-) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}/profile`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    },
-  );
-
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || "Failed to update profile");
-  }
-
-  return res;
-}
-
-type UpdateUserPasswordData = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
-
-export async function updateUserPassword(
-  user: { id: string; email: string; username: string },
-  data: UpdateUserPasswordData,
-) {
-  const { currentPassword, newPassword } = data;
-
-  const fUser = user.email
-    ? await getUserByEmail(user.email)
-    : user.username
-      ? await getUserByUsername(user.username)
-      : null;
-
-  if (!fUser) throw new Error("User not found");
-
-  const passwordsMatch = await compare(currentPassword, fUser.password);
-  if (!passwordsMatch) throw new Error("Current password is incorrect");
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${user.id}/password`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ newPassword }),
-    },
-  );
-
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || "Failed to update password");
-  }
-
-  return res;
 }
 
 export async function getUserProfile(userId: string) {
@@ -209,9 +150,156 @@ export async function getUserStats(): Promise<
     return res.data;
   } catch (error) {
     console.error("Error fetching user stats:", error);
-    return { error: "There was an error fetching user stats" };
+    return { error: `There was an error fetching user stats. \n${error}` };
   }
 }
+
+export async function getMe(): Promise<User | { error: string }> {
+  try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`;
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data: User = res.data;
+    return {
+      id: data.id,
+      role: data.role,
+      username: data.username,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      image: data.image,
+      location: data.location,
+      profileVisibility: data.profileVisibility,
+      activityVisible: data.activityVisible,
+      sessions: data.sessions,
+    };
+  } catch (error) {
+    console.error("Error fetching user stats:", error);
+    return { error: `There was an error fetching user stats. \n${error}` };
+  }
+}
+
+export async function updateUserProfile(
+  data: ProfileFormValues,
+  id: UUID,
+): Promise<void> {
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
+
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`;
+  const res = await axios.patch(
+    url,
+    { ...data, id: id },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return res.data;
+}
+
+export async function updateUserPassword(
+  data: PasswordFormValues,
+  id: UUID,
+): Promise<void> {
+  try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/password`;
+    const res = await axios.patch(
+      url,
+      {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+        id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return res.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error);
+  }
+}
+
+export async function updateUserPrivacy(
+  data: PrivacyFormValues,
+  id: UUID,
+): Promise<void> {
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
+
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/privacy`;
+  const res = await axios.patch(
+    url,
+    { data, id: id },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return res.data;
+}
+
+export async function uploadAvatar(
+  file: File,
+  id: string,
+): Promise<{ image: string }> {
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
+
+  const formData = new FormData();
+  formData.append("avatar", file);
+  formData.append("id", id);
+
+  const res = await axios.patch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/avatar`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return res.data;
+}
+
+// export async function getUserSessions(): Promise<
+//   UserSession[] | { error: string }
+// > {
+//   try {
+//     const tokenRes = await axios.get("/api/auth/token");
+//     const { token } = tokenRes.data;
+
+//     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/sessions`;
+//     const res = await axios.get(url, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return res.data;
+//   } catch (error) {
+//     console.error("Error fetching user stats:", error);
+//     return { error: `There was an error fetching user stats. \n${error}` };
+//   }
+// }
 
 /*++===========================================================================================================++
   ||                                           BLOG DATABASE QUERIES                                           ||

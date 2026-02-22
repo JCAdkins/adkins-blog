@@ -40,7 +40,7 @@ export interface LoginActionState {
 
 export const login = async (
   _: LoginActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<LoginActionState> => {
   try {
     const validatedData = authLogInFormSchema.parse({
@@ -88,7 +88,7 @@ export interface RegisterActionState {
 
 export const register = async (
   _: RegisterActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<RegisterActionState> => {
   try {
     const userData = authRegisterFormSchema.parse({
@@ -100,13 +100,13 @@ export const register = async (
       role: "user",
     });
 
-    let user = await getUserByEmail(userData.email);
-    if (user) return { status: "email_in_use" };
+    let tUser = await getUserByEmail(userData.email);
+    if (tUser) return { status: "email_in_use" };
 
-    user = await getUserByUsername(userData.username);
-    if (user) return { status: "username_taken" };
+    tUser = await getUserByUsername(userData.username);
+    if (tUser) return { status: "username_taken" };
 
-    user = await createUser(userData);
+    await createUser(userData);
     await signIn("credentials", {
       email: userData.email,
       password: userData.password,

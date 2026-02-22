@@ -1,17 +1,25 @@
 import * as z from "zod";
 
+const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
+
 export const profileSchema = z.object({
-  firstName: z.string().min(2),
-  lastName: z.string().min(2),
+  firstName: z.string(),
+  lastName: z.string(),
   username: z.string().min(3).max(20),
-  email: z.string().email(),
+  email: z.string().email("Invalid email address"),
 });
 
 export const passwordSchema = z
   .object({
-    currentPassword: z.string().min(1),
-    newPassword: z.string().min(8),
-    confirmPassword: z.string(),
+    currentPassword: z.string().min(10, "Minimum 10 characters required"),
+    newPassword: z
+      .string()
+      .min(10, "Minimum 10 characters required")
+      .refine(
+        (val) => (val.match(specialCharRegex) ?? []).length >= 2,
+        "Must contain at least 2 special characters",
+      ),
+    confirmPassword: z.string().min(10, "Minimum 10 characters required"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -19,9 +27,8 @@ export const passwordSchema = z
   });
 
 export const privacySchema = z.object({
-  profileVisibility: z.enum(["public", "friends", "private"]),
+  profileVisibility: z.enum(["public", "users", "private"]),
   activityVisible: z.boolean(),
-  connectionsVisible: z.boolean(),
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;
