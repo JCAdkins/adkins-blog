@@ -8,30 +8,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User } from "next-auth";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import UserAvatar from "../ui/avatar";
-import Image from "next/image";
+import { useAvatarSrc } from "@/view-models/useAvatarSrc";
 
 export function UserMenu({ user }: { user: User }) {
   const router = useRouter();
-  const { data: _, status, update } = useSession();
+  const avatarSrc = useAvatarSrc(user.image);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className=" cursor-pointer rounded-full text-sm font-medium">
-          {user.image ? (
-            <UserAvatar src={user.image} alt={user.username[0].toUpperCase()} />
-          ) : (
-            <Image
-              width={6}
-              height={6}
-              src="/generic-prof-pic.webp"
-              alt="Generic profile"
-              className="rounded-full h-8 w-8"
-            />
-          )}
+          <UserAvatar
+            src={avatarSrc}
+            fallbackSrc="/generic-prof-pic.webp"
+            alt={user.username[0].toUpperCase()}
+          />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

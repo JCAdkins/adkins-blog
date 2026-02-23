@@ -37,11 +37,13 @@ import { useSettingsViewModel } from "@/view-models/settings/useSettignsViewMode
 export default function SettingsPage() {
   const {
     avatarPreview,
+    isLoading,
     isUpdating,
     profileForm,
     passwordForm,
     privacyForm,
     sessions,
+    privacyDefaults,
     onProfileSubmit,
     onPasswordSubmit,
     onPrivacySubmit,
@@ -246,6 +248,12 @@ export default function SettingsPage() {
                     onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}
                     className="space-y-6"
                   >
+                    <input
+                      type="text"
+                      autoComplete="username"
+                      readOnly
+                      className="hidden"
+                    />
                     <div className="space-y-4">
                       <FormField
                         control={passwordForm.control}
@@ -293,7 +301,11 @@ export default function SettingsPage() {
                           <FormItem>
                             <FormLabel>Confirm New Password</FormLabel>
                             <FormControl>
-                              <Input {...field} type="password" />
+                              <Input
+                                {...field}
+                                type="password"
+                                autoComplete="new-password"
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -357,7 +369,7 @@ export default function SettingsPage() {
                         >
                           <div className="flex items-start gap-4">
                             <div className="rounded-full bg-muted p-2">
-                              {session.current ? (
+                              {session.isCurrent ? (
                                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                               ) : (
                                 <AlertCircle className="h-5 w-5 text-amber-600" />
@@ -366,8 +378,9 @@ export default function SettingsPage() {
                             <div>
                               <p className="font-medium">{session.device}</p>
                               <p className="text-sm text-muted-foreground">
-                                {session.location} • {session.lastActive}
-                                {session.current && (
+                                {`${session.city}, ${session.region}, ${session.country}`}{" "}
+                                • {session.lastActiveAt.toTimeString()}
+                                {session.isCurrent && (
                                   <span className="ml-2 inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
                                     Current
                                   </span>
@@ -375,7 +388,7 @@ export default function SettingsPage() {
                               </p>
                             </div>
                           </div>
-                          {!session.current && (
+                          {!session.isCurrent && (
                             <Button
                               variant="ghost"
                               size="icon"
@@ -424,39 +437,42 @@ export default function SettingsPage() {
                 >
                   <div className="space-y-6">
                     {/* Profile Visibility */}
-                    <FormField
-                      control={privacyForm.control}
-                      name="profileVisibility"
-                      render={({ field }: { field: any }) => (
-                        <FormItem>
-                          <FormLabel>Profile Visibility</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select visibility" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="public">
-                                Public – Anyone can see
-                              </SelectItem>
-                              <SelectItem value="friends">
-                                Friends only
-                              </SelectItem>
-                              <SelectItem value="private">
-                                Private – Only me
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormDescription>
-                            Who can see your profile, posts, and activity
-                          </FormDescription>
-                        </FormItem>
-                      )}
-                    />
+                    {privacyDefaults && (
+                      <FormField
+                        control={privacyForm.control}
+                        name="profileVisibility"
+                        render={({ field }: { field: any }) => (
+                          <FormItem>
+                            <FormLabel>Profile Visibility</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                              key={privacyDefaults?.profileVisibility}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select visibility" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="public">
+                                  Public – Anyone can see
+                                </SelectItem>
+                                <SelectItem value="users">
+                                  Users - Anyone with account
+                                </SelectItem>
+                                <SelectItem value="private">
+                                  Private – Only me
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormDescription>
+                              Who can see your profile, posts, and activity
+                            </FormDescription>
+                          </FormItem>
+                        )}
+                      />
+                    )}
 
                     {/* Activity Visibility */}
                     <FormField
@@ -471,31 +487,6 @@ export default function SettingsPage() {
                             <FormDescription>
                               Allow others to see when you're online or recently
                               active
-                            </FormDescription>
-                          </div>
-                          <FormControl>
-                            <Switch
-                              className="bg-gray-400"
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Connections Visibility */}
-                    <FormField
-                      control={privacyForm.control}
-                      name="connectionsVisible"
-                      render={({ field }: { field: any }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <FormLabel className="text-base">
-                              Show Connections
-                            </FormLabel>
-                            <FormDescription>
-                              Display who you follow and who follows you
                             </FormDescription>
                           </div>
                           <FormControl>

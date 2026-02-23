@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { Controller } from "react-hook-form";
+import { Controller, useFormState } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 
@@ -18,9 +18,20 @@ Form.displayName = "Form";
 const FormFieldContext = React.createContext<any>({});
 
 const FormField = ({ control, name, render, children }: FormFieldProps) => {
+  const { errors } = useFormState({ control, name });
+  const error = errors[name];
+
   return (
-    <FormFieldContext.Provider value={{ name, control }}>
-      {render ? render({ field: { name, control } }) : children}
+    <FormFieldContext.Provider value={{ name, control, error }}>
+      {render ? (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field }) => render({ field }) as React.ReactElement}
+        />
+      ) : (
+        children
+      )}
     </FormFieldContext.Provider>
   );
 };
@@ -75,7 +86,7 @@ const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, forwardedRef) => {
-  const { name, control } = useFormField();
+  const { name, control, error } = useFormField();
 
   return (
     <Controller
@@ -83,7 +94,15 @@ const FormControl = React.forwardRef<
       control={control}
       render={({ field }) => (
         // Let Controller pass the ref automatically
-        <Slot {...field} {...props} ref={forwardedRef} />
+        <Slot
+          {...field}
+          {...props}
+          ref={forwardedRef}
+          className={cn(
+            props.className,
+            error && "border-destructive focus-visible:ring-destructive",
+          )}
+        />
       )}
     />
   );
@@ -93,13 +112,19 @@ FormControl.displayName = "FormControl";
 const FormDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-  />
-));
+>(({ className, ...props }, ref) => {
+  const { error } = useFormField();
+
+  if (error) return null;
+
+  return (
+    <p
+      ref={ref}
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  );
+});
 FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<

@@ -5,10 +5,11 @@ import { getBlogById } from "@/lib/db/queries";
 import { getImmichAsset } from "@/lib/services/immich-service";
 import { formatDateToMMDDYYYY } from "@/lib/utils";
 import ImageGallery from "@/components/containers/image-container";
-import { Blog, BlogPostImage } from "next-auth";
 import BlogContentSkeleton from "../skeletons/blog-content-skeleton";
 import BlogImageSkeleton from "../skeletons/blog-image-skeleton";
 import React from "react";
+import { Blog } from "@/models/blog/blogModel";
+import { BlogPostImage } from "@/models/blog/blogPostImageModel";
 
 type Props = {
   id: string;
@@ -34,7 +35,7 @@ export default function BlogPostContent({ id }: Props) {
               getImmichAsset({ type: "original", id: img.imageId }),
             ]);
             return { thumbnail, original };
-          })
+          }),
         );
         setImages(imgs);
       }

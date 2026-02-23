@@ -2,7 +2,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { CommentCard } from "../cards/comment/comment-card";
 import { CommentInput } from "../inputs/comment-input";
 import { useComments } from "@/contexts/comments-context"; // Updated path if needed

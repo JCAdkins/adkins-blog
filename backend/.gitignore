@@ -5,7 +5,11 @@ node_modules
 .vscode/
 
 uploads/
+avatars/
 
 backup.sql
 
 dist/
+
+prisma/generated/prisma
+prisma/migrations

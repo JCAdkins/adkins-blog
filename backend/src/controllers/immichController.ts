@@ -12,13 +12,10 @@ interface CustomRequest extends express.Request {
   file?: Express.Multer.File;
 }
 
-export async function postNewImage(
-  req: CustomRequest, // IMPORTANT: Use CustomRequest here
-  res: express.Response,
-) {
+export async function postNewImage(req: CustomRequest, res: express.Response) {
   try {
     console.log("Creating new image.");
-    const uploadedFiles = req.files; // This is where the file data will be
+    const uploadedFiles = req.files;
 
     if (!uploadedFiles || !Array.isArray(uploadedFiles)) {
       console.error("No file found on req.file");
@@ -30,12 +27,26 @@ export async function postNewImage(
       uploadedFiles.map(async (file: any) => {
         const filePathOnServer = file.path;
         const binaryData = fs.createReadStream(filePathOnServer);
-        return await PostNewImmichImage(binaryData, file);
+        const result = await PostNewImmichImage(binaryData, file);
+
+        // Clean up after successful upload
+        fs.unlinkSync(filePathOnServer);
+
+        return result;
       }),
     );
 
     res.status(200).json(urls);
   } catch (error) {
+    // Clean up any remaining temp files if something went wrong
+    if (req.files && Array.isArray(req.files)) {
+      req.files.forEach((file: any) => {
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      });
+    }
+
     console.error("Error in immichController:", error);
     res.status(500).json({ message: "Internal server error" });
   }

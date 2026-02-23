@@ -1,16 +1,20 @@
+import { UUID } from "crypto";
 import NextAuth from "next-auth";
 
 declare module "next-auth" {
   interface User {
-    id: string;
+    id: UUID;
     role: string;
     username: string;
-    first_name?: string;
-    last_name?: string;
-    name?: string;
-    email?: string;
+    firstName?: string;
+    lastName?: string;
+    email: string;
     image?: string;
-    password: string;
+    location?: string;
+
+    profileVisibility: "public" | "users" | "private";
+    activityVisible: boolean;
+    sessions: UserSession[];
   }
   interface Session {
     token?: any;

@@ -1,10 +1,8 @@
 import { BlogPostInput } from "../models/blogPostModel.js";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { db } from "@/lib/prisma.js";
 
 export async function getAllBlogPosts() {
-  return await prisma.blogPost.findMany({
+  return await db.blogPost.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -19,7 +17,7 @@ export async function getAllBlogPosts() {
 }
 
 export const getFeaturedBlogs = async () => {
-  return await prisma.blogPost.findMany({
+  return await db.blogPost.findMany({
     where: {
       featured: "true", // If 'featured' is a string (e.g., "true" instead of boolean)
     },
@@ -40,7 +38,7 @@ export const getFeaturedBlogs = async () => {
 // Get a single blog post by ID
 export const getBlogPostById = async (id: string) => {
   console.log("returning blog fetch...");
-  return await prisma.blogPost.findUnique({
+  return await db.blogPost.findUnique({
     where: { id },
     include: {
       blogPostImages: true,
@@ -51,7 +49,7 @@ export const getBlogPostById = async (id: string) => {
 export async function createBlogPost(input: BlogPostInput) {
   const { title, description, genre, content, featured, images } = input;
 
-  const blogPost = await prisma.blogPost.create({
+  const blogPost = await db.blogPost.create({
     data: {
       title,
       description,
@@ -90,7 +88,7 @@ export async function createBlogPost(input: BlogPostInput) {
 
 // Delete a blog post by ID
 export async function deleteBlogPost(id: string) {
-  return await prisma.blogPost.delete({
+  return await db.blogPost.delete({
     where: { id },
   });
 }
