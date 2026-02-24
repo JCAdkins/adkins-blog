@@ -1,4 +1,4 @@
-import { Prisma } from "../../prisma/generated/prisma/index.js";
+import { Prisma } from "../generated/prisma/index.js";
 
 export type CommentInput = {
   content: string;
