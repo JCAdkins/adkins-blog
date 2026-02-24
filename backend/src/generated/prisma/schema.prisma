@@ -1,0 +1,159 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["driverAdapters"]
+}
+
+model BlogPost {
+  id             String          @id @default(uuid())
+  title          String
+  content        String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  featured       String          @default("false")
+  description    String          @default("No description provided.")
+  genre          String?
+  blogPostImages BlogPostImage[]
+  Comment        Comment[]
+}
+
+model Image {
+  id             String          @id
+  status         String
+  blogPostImages BlogPostImage[]
+}
+
+model BlogPostImage {
+  blogPostId String
+  imageId    String
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id])
+  image      Image    @relation(fields: [imageId], references: [id])
+
+  @@id([blogPostId, imageId])
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  username String @unique
+
+  firstName  String?
+  lastName   String?
+  image      String?
+  location   String?
+  isVerified Boolean @default(false)
+
+  // Security
+  twoFactorEnabled Boolean @default(false)
+
+  // Privacy / visibility
+  profileVisibility String  @default("users")
+  activityVisible   Boolean @default(true)
+
+  role        String    @default("user")
+  lastLoginAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  contactMessages       ContactMessage[]
+  comments              Comment[]
+  likes                 Like[]
+  receivedNotifications Notification[]   @relation("NotificationRecipient")
+  sentNotifications     Notification[]   @relation("NotificationActor")
+  sessions              UserSession[]
+}
+
+model UserSession {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  device  String
+  browser String
+  os      String?
+
+  city    String?
+  region  String?
+  country String?
+
+  ipAddress String?
+
+  lastActiveAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  isCurrent Boolean @default(false)
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  userId    String?
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+  subject   String
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id                      String         @id @default(cuid())
+  content                 String
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  postId                  String
+  authorId                String
+  parentId                String?
+  isDeleted               Boolean        @default(false)
+  author                  User           @relation(fields: [authorId], references: [id])
+  parent                  Comment?       @relation("CommentReplies", fields: [parentId], references: [id])
+  replies                 Comment[]      @relation("CommentReplies")
+  post                    BlogPost       @relation(fields: [postId], references: [id])
+  likes                   Like[]         @relation("CommentLikes")
+  targetedByNotifications Notification[] @relation("CommentTarget")
+  repliedInNotifications  Notification[] @relation("ReplyTarget")
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  commentId String
+  createdAt DateTime @default(now())
+  comment   Comment  @relation("CommentLikes", fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, commentId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  message   String
+  read      Boolean          @default(false)
+  userId    String
+  commentId String?
+  createdAt DateTime         @default(now())
+  actorId   String
+  replyId   String?
+  actor     User             @relation("NotificationActor", fields: [actorId], references: [id])
+  comment   Comment?         @relation("CommentTarget", fields: [commentId], references: [id])
+  reply     Comment?         @relation("ReplyTarget", fields: [replyId], references: [id])
+  user      User             @relation("NotificationRecipient", fields: [userId], references: [id])
+}
+
+enum NotificationType {
+  LIKE
+  REPLY
+}
+
+enum Role {
+  user
+  admin
+}
