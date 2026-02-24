@@ -1,5 +1,5 @@
+import "dotenv/config";
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/user-routes.js";
 import immichRoutes from "./routes/immich-routes.js";
@@ -10,7 +10,6 @@ import messagesRoutes from "./routes/messages-routes.js";
 import notificationRoutes from "./routes/notification-routes.js";
 import adminRoutes from "./routes/admin-routes.js";
 
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 

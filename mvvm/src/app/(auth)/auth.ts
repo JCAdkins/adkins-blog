@@ -48,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!passwordsMatch) return null;
 
         // Add role to the user object returned after successful login
-        await updateUserLoginAt(user.id); // Log the user in (update last login time)
+        await updateUserLoginAt(user.id, credentials.userAgent); // Log the user in (update last login time)
         return {
           id: user.id,
           role: user.role, // Ensure the role is included

@@ -51,6 +51,7 @@ export const login = async (
     const result = await signIn("credentials", {
       email: validatedData.email,
       password: validatedData.password,
+      userAgent: formData.get("userAgent") ?? "",
       redirect: false,
     });
 

@@ -22,7 +22,8 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export const db =
-  globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ["query"] });
+  globalForPrisma.prisma ??
+  new PrismaClient({ adapter, log: ["warn", "error"] });
 
 // Store in global for hot-reload in dev
 if (process.env.NODE_ENV !== "production") {

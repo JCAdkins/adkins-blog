@@ -16,6 +16,8 @@ import {
 import { User } from "next-auth";
 import { UserSession } from "@/models/userSession";
 import {
+  deleteAllOtherSessions,
+  deleteSession,
   getMe,
   updateUserPassword,
   updateUserPrivacy,
@@ -112,13 +114,13 @@ export function useSettingsViewModel() {
       user?.firstName === data.firstName &&
       user.lastName === data.lastName &&
       user.username === data.username &&
-      user.email === data.email
+      user.email === data.email &&
+      !avatarFile
     ) {
-      if (!avatarFile) {
-        toast("No data has changed");
-      }
+      toast("No data has changed");
       return;
     }
+
     setIsUpdating(true);
     const validated = profileSchema.parse({
       firstName: data.firstName,
@@ -128,8 +130,8 @@ export function useSettingsViewModel() {
     });
     toast.promise(
       Promise.all([
-        avatarFile ? uploadAvatar(avatarFile, user!.id) : Promise.resolve(),
-        updateUserProfile(validated, user!.id),
+        avatarFile ? uploadAvatar(avatarFile) : Promise.resolve(),
+        updateUserProfile(validated),
       ]).finally(() => setIsUpdating(false)),
       {
         loading: "Updating profile...",
@@ -146,9 +148,8 @@ export function useSettingsViewModel() {
       newPassword: data.newPassword,
       confirmPassword: data.confirmPassword,
     });
-    const res = updateUserPassword(validated, user!.id);
     toast.promise(
-      updateUserPassword(validated, user!.id)
+      updateUserPassword(validated)
         .then(() => passwordForm.reset())
         .finally(() => setIsUpdating(false)),
       {
@@ -159,10 +160,36 @@ export function useSettingsViewModel() {
     );
   };
 
+  const onSessionDelete = async (id: string) => {
+    toast.promise(deleteSession(id), {
+      loading: "Deleting session...",
+      success: "Deleted!",
+      error: (err) => err.message ?? "Something went wrong",
+    });
+    setSessions(sessions.filter((session) => session.id !== id));
+  };
+
+  const removeAllOtherSessions = async () => {
+    const currSession = sessions.filter((session) => session.isCurrent);
+    toast.promise(deleteAllOtherSessions(currSession[0].id), {
+      loading: "Removing all other sessions...",
+      success: "All non-active sessions removed!",
+      error: (err) => err.message ?? "Something went wrong",
+    });
+    setSessions(currSession);
+  };
+
   const onPrivacySubmit = async (data: PrivacyFormValues) => {
+    if (
+      data.activityVisible === user?.activityVisible &&
+      data.profileVisibility === user.profileVisibility
+    ) {
+      toast.error("No data was changed. Aborting save.");
+      return;
+    }
     setIsUpdating(true);
     toast.promise(
-      updateUserPrivacy(data, user!.id).finally(() => setIsUpdating(false)),
+      updateUserPrivacy(data).finally(() => setIsUpdating(false)),
       {
         loading: "Updating privacy...",
         success: "Saved!",
@@ -185,7 +212,9 @@ export function useSettingsViewModel() {
     onProfileSubmit,
     onPasswordSubmit,
     onPrivacySubmit,
+    onSessionDelete,
     handleAvatarChange,
+    removeAllOtherSessions,
 
     sessions,
   };

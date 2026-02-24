@@ -47,7 +47,9 @@ export default function SettingsPage() {
     onProfileSubmit,
     onPasswordSubmit,
     onPrivacySubmit,
+    onSessionDelete,
     handleAvatarChange,
+    removeAllOtherSessions,
   } = useSettingsViewModel();
 
   return (
@@ -353,9 +355,10 @@ export default function SettingsPage() {
                       <Button
                         variant="outline"
                         className="cursor-pointer text-destructive hover:bg-destructive/10"
+                        onClick={removeAllOtherSessions}
                       >
                         <LogOut className="mr-2 h-4 w-4" />
-                        Sign out all other sessions
+                        Remove all inactive sessions
                       </Button>
                     </div>
                   }
@@ -378,7 +381,7 @@ export default function SettingsPage() {
                             <div>
                               <p className="font-medium">{session.device}</p>
                               <p className="text-sm text-muted-foreground">
-                                {`${session.city}, ${session.region}, ${session.country}`}{" "}
+                                {`${session.city ? `${session.city}, ` : ""} ${session.region ? `${session.region}, ` : ""} ${session.country ? `${session.country}` : ""}`}{" "}
                                 • {session.lastActiveAt.toTimeString()}
                                 {session.isCurrent && (
                                   <span className="ml-2 inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
@@ -393,6 +396,7 @@ export default function SettingsPage() {
                               variant="ghost"
                               size="icon"
                               className="text-destructive hover:text-destructive cursor-pointer"
+                              onClick={() => onSessionDelete(session.id)}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>

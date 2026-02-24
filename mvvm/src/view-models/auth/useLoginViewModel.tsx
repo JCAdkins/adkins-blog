@@ -35,6 +35,7 @@ export const useLoginViewModel = () => {
 
   const onSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
+    formData.append("userAgent", navigator.userAgent);
     formAction(formData);
   };
 

@@ -1,6 +1,11 @@
+// src/services/sessionService.ts
+
 import bcrypt, { hash } from "bcryptjs";
+import express from "express";
 import { db } from "../lib/prisma.js";
 import fs from "fs";
+import { UAParser } from "ua-parser-js";
+import geoip from "geoip-lite";
 import { NewUserInput } from "../models/userModel.js";
 import { UUID } from "crypto";
 import { Prisma } from "prisma/generated/prisma/client.js";
@@ -74,6 +79,76 @@ export const getUserSessions = async (id: UUID) => {
   return await db.userSession.findMany({
     where: { userId: id },
     orderBy: { lastActiveAt: "desc" },
+  });
+};
+
+export const createUserSession = async (
+  userId: string,
+  userAgent: string,
+  req: express.Request,
+) => {
+  console.log("creating session...");
+  const parser = new UAParser(userAgent);
+  const ua = parser.getResult();
+
+  const rawIp =
+    (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
+    req.socket.remoteAddress ||
+    "";
+
+  const ip =
+    process.env.NODE_ENV === "development"
+      ? "8.8.8.8" // Google's IP, just for testing geo lookup
+      : rawIp;
+
+  const geo = geoip.lookup(ip);
+
+  return await db.userSession.create({
+    data: {
+      userId,
+      device: ua.device.vendor
+        ? `${ua.device.vendor} ${ua.device.model}`
+        : "Unknown",
+      browser: `${ua.browser.name} ${ua.browser.version}`,
+      os: `${ua.os.name} ${ua.os.version}`,
+      ipAddress: ip,
+      city: geo?.city,
+      region: geo?.region,
+      country: geo?.country,
+      isCurrent: true,
+      lastActiveAt: new Date(),
+    },
+  });
+};
+
+export const deactivateOtherSessions = async (
+  userId: string,
+  currentSessionId: string,
+) => {
+  console.log("deactivating other sessions...");
+  const sessions = await db.userSession.updateMany({
+    where: {
+      userId,
+      id: { not: currentSessionId },
+    },
+    data: { isCurrent: false },
+  });
+  return sessions;
+};
+
+export const deleteSession = async (sessionId: string) => {
+  await db.userSession.delete({ where: { id: sessionId } });
+};
+
+export const deleteAllOtherSessions = async (
+  userId: string,
+  currentSessionId: string,
+) => {
+  await db.userSession.deleteMany({
+    where: {
+      userId,
+      id: { not: currentSessionId },
+    },
   });
 };
 

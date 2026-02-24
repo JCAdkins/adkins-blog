@@ -16,6 +16,7 @@ export type UserSession = {
 
   ipAddress?: string;
 
+  createdAt: Date;
   lastActiveAt: Date;
 
   isCurrent: boolean;

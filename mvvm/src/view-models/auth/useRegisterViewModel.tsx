@@ -53,6 +53,7 @@ export const useRegisterViewModel = () => {
   const onSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
     setUsername(formData.get("username") as string);
+    formData.append("userAgent", navigator.userAgent);
     formAction(formData);
   };
   return { email, username, isSuccessful, state, onSubmit };

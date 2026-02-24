@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { auth } from "@/app/(auth)/auth";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -78,8 +79,6 @@ export function getRandomColor() {
     .toString(16)
     .padStart(6, "0")}`;
 }
-
-import { auth } from "@/app/(auth)/auth";
 
 export const getAuthToken = async (): Promise<string | null> => {
   const session = await auth();

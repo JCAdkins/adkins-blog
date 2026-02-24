@@ -15,7 +15,7 @@ import {
   PrivacyFormValues,
   ProfileFormValues,
 } from "@/schemas/settings";
-import { UUID } from "crypto";
+import { UserSession } from "@/models/userSession";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
@@ -89,14 +89,11 @@ export async function getUserByUsername(
   return await res.json();
 }
 
-export async function updateUserLoginAt(userId: string) {
+export async function updateUserLoginAt(userId: string, userAgent: string) {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId }),
+    await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
+      userId,
+      userAgent,
     });
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -178,7 +175,13 @@ export async function getMe(): Promise<User | { error: string }> {
       location: data.location,
       profileVisibility: data.profileVisibility,
       activityVisible: data.activityVisible,
-      sessions: data.sessions,
+      sessions: data.sessions.map((session) => {
+        return {
+          ...session,
+          createdAt: new Date(session.createdAt),
+          lastActiveAt: new Date(session.lastActiveAt),
+        };
+      }) as UserSession[],
     };
   } catch (error) {
     console.error("Error fetching user stats:", error);
@@ -188,46 +191,32 @@ export async function getMe(): Promise<User | { error: string }> {
 
 export async function updateUserProfile(
   data: ProfileFormValues,
-  id: UUID,
 ): Promise<void> {
   const tokenRes = await axios.get("/api/auth/token");
   const { token } = tokenRes.data;
 
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`;
-  const res = await axios.patch(
-    url,
-    { ...data, id: id },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const res = await axios.patch(url, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   return res.data;
 }
 
 export async function updateUserPassword(
   data: PasswordFormValues,
-  id: UUID,
 ): Promise<void> {
   try {
     const tokenRes = await axios.get("/api/auth/token");
     const { token } = tokenRes.data;
 
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/password`;
-    const res = await axios.patch(
-      url,
-      {
-        currentPassword: data.currentPassword,
-        newPassword: data.newPassword,
-        id: id,
+    const res = await axios.patch(url, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    });
     return res.data;
   } catch (error: any) {
     if (axios.isAxiosError(error) && error.response?.data?.message) {
@@ -239,34 +228,25 @@ export async function updateUserPassword(
 
 export async function updateUserPrivacy(
   data: PrivacyFormValues,
-  id: UUID,
 ): Promise<void> {
   const tokenRes = await axios.get("/api/auth/token");
   const { token } = tokenRes.data;
 
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/privacy`;
-  const res = await axios.patch(
-    url,
-    { data, id: id },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const res = await axios.patch(url, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   return res.data;
 }
 
-export async function uploadAvatar(
-  file: File,
-  id: string,
-): Promise<{ image: string }> {
+export async function uploadAvatar(file: File): Promise<{ image: string }> {
   const tokenRes = await axios.get("/api/auth/token");
   const { token } = tokenRes.data;
 
   const formData = new FormData();
   formData.append("avatar", file);
-  formData.append("id", id);
 
   const res = await axios.patch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/avatar`,
@@ -278,6 +258,30 @@ export async function uploadAvatar(
       },
     },
   );
+  return res.data;
+}
+
+export async function deleteSession(id: string) {
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/session/${id}`;
+  const res = await axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+}
+
+export async function deleteAllOtherSessions(sessionId: string) {
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/sessions/${sessionId}`;
+  const res = await axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return res.data;
 }
 

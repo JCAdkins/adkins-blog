@@ -10,12 +10,16 @@ import {
   updateUserProfile,
   updateVisibility,
   changeUserPassword,
+  deleteAllOtherSessions,
+  deleteSession,
+  createUserSession,
+  deactivateOtherSessions,
 } from "../services/usersService.js";
 import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
 import { UUID } from "crypto";
-import jwt from "jsonwebtoken";
 import "dotenv/config";
+import { AuthenticatedRequest } from "@/middleware.js";
 
 const JWT_SECRET = process.env.NEXT_AUTH_SECRET;
 
@@ -26,22 +30,13 @@ if (!JWT_SECRET) {
 // ================= GET =======================
 
 export const getMeController = async (
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) => {
-  console.log("inside controller");
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Unauthorized: No token provided" });
-    return;
-  }
-
   try {
-    const token = authHeader?.split(" ")[1];
-    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-    const user = await findUserByEmail(decoded.email);
-    const sessions = await getUserSessions(decoded.id);
+    const { id, email } = req.user;
+    const user = await findUserByEmail(email);
+    const sessions = await getUserSessions(id);
     res.json({ ...user, sessions: sessions });
   } catch (err) {
     console.error("Error getting user data:", err);
@@ -58,7 +53,7 @@ export const getAllUsersController = async (
     const users = await getAllUsers();
     res.json(users);
   } catch (err) {
-    console.log("Error getting the users.");
+    console.error("Error getting the users.");
     res.status(500).json({ message: "There was a problem getting the users." });
   }
 };
@@ -72,8 +67,6 @@ export const getUserByEmailController = async (
     const email = req.params.email;
     const includeParam = req.params.include;
     const include = includeParam === "true";
-
-    console.log("include: ", include);
     const user = await findUserByEmail(email, include);
 
     if (!user) {
@@ -112,21 +105,30 @@ export const getUserByUsernameController = async (
   }
 };
 
+export const getUserSessionsController = async (
+  req: AuthenticatedRequest,
+  res: express.Response,
+) => {
+  const { id } = req.user; // from verifyToken middleware
+  const sessions = await getUserSessions(id);
+  res.status(200).json(sessions);
+};
+
 // =============== PATCH =======================
 
 export const updateUserController = async (
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) => {
   try {
     const data = req.body;
-    console.log("data: ", data);
-    if (!data.id || !data.username || !data.email) {
+    const id = req.user.id;
+    if (!data.username || !data.email) {
       res.status(400).json({ message: "Missing request data" });
       return;
     }
 
-    const user = await updateUserProfile(data);
+    const user = await updateUserProfile({ ...data, id: id });
     res.status(200).json(user);
   } catch (err) {
     console.error("Error updating users profile:", err);
@@ -135,13 +137,14 @@ export const updateUserController = async (
 };
 
 export const updateUserPassword = async (
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) => {
   try {
-    const { id, currentPassword, newPassword } = req.body;
+    const { currentPassword, newPassword } = req.body;
+    const id = req.user.id;
 
-    if (!id || !currentPassword || !newPassword) {
+    if (!currentPassword || !newPassword) {
       res.status(400).json({ message: "Missing request data" });
       return;
     }
@@ -160,17 +163,22 @@ export const updateUserPassword = async (
 };
 
 export const updateUserVisibility = async (
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) => {
   try {
     const data = req.body;
-    if (!data.id || !data.activityVisible || !data.profileVisibility) {
+    const id = req.user.id;
+    if (
+      !data.activityVisible === null ||
+      !data.activityVisible === undefined ||
+      !data.profileVisibility
+    ) {
       res.status(400).json({ message: "Missing request data" });
       return;
     }
 
-    const user = await updateVisibility(data);
+    const user = await updateVisibility({ ...data, id });
     res.status(200).json(user);
   } catch (err) {
     console.error("Error updating users visibility:", err);
@@ -179,11 +187,11 @@ export const updateUserVisibility = async (
 };
 
 export const updateUserAvatar = async (
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) => {
   try {
-    const { id } = req.body;
+    const id = req.user.id;
     const avatar = req.file;
 
     if (!id || !avatar) {
@@ -225,15 +233,45 @@ export const createNewUserController = async (
 };
 
 export const loginUserController = async (
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) => {
   try {
-    const { userId } = req.body;
+    console.log("logging user in...");
+    const { userId, userAgent } = req.body;
+    const session = await createUserSession(userId, userAgent, req);
+    await deactivateOtherSessions(userId, session.id);
     await updateUserLastLogin(userId as UUID);
     res.status(200).json({ message: "User login time updated." });
   } catch (err) {
     console.error("Error updating users login:", err);
     res.status(500).json({ message: "Server error" });
   }
+};
+
+// ============================== DELETE ==================================
+
+export const deleteSessionController = async (
+  req: AuthenticatedRequest,
+  res: express.Response,
+) => {
+  console.log("deleting session...");
+  const { sessionId } = req.params;
+  console.log("sessionId: ", sessionId);
+  await deleteSession(sessionId);
+  res.status(200).json({ message: "Session deleted" });
+};
+
+export const deleteAllOtherSessionsController = async (
+  req: AuthenticatedRequest,
+  res: express.Response,
+) => {
+  console.log("deleting all other sessions...");
+  const { sessionId } = req.params;
+  const id = req.user.id;
+  console.log("id: ", id);
+  console.log("sessionId: ", sessionId);
+
+  await deleteAllOtherSessions(id, sessionId);
+  res.status(200).json({ message: "All other sessions signed out" });
 };

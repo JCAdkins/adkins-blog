@@ -1,16 +1,19 @@
 // routes/blogPosts.js
 import express from "express";
 import {
+  createNewUserController,
+  deleteSessionController,
+  deleteAllOtherSessionsController,
   getUserByEmailController,
   getUserByUsernameController,
   getAllUsersController,
-  loginUserController,
-  createNewUserController,
   getMeController,
+  loginUserController,
   updateUserController,
   updateUserPassword,
   updateUserAvatar,
   updateUserVisibility,
+  getUserSessionsController,
 } from "../controllers/usersController.js";
 import { verifyToken } from "@/middleware.js";
 import multer from "multer";
@@ -30,6 +33,9 @@ router.get("/", getAllUsersController);
 // Get the user thats signed into the session
 router.get("/me", verifyToken, getMeController);
 
+// Retrieve all the users sessions
+router.get("/me/sessions", verifyToken, getUserSessionsController);
+
 // Update user profile
 router.patch("/me", verifyToken, updateUserController);
 
@@ -37,7 +43,7 @@ router.patch("/me", verifyToken, updateUserController);
 router.patch("/me/password", verifyToken, updateUserPassword);
 
 // Update user profile visinility
-router.patch("/me/visibility", verifyToken, updateUserVisibility);
+router.patch("/me/privacy", verifyToken, updateUserVisibility);
 
 // Update useer avatar
 router.patch(
@@ -52,5 +58,12 @@ router.post("/login", loginUserController);
 
 // Create new user
 router.post("/register", createNewUserController);
+
+router.delete("/me/session/:sessionId", verifyToken, deleteSessionController);
+router.delete(
+  "/me/sessions/:sessionId",
+  verifyToken,
+  deleteAllOtherSessionsController,
+);
 
 export default router;
