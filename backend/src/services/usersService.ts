@@ -8,7 +8,7 @@ import { UAParser } from "ua-parser-js";
 import geoip from "geoip-lite";
 import { NewUserInput } from "../models/userModel.js";
 import { UUID } from "crypto";
-import { Prisma } from "../generated/prisma/index.js";
+import { Prisma } from "../../generated/prisma/index.js";
 import { uploadAvatarToImmich } from "./immichService.js";
 
 export const createUserService = async (userData: NewUserInput) => {
