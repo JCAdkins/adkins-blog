@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "prisma generate && tsc && mkdir -p dist/node_modules && cp -r node_modules/@prisma dist/node_modules/",
+    "build": "tsc",
     "start": "node dist/server.js",
     "dev": "NODE_ENV=development tsx src/server.ts",
     "postinstall": "prisma generate",
