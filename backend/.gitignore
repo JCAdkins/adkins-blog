@@ -14,3 +14,4 @@ dist/
 
 prisma/generated/prisma
 prisma/migrations
+prisma/scripts
