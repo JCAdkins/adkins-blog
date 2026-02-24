@@ -1,6 +1,6 @@
 import { useMessageContext } from "@/contexts/message-context";
+import { Message } from "@/models/messageModel";
 import { useEffect, useState } from "react";
-import { Message } from "../../../next-auth";
 
 export const useAdminMessagesViewModel = () => {
   const { setUnreadCount } = useMessageContext();
