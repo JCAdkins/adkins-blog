@@ -60,7 +60,7 @@ export async function getUsersPerDay() {
   // Create lookup map
   const map = new Map<string, number>();
 
-  usersPerDayRaw.forEach((row) => {
+  usersPerDayRaw.forEach((row: any) => {
     const tKey = new Date(row.date.toString().split(" GMT")[0])
       .toISOString()
       .slice(0, 10)
@@ -106,7 +106,7 @@ export async function getUsersPerMonth() {
   // Convert to map for quick lookup
   const map = new Map<string, number>();
 
-  usersPerMonthRaw.forEach((row) => {
+  usersPerMonthRaw.forEach((row: any) => {
     const key = `${row.year}-${String(row.month).padStart(2, "0")}`;
     map.set(key, Number(row.count));
   });
@@ -174,7 +174,7 @@ export const getAverageCommentsPerBlog = async () => {
   if (result.length === 0) return 0;
 
   const totalComments = result.reduce(
-    (acc, curr) => acc + curr._count.postId,
+    (acc: any, curr: any) => acc + curr._count.postId,
     0,
   );
   return totalComments / result.length;
@@ -210,7 +210,7 @@ export const getCommentsPerDay = async () => {
 
   // Map raw results for easy lookup
   const map = new Map<string, number>();
-  commentsPerDayRaw.forEach((row) => {
+  commentsPerDayRaw.forEach((row: any) => {
     const tKey = new Date(row.date.toString().split(" GMT")[0])
       .toISOString()
       .slice(0, 10)
@@ -252,7 +252,7 @@ export const getCommentsPerMonth = async () => {
 
   // Map raw results for easy lookup
   const map = new Map<string, number>();
-  commentsPerMonthRaw.forEach((row) => {
+  commentsPerMonthRaw.forEach((row: any) => {
     const key = `${row.year}-${String(row.month).padStart(2, "0")}`;
     map.set(key, Number(row.count));
   });

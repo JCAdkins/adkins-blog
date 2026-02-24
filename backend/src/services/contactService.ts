@@ -82,7 +82,7 @@ export async function getAdminsList() {
       },
     });
 
-    return admins.map((admin) => admin.email);
+    return admins.map((admin: any) => admin.email);
   } catch (error) {
     console.error("Error fetching admin list:", error);
     return [];

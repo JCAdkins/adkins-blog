@@ -82,7 +82,7 @@ export async function createBlogPost(input: BlogPostInput) {
   // Optional: flatten the blogPostImages to directly return the linked images
   return {
     ...blogPost,
-    images: blogPost.blogPostImages.map((bpImage) => bpImage.image),
+    images: blogPost.blogPostImages.map((bpImage: any) => bpImage.image),
   };
 }
 
