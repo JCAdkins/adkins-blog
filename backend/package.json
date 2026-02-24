@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "NODE_ENV=development tsx src/server.ts",
-    "postinstall": "prisma generate --generator client",
+    "postinstall": "prisma generate",
     "db:generate": "pnpm prisma migrate dev --name",
     "db:deploy": "pnpm prisma migrate deploy",
     "clear-images": "ts-node prisma/scripts/clearImage.ts",
@@ -41,6 +41,8 @@
     "next-auth": "^4.24.11",
     "pg": "^8.18.0",
     "pnpm": "^10.30.0",
+    "prisma": "^7.4.0",
+    "@types/pg": "^8.16.0",
     "resend": "^4.5.1",
     "ua-parser-js": "^2.0.9",
     "zod": "^3.24.2"
