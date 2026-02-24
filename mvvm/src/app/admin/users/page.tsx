@@ -3,6 +3,7 @@ import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 // import { promoteUser, deleteUser, banUser, getUsers } from "@/lib/actions";
+export const dynamic = "force-dynamic";
 
 const promoteUser = (id: string) => console.log("Promoiting user: ", id);
 const deleteUser = (id: string) => console.log("Deleting user: ", id);
