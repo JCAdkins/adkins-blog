@@ -1,5 +1,5 @@
 import { BlogPostInput } from "../models/blogPostModel.js";
-import { db } from "@/lib/prisma.js";
+import { db } from "../lib/prisma.js";
 
 export async function getAllBlogPosts() {
   return await db.blogPost.findMany({

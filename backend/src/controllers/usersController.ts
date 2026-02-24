@@ -19,7 +19,7 @@ import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
 import { UUID } from "crypto";
 import "dotenv/config";
-import { AuthenticatedRequest } from "@/middleware.js";
+import { AuthenticatedRequest } from "../middleware.js";
 
 const JWT_SECRET = process.env.NEXT_AUTH_SECRET;
 

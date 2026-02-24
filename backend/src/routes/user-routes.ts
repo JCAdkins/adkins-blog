@@ -15,7 +15,7 @@ import {
   updateUserVisibility,
   getUserSessionsController,
 } from "../controllers/usersController.js";
-import { verifyToken } from "@/middleware.js";
+import { verifyToken } from "../middleware.js";
 import multer from "multer";
 
 const router = express.Router();

@@ -1,4 +1,4 @@
-import { NotificationInput } from "@/models/notificationsModel.js";
+import { NotificationInput } from "../models/notificationsModel.js";
 import {
   createLikeNotificationServ,
   createReplyNotificationServ,

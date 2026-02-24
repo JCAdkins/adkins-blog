@@ -1,4 +1,4 @@
-import { NotificationInput } from "@/models/notificationsModel.js";
+import { NotificationInput } from "../models/notificationsModel.js";
 import { db } from "../lib/prisma.js";
 
 export async function createLikeNotificationServ(

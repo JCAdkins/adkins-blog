@@ -3,7 +3,8 @@ import FormData from "form-data";
 import { console } from "inspector";
 
 const API_KEY = process.env.IMMICH_API_KEY;
-const BASE_URL = "http://localhost:2283/api";
+// const BASE_URL = "http://localhost:2283/api";
+const BASE_URL = process.env.IMMICH_API_URL;
 
 export async function PostNewImmichImage(bFile: any, file: any) {
   const modifiedTime = new Date().toISOString();
