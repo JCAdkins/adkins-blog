@@ -39,12 +39,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.4.0
- * Query Engine version: ab56fe763f921d033a6c195e7ddeb3e255bdbb57
+ * Prisma Client JS version: 7.4.1
+ * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
  */
 Prisma.prismaVersion = {
-  client: "7.4.0",
-  engine: "ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
+  client: "7.4.1",
+  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -228,8 +228,8 @@ exports.Prisma.ModelName = {
  */
 const config = {
   "previewFeatures": [],
-  "clientVersion": "7.4.0",
-  "engineVersion": "ab56fe763f921d033a6c195e7ddeb3e255bdbb57",
+  "clientVersion": "7.4.1",
+  "engineVersion": "55ae170b1ced7fc6ed07a15f110549408c501bb3",
   "activeProvider": "postgresql",
   "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\nmodel BlogPost {\n  id             String          @id @default(uuid())\n  title          String\n  content        String\n  createdAt      DateTime        @default(now())\n  updatedAt      DateTime        @updatedAt\n  featured       String          @default(\"false\")\n  description    String          @default(\"No description provided.\")\n  genre          String?\n  blogPostImages BlogPostImage[]\n  Comment        Comment[]\n}\n\nmodel Image {\n  id             String          @id\n  status         String\n  blogPostImages BlogPostImage[]\n}\n\nmodel BlogPostImage {\n  blogPostId String\n  imageId    String\n  blogPost   BlogPost @relation(fields: [blogPostId], references: [id])\n  image      Image    @relation(fields: [imageId], references: [id])\n\n  @@id([blogPostId, imageId])\n}\n\nmodel User {\n  id       String @id @default(uuid())\n  email    String @unique\n  password String\n  username String @unique\n\n  firstName  String?\n  lastName   String?\n  image      String?\n  location   String?\n  isVerified Boolean @default(false)\n\n  // Security\n  twoFactorEnabled Boolean @default(false)\n\n  // Privacy / visibility\n  profileVisibility String  @default(\"users\")\n  activityVisible   Boolean @default(true)\n\n  role        String    @default(\"user\")\n  lastLoginAt DateTime?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  contactMessages       ContactMessage[]\n  comments              Comment[]\n  likes                 Like[]\n  receivedNotifications Notification[]   @relation(\"NotificationRecipient\")\n  sentNotifications     Notification[]   @relation(\"NotificationActor\")\n  sessions              UserSession[]\n}\n\nmodel UserSession {\n  id     String @id @default(uuid())\n  userId String\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  device  String\n  browser String\n  os      String?\n\n  city    String?\n  region  String?\n  country String?\n\n  ipAddress String?\n\n  lastActiveAt DateTime @default(now())\n  createdAt    DateTime @default(now())\n\n  isCurrent Boolean @default(false)\n}\n\nmodel ContactMessage {\n  id        String   @id @default(uuid())\n  name      String\n  email     String\n  message   String\n  userId    String?\n  createdAt DateTime @default(now())\n  read      Boolean  @default(false)\n  subject   String\n  user      User?    @relation(fields: [userId], references: [id])\n}\n\nmodel Comment {\n  id                      String         @id @default(cuid())\n  content                 String\n  createdAt               DateTime       @default(now())\n  updatedAt               DateTime       @updatedAt\n  postId                  String\n  authorId                String\n  parentId                String?\n  isDeleted               Boolean        @default(false)\n  author                  User           @relation(fields: [authorId], references: [id])\n  parent                  Comment?       @relation(\"CommentReplies\", fields: [parentId], references: [id])\n  replies                 Comment[]      @relation(\"CommentReplies\")\n  post                    BlogPost       @relation(fields: [postId], references: [id])\n  likes                   Like[]         @relation(\"CommentLikes\")\n  targetedByNotifications Notification[] @relation(\"CommentTarget\")\n  repliedInNotifications  Notification[] @relation(\"ReplyTarget\")\n}\n\nmodel Like {\n  id        String   @id @default(cuid())\n  userId    String\n  commentId String\n  createdAt DateTime @default(now())\n  comment   Comment  @relation(\"CommentLikes\", fields: [commentId], references: [id], onDelete: Cascade)\n  user      User     @relation(fields: [userId], references: [id])\n\n  @@unique([userId, commentId])\n}\n\nmodel Notification {\n  id        String           @id @default(cuid())\n  type      NotificationType\n  message   String\n  read      Boolean          @default(false)\n  userId    String\n  commentId String?\n  createdAt DateTime         @default(now())\n  actorId   String\n  replyId   String?\n  actor     User             @relation(\"NotificationActor\", fields: [actorId], references: [id])\n  comment   Comment?         @relation(\"CommentTarget\", fields: [commentId], references: [id])\n  reply     Comment?         @relation(\"ReplyTarget\", fields: [replyId], references: [id])\n  user      User             @relation(\"NotificationRecipient\", fields: [userId], references: [id])\n}\n\nenum NotificationType {\n  LIKE\n  REPLY\n}\n\nenum Role {\n  user\n  admin\n}\n"
 }
