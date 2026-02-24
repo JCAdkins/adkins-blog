@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { likeComment, createLikeNotification } from "@/lib/db/queries";
-import { Like, BlogComment } from "next-auth";
+import { BlogComment } from "@/models/blog/blogCommentModel";
+import { Like } from "@/models/likeModel";
 
 export function useCommentLikes(comment: BlogComment, userId?: string) {
   const [likes, setLikes] = useState(comment.likes?.length || 0);

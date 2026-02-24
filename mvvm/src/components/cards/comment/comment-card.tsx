@@ -11,7 +11,7 @@ import { useReportModal } from "@/hooks/useReportModal";
 import { useConfirmModal } from "@/hooks/useConfirmModal";
 import { Button } from "@/components/ui/button";
 import { useComments } from "@/contexts/comments-context";
-import { BlogComment } from "next-auth";
+import { BlogComment } from "@/models/blog/blogCommentModel";
 
 interface CommentCardProps {
   comment: BlogComment;

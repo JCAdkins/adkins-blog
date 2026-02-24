@@ -1,6 +1,6 @@
 // src/components/cards/BlogCardServer.tsx
+import { Blog } from "@/models/blog/blogModel";
 import { getImmichAsset } from "../../lib/services/immich-service";
-import { Blog } from "next-auth";
 
 type BlogCardPropsBase = {
   blog: Blog;

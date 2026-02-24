@@ -4,8 +4,8 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Card } from "../ui/card";
-import { Blog } from "next-auth";
 import Image from "next/image";
+import { Blog } from "@/models/blog/blogModel";
 
 export default function BlogCard({
   blog,
@@ -23,7 +23,7 @@ export default function BlogCard({
       key={blog.id}
       className={cn(
         "text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]",
-        className
+        className,
       )}
     >
       <div {...childProps}>

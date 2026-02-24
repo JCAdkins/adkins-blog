@@ -9,11 +9,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { cn, formatDateToShortDateTime } from "@/lib/utils";
-import { BlogComment } from "next-auth";
 import { markNotificationAsRead } from "@/lib/db/queries";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useNotifications } from "@/contexts/notifications-context";
+import { BlogComment } from "@/models/blog/blogCommentModel";
 
 type NotificationCardProps = {
   className?: string;

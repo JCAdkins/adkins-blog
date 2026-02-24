@@ -16,7 +16,7 @@ import {
   fetchRepliesForComment,
   likeComment,
 } from "@/lib/db/queries";
-import { BlogComment } from "next-auth";
+import { BlogComment } from "@/models/blog/blogCommentModel";
 
 interface CommentsContextType {
   commentsById: Record<string, BlogComment>;

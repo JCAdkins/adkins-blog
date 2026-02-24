@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ProgressIndicator } from "../ui/progress-indicator";
 import FileDropZone from "../inputs/file-drop-zone";
-import { BlogGenre } from "next-auth";
+import { BlogGenre } from "@/models/blog/blogGenreModel";
 
 interface CreatePostFormProps {
   action: (formData: FormData) => Promise<void>;
@@ -34,7 +34,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const target = e.target;
     const { name, type, value } = target;
@@ -73,7 +73,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         name="description"
         value={formState.description}
         onChange={handleChange}
-        className="border-input bg-background min-h-[120px] w-full rounded-md border p-2 text-sm"
+        className="border-input bg-background min-h-30 w-full rounded-md border p-2 text-sm"
         placeholder="Enter description"
       />
     </div>,
@@ -99,7 +99,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
         name="content"
         value={formState.content}
         onChange={handleChange}
-        className="border-input bg-background min-h-[200px] w-full rounded-md border p-2 text-sm"
+        className="border-input bg-background min-h-50 w-full rounded-md border p-2 text-sm"
         placeholder="Write your content..."
       />
     </div>,
