@@ -122,7 +122,7 @@ export const updateUserController = async (
 ) => {
   try {
     const data = req.body;
-    const id = req.user.id;
+    const id = req.user.id as string;
     if (!data.username || !data.email) {
       res.status(400).json({ message: "Missing request data" });
       return;
@@ -142,7 +142,7 @@ export const updateUserPassword = async (
 ) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const id = req.user.id;
+    const id = req.user.id as UUID;
 
     if (!currentPassword || !newPassword) {
       res.status(400).json({ message: "Missing request data" });
@@ -168,7 +168,7 @@ export const updateUserVisibility = async (
 ) => {
   try {
     const data = req.body;
-    const id = req.user.id;
+    const id = req.user.id as string;
     if (
       !data.activityVisible === null ||
       !data.activityVisible === undefined ||
@@ -191,7 +191,7 @@ export const updateUserAvatar = async (
   res: express.Response,
 ) => {
   try {
-    const id = req.user.id;
+    const id = req.user.id as string;
     const avatar = req.file;
 
     if (!id || !avatar) {
@@ -268,7 +268,7 @@ export const deleteAllOtherSessionsController = async (
 ) => {
   console.log("deleting all other sessions...");
   const { sessionId } = req.params;
-  const id = req.user.id;
+  const id = req.user.id as string;
   console.log("id: ", id);
   console.log("sessionId: ", sessionId);
 
