@@ -7,6 +7,7 @@ const API_KEY = process.env.IMMICH_API_KEY;
 const BASE_URL = process.env.IMMICH_API_URL;
 
 export async function PostNewImmichImage(bFile: any, file: any) {
+  console.log("posting new image service...");
   const modifiedTime = new Date().toISOString();
   const createdTime = new Date().toISOString(); // or use stats.birthtime depending on your OS
   console.log("Uploading image to Immich.");
@@ -53,7 +54,7 @@ export async function PostNewImmichImage(bFile: any, file: any) {
 
 export async function downloadImmichImage(id: string) {
   try {
-    console.log("downloading asset at model...");
+    console.log("downloading original image at immich service...");
     const response = await axios.get(`${BASE_URL}/assets/${id}/original`, {
       headers: {
         Accept: "application/octet-stream",
@@ -78,6 +79,7 @@ export async function downloadImmichImage(id: string) {
 }
 
 export async function downloadImmichImageThumbnail(id: string) {
+  console.log("downloading image thumbnail at immach service...");
   try {
     const response = await axios.get(`${BASE_URL}/assets/${id}/thumbnail`, {
       headers: {
@@ -103,6 +105,7 @@ export async function downloadImmichImageThumbnail(id: string) {
 }
 
 export async function addAssetToAlbum(albumId: string, assetId: string) {
+  console.log("adding asset to album in immich service...");
   await axios.put(
     `${BASE_URL}/albums/${albumId}/assets`,
     {
@@ -118,6 +121,7 @@ export async function addAssetToAlbum(albumId: string, assetId: string) {
 }
 
 export async function getOrCreateAvatarsAlbum(): Promise<string> {
+  console.log("getting or creating avatar in immich service...");
   // Get all albums
   const res = await axios.get(`${BASE_URL}/albums`, {
     headers: { "x-api-key": API_KEY },
@@ -147,6 +151,7 @@ export async function uploadAvatarToImmich(
   bFile: any,
   file: any,
 ): Promise<string> {
+  console.log("uploading avatar to immich in immich service...");
   const asset = await PostNewImmichImage(bFile, file);
   if (!asset?.id) throw new Error("Failed to upload avatar to Immich");
 
