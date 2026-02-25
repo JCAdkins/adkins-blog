@@ -628,7 +628,7 @@ export async function fetchNotifications(userId: string) {
     const tokenRes = await axios.get("/api/auth/token");
     const { token } = tokenRes.data;
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/unread?id=${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/unread/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

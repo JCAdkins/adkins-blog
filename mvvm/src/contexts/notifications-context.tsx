@@ -28,17 +28,7 @@ export function NotificationsProvider({
 
     try {
       const res = await fetchNotifications(session.user.id);
-      if (!res.ok) {
-        const text = await res.text(); // fallback to text for debugging
-        console.error(
-          "Failed to fetch unread notifications:",
-          res.status,
-          text,
-        );
-        return;
-      }
-      const data = await res.json();
-      setUnreadCount(data.length);
+      setUnreadCount(res.length);
     } catch (err) {
       console.error("Failed to fetch unread notifications", err);
     }
