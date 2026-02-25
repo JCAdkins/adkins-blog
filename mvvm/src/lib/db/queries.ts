@@ -625,10 +625,17 @@ export async function getCommentStats(): Promise<
 
 export async function fetchNotifications(userId: string) {
   try {
-    const res = await fetch(
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const res = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/unread?id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
-    return await res.json();
+    return await res.data;
   } catch (error) {
     console.error("Error: ", error);
   }
