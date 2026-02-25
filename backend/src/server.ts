@@ -15,7 +15,11 @@ const PORT = process.env.PORT || 3001;
 
 app.use(
   cors({
-    origin: "http://localhost:3001", // your Next.js frontend
+    origin: [
+      "http://localhost:3001",
+      "https://blog.adkins.ninja",
+      "https://www.blog.adkins.ninja",
+    ],
     credentials: true,
   }),
 );

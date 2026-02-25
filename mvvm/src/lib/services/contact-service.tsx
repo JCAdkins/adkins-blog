@@ -16,7 +16,8 @@ interface FormWithoutUser {
 
 export async function ContactAdmins(payload: FormWithUser | FormWithoutUser) {
   try {
-    const response = await fetch("/api/contact", {
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/contact`;
+    const response = await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -44,7 +45,8 @@ export async function welcomeNewUser({
   const testEmail = "jordan.adkins111@gmail.com";
   const testUsername = username || "New User";
   try {
-    const response = await fetch("api/contact/greeting", {
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/contact/greeting`;
+    const response = await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: testEmail, username: testUsername }),

@@ -405,7 +405,8 @@ export async function getBlogById(id: string) {
 
 export const markMessageAsRead = async (id: string) => {
   try {
-    const res = await fetch("/api/admin/messages/mark-read", {
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/messages/mark-read`;
+    const res = await fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -504,7 +505,8 @@ export async function postNewComment({
   parentId?: string;
 }) {
   try {
-    const res = await axios.post("/api/comment/create-comment", {
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comment/create-comment`;
+    const res = await axios.post(URL, {
       content,
       blogId,
       authorId,
@@ -519,12 +521,10 @@ export async function postNewComment({
 
 export async function deleteCommentLib(commentId: string, type: string) {
   try {
-    const res = await fetch(
-      `/api/comment/delete-comment/${commentId}?hard=${type}`,
-      {
-        method: "DELETE",
-      },
-    );
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comment/delete-comment/${commentId}?hard=${type}`;
+    const res = await fetch(URL, {
+      method: "DELETE",
+    });
     const data = await res.json();
     return data;
   } catch (err) {
@@ -559,7 +559,8 @@ export async function likeComment(
   userId: string,
 ) {
   try {
-    const res = await axios.post("/api/comment/like-comment", {
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comment/like-comment`;
+    const res = await axios.post(URL, {
       commentId,
       authorId,
       userId,
@@ -611,7 +612,7 @@ export async function getCommentStats(): Promise<
 export async function fetchNotifications(userId: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications?userId=${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications?userId=${userId}`,
     );
     return await res.json();
   } catch (error) {
@@ -621,7 +622,8 @@ export async function fetchNotifications(userId: string) {
 
 export async function markNotificationAsRead(notifId: string) {
   try {
-    const res = await fetch("api/notifications/mark-read", {
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/mark-read`;
+    const res = await fetch(URL, {
       method: "POST",
       body: JSON.stringify(notifId),
     });
@@ -634,7 +636,8 @@ export async function markNotificationAsRead(notifId: string) {
 
 export async function markAllNotificationsAsRead(userId: string) {
   try {
-    const res = await fetch("/api/notifications/mark-all-read", {
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/mark-all-read`;
+    const res = await fetch(url, {
       method: "POST",
       body: JSON.stringify(userId),
     });
@@ -649,16 +652,13 @@ export async function getUserNotifications(userId: string, page: number = 1) {
   try {
     const limit = 10;
     const offset = page * limit;
-
-    const response = await fetch(
-      `/api/notifications/${encodeURIComponent(userId)}?offset=${offset}&limit=${limit}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/${encodeURIComponent(userId)}?offset=${offset}&limit=${limit}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+    });
 
     if (!response.ok) {
       console.error("Failed to fetch notifications");
@@ -695,7 +695,8 @@ export async function createLikeNotification({
   actorId: string;
 }) {
   try {
-    const res = await axios.post("/api/notifications/like", {
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/like`;
+    const res = await axios.post(url, {
       commentId,
       authorName,
       userId,
@@ -732,7 +733,8 @@ export async function createReplyNotification({
   actorId: string;
 }) {
   try {
-    const res = await axios.post("/api/notifications/reply", {
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/reply`;
+    const res = await axios.post(url, {
       commentId,
       replyId,
       authorName,
