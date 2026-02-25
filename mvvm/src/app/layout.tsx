@@ -10,6 +10,7 @@ import { NotificationsProvider } from "@/contexts/notifications-context";
 import { ModalProvider } from "@/contexts/modals-context";
 import { ConfirmModal } from "@/components/modals/confirm-delete-modal";
 import { ReportCommentModal } from "@/components/modals/report-comment-modal";
+import { Analytics } from "@vercel/analytics/next";
 
 const Nunito = localFont({
   src: "../fonts/Nunito-VariableFont.ttf",
@@ -95,6 +96,7 @@ export default async function RootLayout({
             </ModalProvider>
           </SessionProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
