@@ -285,26 +285,6 @@ export async function deleteAllOtherSessions(sessionId: string) {
   return res.data;
 }
 
-// export async function getUserSessions(): Promise<
-//   UserSession[] | { error: string }
-// > {
-//   try {
-//     const tokenRes = await axios.get("/api/auth/token");
-//     const { token } = tokenRes.data;
-
-//     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/sessions`;
-//     const res = await axios.get(url, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return res.data;
-//   } catch (error) {
-//     console.error("Error fetching user stats:", error);
-//     return { error: `There was an error fetching user stats. \n${error}` };
-//   }
-// }
-
 /*++===========================================================================================================++
   ||                                           BLOG DATABASE QUERIES                                           ||
   ++===========================================================================================================++*/
@@ -405,11 +385,14 @@ export async function getBlogById(id: string) {
 
 export const markMessageAsRead = async (id: string) => {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/messages/mark-read`;
     const res = await fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ id }),
     });
@@ -505,13 +488,23 @@ export async function postNewComment({
   parentId?: string;
 }) {
   try {
-    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comment/create-comment`;
-    const res = await axios.post(URL, {
-      content,
-      blogId,
-      authorId,
-      parentId,
-    });
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comments`;
+    const res = await axios.post(
+      URL,
+      {
+        content,
+        blogId,
+        authorId,
+        parentId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
     return res.data;
   } catch (error) {
     console.error("Error posting comment:", error);
@@ -521,12 +514,15 @@ export async function postNewComment({
 
 export async function deleteCommentLib(commentId: string, type: string) {
   try {
-    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comment/delete-comment/${commentId}?hard=${type}`;
-    const res = await fetch(URL, {
-      method: "DELETE",
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}?hard=${type}`;
+    const res = await axios.delete(URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    const data = await res.json();
-    return data;
+    return res.data;
   } catch (err) {
     console.error("Failed to delete comment", err);
     return { error: "Failed to delete comment." };
@@ -559,12 +555,30 @@ export async function likeComment(
   userId: string,
 ) {
   try {
-    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comment/like-comment`;
-    const res = await axios.post(URL, {
-      commentId,
-      authorId,
-      userId,
-    });
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const cToken = token;
+    let sToken;
+    if (!cToken) {
+      sToken = await getAuthToken();
+    }
+    if (!sToken && !cToken) {
+      throw new Error("Unauthorized");
+    }
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/comments/like`;
+    const res = await axios.post(
+      URL,
+      {
+        commentId,
+        authorId,
+        userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sToken ? sToken : cToken}`,
+        },
+      },
+    );
 
     return res.data;
   } catch (error) {
@@ -622,12 +636,15 @@ export async function fetchNotifications(userId: string) {
 
 export async function markNotificationAsRead(notifId: string) {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/mark-read`;
-    const res = await fetch(URL, {
-      method: "POST",
-      body: JSON.stringify(notifId),
+    const res = await axios.post(URL, notifId, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    return await res.json();
+    return res.data;
   } catch (error) {
     console.error("Error: ", error);
     return { error: "There was an issue marking the notification as read" };
@@ -636,12 +653,15 @@ export async function markNotificationAsRead(notifId: string) {
 
 export async function markAllNotificationsAsRead(userId: string) {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/mark-all-read`;
-    const res = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(userId),
+    const res = await axios.post(url, userId, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    return await res.json();
+    return await res.data;
   } catch (error) {
     console.error("Error: ", error);
     return { error: "There was an issue marking all notifications as read" };
@@ -650,23 +670,18 @@ export async function markAllNotificationsAsRead(userId: string) {
 
 export async function getUserNotifications(userId: string, page: number = 1) {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const limit = 10;
     const offset = page * limit;
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/${encodeURIComponent(userId)}?offset=${offset}&limit=${limit}`;
-    const response = await fetch(url, {
-      method: "GET",
+    const response = await axios.get(url, {
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    if (!response.ok) {
-      console.error("Failed to fetch notifications");
-      return [];
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Error fetching notifications:", error);
     return [];
@@ -695,13 +710,31 @@ export async function createLikeNotification({
   actorId: string;
 }) {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const cToken = token;
+    let sToken;
+    if (!cToken) {
+      sToken = await getAuthToken();
+    }
+    if (!sToken && !cToken) {
+      throw new Error("Unauthorized");
+    }
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/like`;
-    const res = await axios.post(url, {
-      commentId,
-      authorName,
-      userId,
-      actorId,
-    });
+    const res = await axios.post(
+      url,
+      {
+        commentId,
+        authorName,
+        userId,
+        actorId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${cToken ? cToken : sToken}`,
+        },
+      },
+    );
     return res.data;
   } catch (error) {
     console.error("Error: ", error);
@@ -733,14 +766,24 @@ export async function createReplyNotification({
   actorId: string;
 }) {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/reply`;
-    const res = await axios.post(url, {
-      commentId,
-      replyId,
-      authorName,
-      userId,
-      actorId,
-    });
+    const res = await axios.post(
+      url,
+      {
+        commentId,
+        replyId,
+        authorName,
+        userId,
+        actorId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
     return res.data;
   } catch (error) {
     console.error("Error: ", error);

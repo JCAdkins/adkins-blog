@@ -12,7 +12,7 @@ import express from "express";
 
 export async function fetchBlogCommentsPaginated(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   try {
     const { blogId, page = 1, pageSize = 10 } = req.query;
@@ -22,7 +22,7 @@ export async function fetchBlogCommentsPaginated(
     const comments = await getBlogMessagesPaginated(
       blogId as string,
       numericPage,
-      numericPageSize
+      numericPageSize,
     );
     res.status(200).json(comments);
   } catch (error) {
@@ -33,7 +33,7 @@ export async function fetchBlogCommentsPaginated(
 
 export async function fetchCommentReplies(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   try {
     const { commentId } = req.params;
@@ -50,7 +50,7 @@ export async function fetchCommentReplies(
 
 export async function postNewComment(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   const data = req.body;
   try {
@@ -64,7 +64,7 @@ export async function postNewComment(
 
 export async function deleteComment(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   try {
     const { commentId } = req.params;
@@ -81,6 +81,7 @@ export async function deleteComment(
 }
 
 export async function likeComment(req: express.Request, res: express.Response) {
+  console.log("Liking comment");
   const { commentId, userId } = req.body;
   try {
     const result = await likeCommentService(commentId, userId);
@@ -93,7 +94,7 @@ export async function likeComment(req: express.Request, res: express.Response) {
 
 export async function getCommentById(
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   // Recurse is whether we want to fetch all parent replies/comments
   const { commentId } = req.params;

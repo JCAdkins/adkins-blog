@@ -19,7 +19,7 @@ router.post("/reply", verifyToken, createReplyNotification);
 
 router.post("/mark-read", verifyToken, markNotificationAsRead);
 
-router.post("/mark-all-read", markAllNotificationsAsRead);
+router.post("/mark-all-read", verifyToken, markAllNotificationsAsRead);
 
 // Fetch
 router.get("/unread/:userId", verifyToken, getUnreadUserNotifications);
