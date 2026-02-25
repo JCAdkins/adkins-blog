@@ -1,4 +1,5 @@
 import { useMessageContext } from "@/contexts/message-context";
+import { getMessages } from "@/lib/db/queries";
 import { Message } from "@/models/messageModel";
 import { useEffect, useState } from "react";
 
@@ -11,8 +12,7 @@ export const useAdminMessagesViewModel = () => {
 
   useEffect(() => {
     const fetchAndSetMessages = async () => {
-      const res = await fetch("/api/admin/messages");
-      const msgs = await res.json();
+      const msgs = await getMessages();
       setMessages(msgs);
       setLoading(false);
     };

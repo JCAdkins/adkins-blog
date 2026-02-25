@@ -383,21 +383,34 @@ export async function getBlogById(id: string) {
   ||                                       MESSAGES DATABASE QUERIES                                           ||
   ++===========================================================================================================++*/
 
+export const getMessages = async () => {
+  try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/messages`;
+    const res = await axios.get(URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("There was an error fething messages: ", error);
+    return { error: "There was an error fetching messages." };
+  }
+};
+
 export const markMessageAsRead = async (id: string) => {
   try {
     const tokenRes = await axios.get("/api/auth/token");
     const { token } = tokenRes.data;
-    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/messages/mark-read`;
-    const res = await fetch(URL, {
-      method: "POST",
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/messages/mark-read`;
+    const res = await axios.post(URL, id, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ id }),
     });
-    const data = await res.json();
-    return data;
+    return res.data;
   } catch (error) {
     console.error("Failed to mark message as read: ", error);
   }
