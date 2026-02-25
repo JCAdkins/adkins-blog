@@ -1,3 +1,4 @@
+import axios from "axios";
 import { User } from "next-auth";
 
 interface FormWithUser {
@@ -16,17 +17,18 @@ interface FormWithoutUser {
 
 export async function ContactAdmins(payload: FormWithUser | FormWithoutUser) {
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/contact`;
-    const response = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+    const response = await axios.post(URL, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    if (!response.ok) {
-      return "failed";
-    }
 
-    return response.status === 200 ? "success" : "failed";
+    return response.status >= 200 && response.status < 300
+      ? "success"
+      : "failed";
   } catch (error) {
     console.error("Form submission error:", error);
     alert("Something went wrong.");
@@ -45,21 +47,44 @@ export async function welcomeNewUser({
   const testEmail = "jordan.adkins111@gmail.com";
   const testUsername = username || "New User";
   try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
     const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/contact/greeting`;
-    const response = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: testEmail, username: testUsername }),
-    });
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.log("response: ", errorText);
-      return { status: "failed" };
-    }
-    return { status: "success" };
+    const response = await axios.post(
+      URL,
+      {
+        email: testEmail,
+        username: testUsername,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.status >= 200 && response.status < 300
+      ? "success"
+      : "failed";
   } catch (err) {
     console.error("Greeting failed: ", err);
     alert("Something went wrong.");
   }
   return { status: "success" };
 }
+
+export const getUnreadMessagesCount = async () => {
+  try {
+    const tokenRes = await axios.get("/api/auth/token");
+    const { token } = tokenRes.data;
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/messages/unread/count`;
+    const res = await axios.get(URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.error("Greeting failed: ", err);
+    alert("Something went wrong.");
+  }
+};

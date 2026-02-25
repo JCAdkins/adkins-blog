@@ -1,6 +1,7 @@
 // context/MessageContext.tsx
 "use client";
 
+import { getUnreadMessagesCount } from "@/lib/services/contact-service";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type MessageContextType = {
@@ -22,7 +23,7 @@ export const MessageProvider = ({
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/admin/messages/unread/count");
+      const res = await getUnreadMessagesCount();
       const count = await res.json();
       setUnreadCount(count);
     };
