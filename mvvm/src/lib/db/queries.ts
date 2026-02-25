@@ -626,7 +626,7 @@ export async function getCommentStats(): Promise<
 export async function fetchNotifications(userId: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications?userId=${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/notifications/unread?id=${userId}`,
     );
     return await res.json();
   } catch (error) {

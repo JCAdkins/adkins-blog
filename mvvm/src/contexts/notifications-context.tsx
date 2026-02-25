@@ -3,6 +3,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { fetchNotifications } from "@/lib/db/queries";
 
 type NotificationsContextType = {
   unreadCount: number;
@@ -11,7 +12,7 @@ type NotificationsContextType = {
 };
 
 const NotificationsContext = createContext<NotificationsContextType | null>(
-  null
+  null,
 );
 
 export function NotificationsProvider({
@@ -26,15 +27,13 @@ export function NotificationsProvider({
     if (!session?.user?.id) return;
 
     try {
-      const res = await fetch(
-        `/api/notifications/unread?id=${session.user.id}`
-      );
+      const res = await fetchNotifications(session.user.id);
       if (!res.ok) {
         const text = await res.text(); // fallback to text for debugging
         console.error(
           "Failed to fetch unread notifications:",
           res.status,
-          text
+          text,
         );
         return;
       }
@@ -66,7 +65,7 @@ export function useNotifications() {
   const context = useContext(NotificationsContext);
   if (!context) {
     throw new Error(
-      "useNotifications must be used within NotificationsProvider"
+      "useNotifications must be used within NotificationsProvider",
     );
   }
   return context;
