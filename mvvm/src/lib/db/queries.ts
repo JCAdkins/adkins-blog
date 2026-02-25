@@ -405,11 +405,15 @@ export const markMessageAsRead = async (id: string) => {
     const tokenRes = await axios.get("/api/auth/token");
     const { token } = tokenRes.data;
     const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/messages/mark-read`;
-    const res = await axios.post(URL, id, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await axios.post(
+      URL,
+      { id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     return res.data;
   } catch (error) {
     console.error("Failed to mark message as read: ", error);
