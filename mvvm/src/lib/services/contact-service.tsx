@@ -76,7 +76,7 @@ export const getUnreadMessagesCount = async () => {
   try {
     const tokenRes = await axios.get("/api/auth/token");
     const { token } = tokenRes.data;
-    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/admin/messages/unread/count`;
+    const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/messages/unread/count`;
     const res = await axios.get(URL, {
       headers: {
         Authorization: `Bearer ${token}`,
