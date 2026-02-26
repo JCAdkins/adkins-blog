@@ -60,7 +60,7 @@ export async function getImmichImage(
   console.log(`downloading immich image id:${immichId} at controller...`);
   try {
     const result = await downloadImmichImage(immichId);
-
+    console.log("immich image: ", result);
     if (result) {
       // If the result is the binary data, send it as a response
       res.setHeader("Content-Type", "application/octet-stream");
@@ -82,7 +82,9 @@ export async function getImmichThumbnail(
   const immichId = req.query.id as string;
 
   try {
+    console.log("downloading immich thumbnail...");
     const result = await downloadImmichImageThumbnail(immichId);
+    console.log("thumbnail: ", result);
 
     if (result) {
       // If the result is the binary data, send it as a response
