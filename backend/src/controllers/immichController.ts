@@ -82,7 +82,7 @@ export async function getImmichThumbnail(
   const immichId = req.query.id as string;
 
   try {
-    console.log("downloading immich thumbnail...");
+    console.log(`downloading immich thumbnail with id: ${immichId}`);
     const result = await downloadImmichImageThumbnail(immichId);
     console.log("thumbnail: ", result);
 
