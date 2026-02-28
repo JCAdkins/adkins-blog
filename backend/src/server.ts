@@ -13,6 +13,8 @@ import adminRoutes from "./routes/admin-routes.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.urlencoded({ limit: "100mb", extended: true }));
+
 app.use(
   cors({
     origin: [

@@ -8,13 +8,16 @@ import multer from "multer";
 import { verifyToken } from "../middleware.js";
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 100 * 1024 * 1024 },
+});
 
 router.post(
   "/upload",
   verifyToken,
   upload.array("images"), // Multer middleware processes the file
-  postNewImage
+  postNewImage,
 );
 router.get("/images", getImmichImage);
 router.get("/thumbnail", getImmichThumbnail);
