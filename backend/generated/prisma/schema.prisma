@@ -8,16 +8,18 @@ generator client {
 }
 
 model BlogPost {
-  id             String          @id @default(uuid())
-  title          String
-  content        String
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  featured       String          @default("false")
-  description    String          @default("No description provided.")
-  genre          String?
-  blogPostImages BlogPostImage[]
-  Comment        Comment[]
+  id               String          @id @default(uuid())
+  title            String
+  content          String
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  featured         String          @default("false")
+  description      String          @default("No description provided.")
+  genre            String?
+  immichAlbumId    String?
+  immichShareToken String?
+  blogPostImages   BlogPostImage[]
+  Comment          Comment[]
 }
 
 model Image {

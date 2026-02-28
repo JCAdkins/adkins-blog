@@ -17,6 +17,8 @@ model BlogPost {
   featured       String          @default("false")
   description    String          @default("No description provided.")
   genre          String?
+  immichAlbumId    String?
+  immichShareToken String?
   blogPostImages BlogPostImage[]
   Comment        Comment[]
 }

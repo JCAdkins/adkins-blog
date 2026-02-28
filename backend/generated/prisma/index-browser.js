@@ -128,7 +128,9 @@ exports.Prisma.BlogPostScalarFieldEnum = {
   updatedAt: 'updatedAt',
   featured: 'featured',
   description: 'description',
-  genre: 'genre'
+  genre: 'genre',
+  immichAlbumId: 'immichAlbumId',
+  immichShareToken: 'immichShareToken'
 };
 
 exports.Prisma.ImageScalarFieldEnum = {
