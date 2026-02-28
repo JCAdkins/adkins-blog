@@ -1,5 +1,6 @@
 import { BlogPostInput } from "../models/blogPostModel.js";
 import { db } from "../lib/prisma.js";
+import { addAssetToAlbum, createPublicAlbum } from "./immichService.js";
 
 export async function getAllBlogPosts() {
   return await db.blogPost.findMany({
@@ -49,6 +50,16 @@ export const getBlogPostById = async (id: string) => {
 export async function createBlogPost(input: BlogPostInput) {
   const { title, description, genre, content, featured, images } = input;
 
+  // Create a public Immich album for this blog post
+  const { albumId, shareToken } = await createPublicAlbum(title);
+
+  // Add all images to the album
+  if (images?.length) {
+    await Promise.all(
+      images.map((image) => addAssetToAlbum(albumId, image.id)),
+    );
+  }
+
   const blogPost = await db.blogPost.create({
     data: {
       title,
@@ -56,30 +67,24 @@ export async function createBlogPost(input: BlogPostInput) {
       genre,
       content,
       featured,
+      immichAlbumId: albumId,
+      immichShareToken: shareToken,
       blogPostImages: {
         create: images?.map((image) => ({
           image: {
             connectOrCreate: {
               where: { id: image.id },
-              create: {
-                id: image.id,
-                status: image.status,
-              },
+              create: { id: image.id, status: image.status },
             },
           },
         })),
       },
     },
     include: {
-      blogPostImages: {
-        include: {
-          image: true,
-        },
-      },
+      blogPostImages: { include: { image: true } },
     },
   });
 
-  // Optional: flatten the blogPostImages to directly return the linked images
   return {
     ...blogPost,
     images: blogPost.blogPostImages.map((bpImage: any) => bpImage.image),

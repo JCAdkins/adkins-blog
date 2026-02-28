@@ -1842,6 +1842,8 @@ export namespace Prisma {
     featured: string | null
     description: string | null
     genre: string | null
+    immichAlbumId: string | null
+    immichShareToken: string | null
   }
 
   export type BlogPostMaxAggregateOutputType = {
@@ -1853,6 +1855,8 @@ export namespace Prisma {
     featured: string | null
     description: string | null
     genre: string | null
+    immichAlbumId: string | null
+    immichShareToken: string | null
   }
 
   export type BlogPostCountAggregateOutputType = {
@@ -1864,6 +1868,8 @@ export namespace Prisma {
     featured: number
     description: number
     genre: number
+    immichAlbumId: number
+    immichShareToken: number
     _all: number
   }
 
@@ -1877,6 +1883,8 @@ export namespace Prisma {
     featured?: true
     description?: true
     genre?: true
+    immichAlbumId?: true
+    immichShareToken?: true
   }
 
   export type BlogPostMaxAggregateInputType = {
@@ -1888,6 +1896,8 @@ export namespace Prisma {
     featured?: true
     description?: true
     genre?: true
+    immichAlbumId?: true
+    immichShareToken?: true
   }
 
   export type BlogPostCountAggregateInputType = {
@@ -1899,6 +1909,8 @@ export namespace Prisma {
     featured?: true
     description?: true
     genre?: true
+    immichAlbumId?: true
+    immichShareToken?: true
     _all?: true
   }
 
@@ -1983,6 +1995,8 @@ export namespace Prisma {
     featured: string
     description: string
     genre: string | null
+    immichAlbumId: string | null
+    immichShareToken: string | null
     _count: BlogPostCountAggregateOutputType | null
     _min: BlogPostMinAggregateOutputType | null
     _max: BlogPostMaxAggregateOutputType | null
@@ -2011,6 +2025,8 @@ export namespace Prisma {
     featured?: boolean
     description?: boolean
     genre?: boolean
+    immichAlbumId?: boolean
+    immichShareToken?: boolean
     blogPostImages?: boolean | BlogPost$blogPostImagesArgs<ExtArgs>
     Comment?: boolean | BlogPost$CommentArgs<ExtArgs>
     _count?: boolean | BlogPostCountOutputTypeDefaultArgs<ExtArgs>
@@ -2025,6 +2041,8 @@ export namespace Prisma {
     featured?: boolean
     description?: boolean
     genre?: boolean
+    immichAlbumId?: boolean
+    immichShareToken?: boolean
   }, ExtArgs["result"]["blogPost"]>
 
   export type BlogPostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2036,6 +2054,8 @@ export namespace Prisma {
     featured?: boolean
     description?: boolean
     genre?: boolean
+    immichAlbumId?: boolean
+    immichShareToken?: boolean
   }, ExtArgs["result"]["blogPost"]>
 
   export type BlogPostSelectScalar = {
@@ -2047,9 +2067,11 @@ export namespace Prisma {
     featured?: boolean
     description?: boolean
     genre?: boolean
+    immichAlbumId?: boolean
+    immichShareToken?: boolean
   }
 
-  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt" | "updatedAt" | "featured" | "description" | "genre", ExtArgs["result"]["blogPost"]>
+  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt" | "updatedAt" | "featured" | "description" | "genre" | "immichAlbumId" | "immichShareToken", ExtArgs["result"]["blogPost"]>
   export type BlogPostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     blogPostImages?: boolean | BlogPost$blogPostImagesArgs<ExtArgs>
     Comment?: boolean | BlogPost$CommentArgs<ExtArgs>
@@ -2073,6 +2095,8 @@ export namespace Prisma {
       featured: string
       description: string
       genre: string | null
+      immichAlbumId: string | null
+      immichShareToken: string | null
     }, ExtArgs["result"]["blogPost"]>
     composites: {}
   }
@@ -2506,6 +2530,8 @@ export namespace Prisma {
     readonly featured: FieldRef<"BlogPost", 'String'>
     readonly description: FieldRef<"BlogPost", 'String'>
     readonly genre: FieldRef<"BlogPost", 'String'>
+    readonly immichAlbumId: FieldRef<"BlogPost", 'String'>
+    readonly immichShareToken: FieldRef<"BlogPost", 'String'>
   }
     
 
@@ -12129,7 +12155,9 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     featured: 'featured',
     description: 'description',
-    genre: 'genre'
+    genre: 'genre',
+    immichAlbumId: 'immichAlbumId',
+    immichShareToken: 'immichShareToken'
   };
 
   export type BlogPostScalarFieldEnum = (typeof BlogPostScalarFieldEnum)[keyof typeof BlogPostScalarFieldEnum]
@@ -12351,6 +12379,8 @@ export namespace Prisma {
     featured?: StringFilter<"BlogPost"> | string
     description?: StringFilter<"BlogPost"> | string
     genre?: StringNullableFilter<"BlogPost"> | string | null
+    immichAlbumId?: StringNullableFilter<"BlogPost"> | string | null
+    immichShareToken?: StringNullableFilter<"BlogPost"> | string | null
     blogPostImages?: BlogPostImageListRelationFilter
     Comment?: CommentListRelationFilter
   }
@@ -12364,6 +12394,8 @@ export namespace Prisma {
     featured?: SortOrder
     description?: SortOrder
     genre?: SortOrderInput | SortOrder
+    immichAlbumId?: SortOrderInput | SortOrder
+    immichShareToken?: SortOrderInput | SortOrder
     blogPostImages?: BlogPostImageOrderByRelationAggregateInput
     Comment?: CommentOrderByRelationAggregateInput
   }
@@ -12380,6 +12412,8 @@ export namespace Prisma {
     featured?: StringFilter<"BlogPost"> | string
     description?: StringFilter<"BlogPost"> | string
     genre?: StringNullableFilter<"BlogPost"> | string | null
+    immichAlbumId?: StringNullableFilter<"BlogPost"> | string | null
+    immichShareToken?: StringNullableFilter<"BlogPost"> | string | null
     blogPostImages?: BlogPostImageListRelationFilter
     Comment?: CommentListRelationFilter
   }, "id">
@@ -12393,6 +12427,8 @@ export namespace Prisma {
     featured?: SortOrder
     description?: SortOrder
     genre?: SortOrderInput | SortOrder
+    immichAlbumId?: SortOrderInput | SortOrder
+    immichShareToken?: SortOrderInput | SortOrder
     _count?: BlogPostCountOrderByAggregateInput
     _max?: BlogPostMaxOrderByAggregateInput
     _min?: BlogPostMinOrderByAggregateInput
@@ -12410,6 +12446,8 @@ export namespace Prisma {
     featured?: StringWithAggregatesFilter<"BlogPost"> | string
     description?: StringWithAggregatesFilter<"BlogPost"> | string
     genre?: StringNullableWithAggregatesFilter<"BlogPost"> | string | null
+    immichAlbumId?: StringNullableWithAggregatesFilter<"BlogPost"> | string | null
+    immichShareToken?: StringNullableWithAggregatesFilter<"BlogPost"> | string | null
   }
 
   export type ImageWhereInput = {
@@ -13016,6 +13054,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
     blogPostImages?: BlogPostImageCreateNestedManyWithoutBlogPostInput
     Comment?: CommentCreateNestedManyWithoutPostInput
   }
@@ -13029,6 +13069,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
     blogPostImages?: BlogPostImageUncheckedCreateNestedManyWithoutBlogPostInput
     Comment?: CommentUncheckedCreateNestedManyWithoutPostInput
   }
@@ -13042,6 +13084,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
     blogPostImages?: BlogPostImageUpdateManyWithoutBlogPostNestedInput
     Comment?: CommentUpdateManyWithoutPostNestedInput
   }
@@ -13055,6 +13099,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
     blogPostImages?: BlogPostImageUncheckedUpdateManyWithoutBlogPostNestedInput
     Comment?: CommentUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -13068,6 +13114,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
   }
 
   export type BlogPostUpdateManyMutationInput = {
@@ -13079,6 +13127,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogPostUncheckedUpdateManyInput = {
@@ -13090,6 +13140,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImageCreateInput = {
@@ -13794,6 +13846,8 @@ export namespace Prisma {
     featured?: SortOrder
     description?: SortOrder
     genre?: SortOrder
+    immichAlbumId?: SortOrder
+    immichShareToken?: SortOrder
   }
 
   export type BlogPostMaxOrderByAggregateInput = {
@@ -13805,6 +13859,8 @@ export namespace Prisma {
     featured?: SortOrder
     description?: SortOrder
     genre?: SortOrder
+    immichAlbumId?: SortOrder
+    immichShareToken?: SortOrder
   }
 
   export type BlogPostMinOrderByAggregateInput = {
@@ -13816,6 +13872,8 @@ export namespace Prisma {
     featured?: SortOrder
     description?: SortOrder
     genre?: SortOrder
+    immichAlbumId?: SortOrder
+    immichShareToken?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -15335,6 +15393,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
     Comment?: CommentCreateNestedManyWithoutPostInput
   }
 
@@ -15347,6 +15407,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
     Comment?: CommentUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -15390,6 +15452,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
     Comment?: CommentUpdateManyWithoutPostNestedInput
   }
 
@@ -15402,6 +15466,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
     Comment?: CommentUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -16128,6 +16194,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
     blogPostImages?: BlogPostImageCreateNestedManyWithoutBlogPostInput
   }
 
@@ -16140,6 +16208,8 @@ export namespace Prisma {
     featured?: string
     description?: string
     genre?: string | null
+    immichAlbumId?: string | null
+    immichShareToken?: string | null
     blogPostImages?: BlogPostImageUncheckedCreateNestedManyWithoutBlogPostInput
   }
 
@@ -16368,6 +16438,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
     blogPostImages?: BlogPostImageUpdateManyWithoutBlogPostNestedInput
   }
 
@@ -16380,6 +16452,8 @@ export namespace Prisma {
     featured?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     genre?: NullableStringFieldUpdateOperationsInput | string | null
+    immichAlbumId?: NullableStringFieldUpdateOperationsInput | string | null
+    immichShareToken?: NullableStringFieldUpdateOperationsInput | string | null
     blogPostImages?: BlogPostImageUncheckedUpdateManyWithoutBlogPostNestedInput
   }
 

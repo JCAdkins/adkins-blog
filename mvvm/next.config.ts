@@ -7,7 +7,12 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "www.lvvr.com" }],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "immich.adkins.ninja",
+      },
+    ],
   },
 };
 

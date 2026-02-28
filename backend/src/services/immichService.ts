@@ -77,6 +77,25 @@ export async function downloadImmichImage(id: string) {
   }
 }
 
+export async function createPublicAlbum(
+  albumName: string,
+): Promise<{ albumId: string; shareToken: string }> {
+  const created = await axios.post(
+    `${BASE_URL}/albums`,
+    { albumName },
+    { headers: { "x-api-key": API_KEY, "Content-Type": "application/json" } },
+  );
+  const albumId = created.data.id;
+
+  const shared = await axios.post(
+    `${BASE_URL}/shared-links`,
+    { albumId, type: "ALBUM", allowDownload: true, showMetadata: true },
+    { headers: { "x-api-key": API_KEY, "Content-Type": "application/json" } },
+  );
+
+  return { albumId, shareToken: shared.data.key };
+}
+
 export async function downloadImmichImageThumbnail(id: string) {
   console.log("downloading image thumbnail at immach service...");
   try {

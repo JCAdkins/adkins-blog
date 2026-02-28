@@ -55,10 +55,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               }}
             >
               <Image
-                src={
-                  img.thumbnail ||
-                  "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
-                }
+                src={img.thumbnail}
                 alt={`Gallery image ${index + 1}`}
                 fill
                 className="object-cover"
@@ -111,10 +108,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               {/* Image */}
               {images[selectedIndex!] ? (
                 <Image
-                  src={
-                    (images[selectedIndex!]?.original as string) ||
-                    "https://www.lvvr.com/featured-listings/application/modules/themes/views/default/assets/images/image-placeholder.png"
-                  }
+                  src={images[selectedIndex!]?.original as string}
                   alt={`Full image ${selectedIndex! + 1}`}
                   width={400}
                   height={300}
