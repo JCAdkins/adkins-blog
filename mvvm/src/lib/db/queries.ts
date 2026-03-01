@@ -318,44 +318,16 @@ export async function getAllBlogs(): Promise<Blog[] | null> {
   }
 }
 
-// Needs secured
-export async function createNewBlog({
-  blogData,
-  token,
-}: {
-  blogData: NewBlog;
-  token: any;
-}) {
-  try {
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    if (token.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
-    // Sign the decoded token to create a raw JWT string
-    const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${signedToken}`,
-      },
-      body: JSON.stringify(blogData),
-    });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error("Fetch failed:", errText);
-      throw new Error("Failed to create blog");
-    }
-    redirect("/admin");
-  } catch (err) {
-    console.error("Fetch error:", err);
-    throw err;
-  }
+export async function createBlog(blogData: NewBlog) {
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
+  await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, blogData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity,
+  });
 }
 
 // Doesn't need secured

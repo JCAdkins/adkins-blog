@@ -1,48 +1,28 @@
 import axios, { AxiosError } from "axios";
-import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 
-export async function getImageURLs({
-  formData,
-  token,
-}: {
-  formData: FormData;
-  token: any;
-}) {
-  if (!token) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+export async function uploadImages(files: File[]): Promise<any[]> {
+  if (!files.length) return [];
 
-  if (token.role !== "admin") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const tokenRes = await axios.get("/api/auth/token");
+  const { token } = tokenRes.data;
 
-  // Sign the decoded token to create a raw JWT string
-  const signedToken = jwt.sign(token, process.env.NEXTAUTH_SECRET!);
-  const uploadEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}/immich/upload`;
-  console.log("Uploading files...");
+  const formData = new FormData();
+  files.forEach((file) => formData.append("images", file));
 
   try {
-    const res = await fetch(uploadEndpoint, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${signedToken}`,
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/immich/upload`,
+      formData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity,
       },
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("❌ Upload failed:", errorText);
-      return NextResponse.json([]); // Fail gracefully
-    }
-
-    const data = await res.json();
-
-    return NextResponse.json(data);
+    );
+    return res.data;
   } catch (error) {
-    console.error("🚨 Error uploading files:", error);
-    return NextResponse.json([]);
+    console.error("Error uploading images:", error);
+    return [];
   }
 }
 
@@ -87,7 +67,7 @@ export async function getImmichAsset({
     if (error.response) {
       console.error(
         `  Status: ${error.response.status} \n Data:`,
-        error.response.data
+        error.response.data,
       );
     } else {
       console.error("  General error:", error.message);

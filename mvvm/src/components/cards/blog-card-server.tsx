@@ -1,6 +1,5 @@
 // src/components/cards/BlogCardServer.tsx
 import { Blog } from "@/models/blog/blogModel";
-import { getImmichAsset } from "../../lib/services/immich-service";
 
 type BlogCardPropsBase = {
   blog: Blog;
@@ -22,10 +21,7 @@ export default async function BlogCardServer<T extends BlogCardPropsBase>({
   className,
   extraProps,
 }: BlogCardServerProps<T>) {
-  const imageUrl = await getImmichAsset({
-    type: "thumbnail",
-    id: blog.blogPostImages?.[0]?.imageId,
-  });
+  const imageUrl = `https://immich.adkins.ninja/api/assets/${blog.blogPostImages?.[0]?.imageId}/thumbnail?key=${blog.immichShareToken}`;
 
   // Combine required props + any extras
   const props = {

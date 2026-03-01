@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ProgressIndicator } from "../ui/progress-indicator";
 import FileDropZone from "../inputs/file-drop-zone";
 import { BlogGenre } from "@/models/blog/blogGenreModel";
-
-interface CreatePostFormProps {
-  action: (formData: FormData) => Promise<void>;
-}
+import { uploadImages } from "@/lib/services/immich-service";
+import { createBlog } from "@/lib/db/queries";
 
 const genreOptions = [
   "educational",
@@ -20,8 +21,12 @@ const genreOptions = [
   "news",
 ] as const;
 
-export default function CreatePostForm({ action }: CreatePostFormProps) {
+export default function CreatePostForm() {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [step, setStep] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formState, setFormState] = useState({
     title: "",
     description: "",
@@ -39,22 +44,44 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
     const target = e.target;
     const { name, type, value } = target;
     const checked = (target as HTMLInputElement).checked;
-
     setFormState((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("title", formState.title);
-    formData.append("description", formState.description);
-    formData.append("genre", formState.genre);
-    formData.append("content", formState.content);
-    formData.append("featured", String(formState.featured));
-    formState.images.forEach((file) => formData.append("images", file));
-    await action(formData);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const token = (session as any)?.token;
+      if (!token) throw new Error("Unauthorized");
+
+      // 1. Upload images first
+      const imageUrls = await uploadImages(formState.images);
+
+      // 2. Create the blog post with returned image data
+      await createBlog({
+        title: formState.title,
+        description: formState.description,
+        genre: formState.genre,
+        content: formState.content,
+        featured: String(formState.featured),
+        images: imageUrls,
+      });
+
+      router.push("/admin");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Failed to create blog post");
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const steps = [
@@ -115,6 +142,7 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
       </label>
     </div>,
     <FileDropZone
+      key={6}
       fileType={[
         "image/svg+xml",
         "image/jpg",
@@ -132,11 +160,13 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
 
   return (
     <div className="space-y-6">
+      {error && <p className="text-sm text-red-500">{error}</p>}
       <form
-        action={async () => {
+        onSubmit={async (e) => {
           if (step === steps.length - 1) {
-            await handleSubmit();
+            await handleSubmit(e);
           } else {
+            e.preventDefault();
             setStep((s) => s + 1);
           }
         }}
@@ -151,8 +181,12 @@ export default function CreatePostForm({ action }: CreatePostFormProps) {
             <div className="invisible">Previous</div>
           )}
           <ProgressIndicator steps={steps.length} currentStep={step} />
-          <Button type="submit">
-            {step === steps.length - 1 ? "Submit" : "Next"}
+          <Button type="submit" disabled={submitting}>
+            {step === steps.length - 1
+              ? submitting
+                ? "Submitting..."
+                : "Submit"
+              : "Next"}
           </Button>
         </div>
       </form>

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { getBlogById } from "@/lib/db/queries";
-import { getImmichAsset } from "@/lib/services/immich-service";
 import { formatDateToMMDDYYYY } from "@/lib/utils";
 import ImageGallery from "@/components/containers/image-container";
 import BlogContentSkeleton from "../skeletons/blog-content-skeleton";
@@ -28,15 +27,6 @@ export default function BlogPostContent({ id }: Props) {
       setPost(data);
 
       if (data?.blogPostImages?.length) {
-        // const imgs = await Promise.all(
-        //   data.blogPostImages.map(async (img: BlogPostImage) => {
-        //     const [thumbnail, original] = await Promise.all([
-        //       getImmichAsset({ type: "thumbnail", id: img.imageId }),
-        //       getImmichAsset({ type: "original", id: img.imageId }),
-        //     ]);
-        //     return { thumbnail, original };
-        //   }),
-        // );
         const imgs = data.blogPostImages.map((img: BlogPostImage) => ({
           thumbnail: `https://immich.adkins.ninja/api/assets/${img.imageId}/thumbnail?key=${data.immichShareToken}`,
           original: `https://immich.adkins.ninja/api/assets/${img.imageId}/original?key=${data.immichShareToken}`,

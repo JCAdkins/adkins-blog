@@ -9,6 +9,8 @@ export type Blog = {
   description: string;
   content: string;
   featured: boolean;
+  immichAlbumId?: String;
+  immichShareToken?: String;
   blogPostImages?: BlogPostImage[];
   createdAt: string;
   updatedAt: string;
