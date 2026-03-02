@@ -30,13 +30,15 @@ export default function BlogCard({
       )}
     >
       <div {...childProps} className="h-full flex flex-col">
-        <Image
-          src={imageUrl || "/placeholder-img.png"}
-          width={30}
-          height={10}
-          alt={blog.title}
-          className="mb-4 h-32 w-full rounded object-cover"
-        />
+        <div className="relative mb-4 h-32 w-full overflow-hidden rounded">
+          <Image
+            src={imageUrl || "/placeholder-img.png"}
+            fill
+            alt={blog.title}
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
         <div className="flex flex-col justify-between flex-1 p-2">
           <div>
             <h2 className="text-lg font-bold">{blog.title}</h2>

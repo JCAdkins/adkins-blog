@@ -28,13 +28,15 @@ export default function BlogCard({
     >
       <div {...childProps}>
         <Link href={`/blog/${blog.id}`} className="block">
-          <Image
-            src={imageUrl || "/placeholder-img.png"}
-            width={30}
-            height={10}
-            alt={blog.title}
-            className="mb-4 h-32 w-full rounded object-cover"
-          />
+          <div className="relative mb-4 h-32 w-full overflow-hidden rounded">
+            <Image
+              src={imageUrl || "/placeholder-img.png"}
+              fill
+              alt={blog.title}
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </div>
           <div className="p-2">
             <h2 className="text-lg font-bold">{blog.title}</h2>
             <p className="text-sm text-gray-600">{blog.description}</p>
