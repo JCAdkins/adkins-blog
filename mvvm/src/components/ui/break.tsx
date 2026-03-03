@@ -6,7 +6,10 @@ interface BreakProps {
 export default function Break({ className, ...rest }: BreakProps) {
   return (
     <div
-      className={cn("my-1 w-full border border-black", className)} // Merge with passed className
+      className={cn(
+        "my-1 w-full border border-black dark:border-dark-border",
+        className,
+      )} // Merge with passed className
       {...rest} // Spread any other props (like id, style, etc.)
     />
   );

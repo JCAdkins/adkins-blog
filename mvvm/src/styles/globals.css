@@ -29,6 +29,14 @@ html.dark {
   --color-login: #e09f89;
   --color-login-hover: #c2826d;
   --color-login-bg: #d2826d;
+
+  /* Dark mode palette */
+  --color-dark-surface: #1e1a2e; /* deep warm purple-dark */
+  --color-dark-card: #2a2438; /* slightly lighter surface */
+  --color-dark-border: #3d3554; /* muted purple border */
+  --color-dark-muted: #897da1; /* muted lavender text */
+  --color-dark-accent: #c2826d; /* reuse login-hover as accent */
+  --color-dark-accent-hover: #e09f89; /* resuse login */
 }
 
 body {

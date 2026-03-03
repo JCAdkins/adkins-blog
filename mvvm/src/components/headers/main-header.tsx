@@ -30,8 +30,7 @@ export default function MainHeader() {
   );
 
   const rightContent = session?.user ? (
-    // <Alert
-    <div className="flex flex-row items-center justify-center gap-2">
+    <div className="flex flex-row items-center justify-center gap-2 dark:text-dark-muted">
       <NotificationBadge />
       <UserMenu user={session.user} />
     </div>
@@ -47,7 +46,7 @@ export default function MainHeader() {
           links={links}
           leftContent={leftContent}
           rightContent={rightContent}
-          className="bg-header text-black"
+          className="bg-header dark:bg-dark-surface/90 text-black dark:text-dark-muted dark:border-b dark:border-dark-border"
         />
       </div>
 
@@ -57,7 +56,7 @@ export default function MainHeader() {
           links={links}
           leftContent={leftContent}
           rightContent={rightContent}
-          className="bg-header text-black"
+          className="bg-header dark:bg-dark-surface/90 text-black dark:text-dark-muted"
         />
       </div>
     </>

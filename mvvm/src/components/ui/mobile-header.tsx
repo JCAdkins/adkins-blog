@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Menu, Home, Info, BookText, Mail } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -35,7 +35,7 @@ export default function MobileHeader({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="left-0 mt-2 w-screen rounded-none border-t bg-white shadow-none"
+            className="left-0 mt-2 w-screen rounded-none border-t dark:border-dark-muted bg-white dark:bg-dark-surface shadow-none"
             side="bottom"
             align="start"
           >
@@ -45,12 +45,12 @@ export default function MobileHeader({
                 {rightContent}
               </div>
               {/* Divider */}
-              <div className="my-2 border-b" />
+              <div className="my-2 border-b dark:border-b-dark-muted" />
               {links.map((link) => (
                 <DropdownMenuItem key={link.href} asChild>
                   <Link
                     href={link.href}
-                    className="flex w-full items-center justify-center gap-2 px-4 py-2 text-base hover:bg-gray-100"
+                    className="flex w-full items-center justify-center gap-2 px-4 py-2 text-base hover:bg-gray-100 dark:text-dark-muted dark:hover:bg-dark-card"
                   >
                     {link.icon}
                     {link.label}
