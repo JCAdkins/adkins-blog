@@ -26,6 +26,7 @@ export function CommentActions({
   return (
     <div className="flex gap-2">
       <Button
+        className="dark:hover:bg-login-hover"
         size="xs"
         onClick={onLike}
         disabled={comment.isDeleted || !sessionUserId}
@@ -40,19 +41,31 @@ export function CommentActions({
       </Button>
 
       {sessionUserId && (
-        <Button size="xs" onClick={onReplyClick}>
+        <Button
+          className="dark:hover:bg-login-hover"
+          size="xs"
+          onClick={onReplyClick}
+        >
           Reply
         </Button>
       )}
 
       {sessionUserId && comment.authorId !== sessionUserId && (
-        <Button size="xs" onClick={() => onReport(comment.id)}>
+        <Button
+          className="dark:hover:bg-login-hover"
+          size="xs"
+          onClick={() => onReport(comment.id)}
+        >
           <FlagIcon />
         </Button>
       )}
 
       {sessionUserId && comment.authorId === sessionUserId && (
-        <Button size="xs" onClick={onDelete}>
+        <Button
+          className="dark:hover:bg-login-hover"
+          size="xs"
+          onClick={onDelete}
+        >
           <TrashIcon />
         </Button>
       )}

@@ -49,7 +49,9 @@ export const CommentsSection = ({
 
   return (
     <section className="mt-12">
-      <h3 className="text-2xl font-bold mb-6">Comments ({allCommentCount})</h3>
+      <h3 className="text-2xl font-bold mb-6 dark:text-login-hover">
+        Comments ({allCommentCount})
+      </h3>
       {session && <CommentInput blogId={blogId} authorId={session.user.id} />}
       <div className="flex flex-col mt-6 gap-4">
         {topLevelIds.map((id) => {

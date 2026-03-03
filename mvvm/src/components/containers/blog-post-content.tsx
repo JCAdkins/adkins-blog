@@ -46,12 +46,16 @@ export default function BlogPostContent({ id }: Props) {
         <BlogContentSkeleton />
       ) : (
         <>
-          <h1 className="text-3xl font-bold">{post.title}</h1>
-          <p className="mb-4 text-gray-500">
+          <h1 className="text-3xl font-bold dark:text-gray-300">
+            {post.title}
+          </h1>
+          <p className="mb-4 text-gray-500 dark:text-login-hover">
             created on {formatDateToMMDDYYYY(post.createdAt)}
           </p>
-          <p className="mb-6 text-gray-500">{post.description}</p>
-          <div className="prose prose-lg dark:prose-invert">
+          <p className="mb-6 text-gray-500 dark:text-login-hover">
+            {post.description}
+          </p>
+          <div className="prose prose-lg dark:text-login">
             {post.content.split("\n").map((line, i) => (
               <React.Fragment key={i}>
                 {line}

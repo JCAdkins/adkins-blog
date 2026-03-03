@@ -52,7 +52,7 @@ export default function WordOfTheDayCard({ term }: Props) {
               <p className="mt-4 text-gray-700 dark:text-[#a89bc2]">
                 {term.definition.split("\n").map((line, i) => (
                   <React.Fragment key={i}>
-                    {line} <br />
+                    {line}
                     <br />
                   </React.Fragment>
                 ))}

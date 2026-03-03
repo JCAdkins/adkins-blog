@@ -313,7 +313,7 @@
   },
   {
     "word": "CMYK Color",
-    "definition": "This is the color mode used in commercial, off-set printing. It is an alternative set of colors than used with digital photography displayed in cameras or other electronic devices.\n\nThe colors are:Cyan (C)\n\nMagenta (M)\n\nYellow (Y)\n\nBlack (K)\n\nThe K is for the key. In the printing process, the plate for black is the 'key' plate and is used as a base to align the plates for other colors.\n\nThese colors are known as 'subtractive' colors. When these colors are added to white, as in the printing process, other colors are removed from the visual spectrum."
+    "definition": "This is the color mode used in commercial, off-set printing. It is an alternative set of colors than used with digital photography displayed in cameras or other electronic devices.\n\nThe colors are:\nCyan (C)\nMagenta (M)\nYellow (Y)\nBlack (K)\n\nThe K is for the key. In the printing process, the plate for black is the 'key' plate and is used as a base to align the plates for other colors.\n\nThese colors are known as 'subtractive' colors. When these colors are added to white, as in the printing process, other colors are removed from the visual spectrum."
   },
   {
     "word": "Cold Shoe",

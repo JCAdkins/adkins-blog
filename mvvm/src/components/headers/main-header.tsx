@@ -46,7 +46,7 @@ export default function MainHeader() {
           links={links}
           leftContent={leftContent}
           rightContent={rightContent}
-          className="bg-header dark:bg-dark-surface/90 text-black dark:text-dark-muted dark:border-b dark:border-dark-border"
+          className="bg-header dark:bg-dark-border text-black dark:text-dark-muted dark:border-b dark:border-dark-border"
         />
       </div>
 
@@ -56,7 +56,7 @@ export default function MainHeader() {
           links={links}
           leftContent={leftContent}
           rightContent={rightContent}
-          className="bg-header dark:bg-dark-surface/90 text-black dark:text-dark-muted"
+          className="bg-header dark:bg-dark-border text-black dark:text-dark-muted"
         />
       </div>
     </>

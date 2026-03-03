@@ -47,7 +47,9 @@ export const CommentCard = memo<CommentCardProps>(
     return (
       <Card
         id={`comment-${comment.id}`}
-        className={"bg-header py-2 px-4 text-foreground rounded-md"}
+        className={
+          "bg-header dark:bg-dark-accent dark:border-login py-2 px-4 text-foreground rounded-md"
+        }
       >
         <div className="flex justify-between">
           <p className="text-sm">
