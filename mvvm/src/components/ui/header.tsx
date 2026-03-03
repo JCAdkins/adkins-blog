@@ -27,7 +27,7 @@ export default function Header({
             <Link
               key={link.href}
               href={link.href}
-              className="border-r pr-4 first:ml-4 last:border-r-0 hover:underline"
+              className="border-r dark:border-dark-muted pr-4 first:ml-4 last:border-r-0 hover:underline"
             >
               {link.label}
             </Link>

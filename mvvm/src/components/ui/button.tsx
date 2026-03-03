@@ -10,15 +10,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer hover:font-bold",
+          "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer hover:font-bold dark:bg-dark-accent dark:text-white dark:hover:bg-dark-accent-hover",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 dark:bg-red-800 dark:text-red-100 dark:hover:bg-red-700",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-dark-border dark:bg-transparent dark:text-dark-muted dark:hover:bg-dark-border",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-dark-card dark:text-dark-muted dark:hover:bg-dark-border",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground dark:text-dark-muted dark:hover:bg-dark-border",
+        link: "text-primary underline-offset-4 hover:underline dark:text-dark-muted",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -32,11 +33,12 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
@@ -51,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

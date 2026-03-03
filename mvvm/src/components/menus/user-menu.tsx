@@ -27,13 +27,19 @@ export function UserMenu({ user }: { user: User }) {
           />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => router.push("/settings")}>
+      <DropdownMenuContent className="dark:bg-dark-card dark:border-dark-muted dark:text-dark-muted">
+        <DropdownMenuItem
+          onClick={() => router.push("/settings")}
+          className="dark:hover:bg-dark-border dark:focus:bg-dark-border"
+        >
           Settings
         </DropdownMenuItem>
 
         {user.role === "admin" ? (
-          <DropdownMenuItem onClick={() => router.push("/admin")}>
+          <DropdownMenuItem
+            onClick={() => router.push("/admin")}
+            className="dark:hover:bg-dark-border dark:focus:bg-dark-border"
+          >
             Admin
           </DropdownMenuItem>
         ) : (
@@ -44,6 +50,7 @@ export function UserMenu({ user }: { user: User }) {
             console.log("Logging out");
             await signOut();
           }}
+          className="dark:hover:bg-dark-border dark:focus:bg-dark-border"
         >
           Log out
         </DropdownMenuItem>

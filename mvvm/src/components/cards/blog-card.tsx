@@ -22,7 +22,7 @@ export default function BlogCard({
     <Card
       key={blog.id}
       className={cn(
-        "text-black sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]",
+        "text-black dark:text-gray-300  sm:transition-transform sm:duration-50 sm:hover:scale-[1.02]",
         className,
       )}
     >
@@ -39,7 +39,9 @@ export default function BlogCard({
           </div>
           <div className="p-2">
             <h2 className="text-lg font-bold">{blog.title}</h2>
-            <p className="text-sm text-gray-600">{blog.description}</p>
+            <p className="text-sm text-gray-600 dark:text-dark-muted">
+              {blog.description}
+            </p>
           </div>
         </Link>
       </div>
