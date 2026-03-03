@@ -95,7 +95,7 @@ export default function ContactForm({ user }: Props) {
       <div>
         <label
           htmlFor="reason"
-          className="block text-sm font-medium text-gray-800"
+          className="block text-sm font-medium text-gray-800 dark:text-dark-muted/90"
         >
           Reason for Contact
         </label>
@@ -105,7 +105,7 @@ export default function ContactForm({ user }: Props) {
           value={form.reason}
           onChange={handleChange}
           required
-          className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm"
+          className="mt-1 w-full rounded-md border border-gray-300 bg-white dark:bg-dark-surface dark:border-gray-600 dark:text-login px-3 py-2 shadow-sm"
         >
           <option value="" disabled>
             Select a reason
@@ -121,7 +121,7 @@ export default function ContactForm({ user }: Props) {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-gray-800"
+          className="block text-sm font-medium text-gray-800 dark:text-dark-muted/90"
         >
           Message
         </label>
@@ -133,7 +133,7 @@ export default function ContactForm({ user }: Props) {
           rows={5}
           placeholder="Write message here..."
           required
-          className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm"
+          className="mt-1 w-full rounded-md border border-gray-300 bg-white dark:bg-dark-surface dark:border-gray-600 dark:text-login px-3 py-2 shadow-sm"
         />
       </div>
 

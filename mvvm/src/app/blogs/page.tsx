@@ -38,7 +38,7 @@ export default async function BlogsPage() {
                 extraProps={{
                   childProps: {
                     className:
-                      "bg-header border-white border-1 rounded-md hover:shadow-md",
+                      "bg-header border-white border-1 dark:bg-dark-surface dark:border-dark-muted rounded-md hover:shadow-md",
                   },
                 }}
                 className="bg-transparent border-none shadow-none hover:shadow-none"
@@ -78,7 +78,7 @@ export default async function BlogsPage() {
                     extraProps={{
                       childProps: {
                         className:
-                          "bg-header border-white border-1 rounded-md hover:shadow-md",
+                          "bg-header border-white border-1 dark:bg-dark-surface dark:border-dark-muted rounded-md hover:shadow-md",
                       },
                     }}
                     className="bg-transparent border-none shadow-none hover:shadow-none"
@@ -115,7 +115,7 @@ export default async function BlogsPage() {
                 extraProps={{
                   childProps: {
                     className:
-                      "bg-header border-white border-1 rounded-md hover:shadow-md",
+                      "bg-header border-white border-1 dark:bg-dark-surface dark:border-dark-muted rounded-md hover:shadow-md",
                   },
                 }}
                 className="bg-transparent border-none shadow-none hover:shadow-none"
