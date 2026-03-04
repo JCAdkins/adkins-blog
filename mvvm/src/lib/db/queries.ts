@@ -294,6 +294,9 @@ export async function getFeaturedBlogs(): Promise<Blog[] | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog/featured`,
+      {
+        next: { revalidate: 3600 }, // network first, fall back to cache if it fails
+      },
     );
     if (!response.ok) return null;
     return await response.json();
