@@ -77,7 +77,7 @@ export default async function AdminDashboard() {
                     Comments
                   </Table.ColumnHeaderCell>
                   <Table.ColumnHeaderCell className="px-2" align="right">
-                    Blogs
+                    Likes
                   </Table.ColumnHeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -89,10 +89,10 @@ export default async function AdminDashboard() {
                         {username}
                       </Table.Cell>
                       <Table.Cell className="px-2 text-center" align="right">
-                        {_count?.Comment ?? 0}
+                        {_count?.comments ?? 0}
                       </Table.Cell>
                       <Table.Cell className="px-2 text-center" align="right">
-                        {_count?.Like ?? 0}
+                        {_count?.likes ?? 0}
                       </Table.Cell>
                     </Table.Row>
                   ),

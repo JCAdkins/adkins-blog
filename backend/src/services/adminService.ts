@@ -164,20 +164,23 @@ export const getTotalReplies = async () => {
 };
 
 export const getAverageCommentsPerBlog = async () => {
-  const result = await db.comment.groupBy({
-    by: ["postId"],
-    _count: {
-      postId: true,
-    },
-  });
+  const [result, totalPosts] = await Promise.all([
+    db.comment.groupBy({
+      by: ["postId"],
+      _count: {
+        postId: true,
+      },
+    }),
+    db.blogPost.count(),
+  ]);
 
-  if (result.length === 0) return 0;
+  if (result.length === 0 || totalPosts === 0) return 0;
 
   const totalComments = result.reduce(
     (acc: any, curr: any) => acc + curr._count.postId,
     0,
   );
-  return totalComments / result.length;
+  return totalComments / totalPosts;
 };
 
 export const getTopCommentedBlogs = async () => {
