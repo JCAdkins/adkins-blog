@@ -53,7 +53,7 @@ export const CommentInput = ({
   };
 
   return session ? (
-    <div className="flex flex-col items-end w-full gap-2">
+    <div className="flex flex-col items-end w-full gap-2 mb-1">
       <Input
         type="text"
         value={content}
@@ -61,7 +61,11 @@ export const CommentInput = ({
         placeholder="Write your comment..."
         className="w-full"
       />
-      <Button size="sm" onClick={handleSubmit} className="hover:bg-login">
+      <Button
+        size="sm"
+        onClick={handleSubmit}
+        className="bg-transparent hover:bg-login"
+      >
         Submit
       </Button>
     </div>
