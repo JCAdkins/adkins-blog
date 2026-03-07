@@ -58,7 +58,7 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold tracking-tight">Settings</h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-2 text-muted-foreground dark:text-dark-accent-hover">
             Manage your account, security, and privacy preferences
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function SettingsPage() {
             {/* ── PROFILE TAB ── */}
             <TabsContent value="profile">
               <Card
-                className="text-black border-t-0 rounded-b-md"
+                className="text-black border-t-0 rounded-b-md dark:bg-dark-surface border-x-dark-border dark:border-b-dark-border dark:text-dark-accent-hover"
                 header={
                   <div className="flex flex-col gap-2 pt-4">
                     <h3>Profile Information</h3>
@@ -97,9 +97,8 @@ export default function SettingsPage() {
                   </div>
                 }
                 footer={
-                  <div className="flex justify-end items-center py-4 pr-4">
+                  <div className="flex justify-end items-center py-4 pr-4 dark:text-dark-accent-hover">
                     <Button
-                      variant="outline"
                       type="submit"
                       className="cursor-pointer"
                       disabled={isUpdating}
@@ -125,7 +124,7 @@ export default function SettingsPage() {
                       />
                       <div>
                         <Label htmlFor="avatar" className="cursor-pointer">
-                          <div className="flex items-center gap-2 rounded-md border border-input bg-background px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground">
+                          <div className="flex items-center gap-2 rounded-md border border-input bg-background px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground dark:border-dark-border dark:bg-dark-surface dark:hover:bg-dark-border">
                             <Camera className="h-4 w-4" />
                             Change Avatar
                           </div>
@@ -220,10 +219,10 @@ export default function SettingsPage() {
 
             {/* ── SECURITY TAB ── */}
             <TabsContent value="security">
-              <div className="space-y-6">
+              <div className="space-y-6 ">
                 {/* Change Password */}
                 <Card
-                  className="text-black border-t-0"
+                  className="text-black border-t-0 dark:bg-dark-surface border-x-dark-border dark:text-dark-accent-hover dark:border-b-dark-border"
                   header={
                     <div className="flex flex-col items-center justify-center gap-2 pt-4">
                       <h3>Change Password</h3>
@@ -236,7 +235,6 @@ export default function SettingsPage() {
                     <div className="flex justify-end py-4 pr-4">
                       <Button
                         type="submit"
-                        variant="outline"
                         className="cursor-pointer"
                         disabled={isUpdating}
                         onClick={passwordForm.handleSubmit(onPasswordSubmit)}
@@ -319,7 +317,7 @@ export default function SettingsPage() {
 
                 {/* Two-Factor Authentication */}
                 <Card
-                  className="text-black"
+                  className="text-black  dark:bg-dark-surface border-x-dark-border dark:text-dark-accent-hover"
                   header={
                     <div className="flex flex-col items-center justify-center gap-2 pt-4">
                       <h3>Two-Factor Authentication (2FA)</h3>
@@ -341,7 +339,7 @@ export default function SettingsPage() {
 
                 {/* Active Sessions */}
                 <Card
-                  className="text-black rounded-b-md"
+                  className="text-black rounded-b-md  dark:bg-dark-surface border-x-dark-border dark:text-dark-accent-hover dark:border-b-dark-border"
                   header={
                     <div className="flex flex-col items-center justify-center gap-2 pt-4">
                       <h3>Active Sessions</h3>
@@ -353,7 +351,6 @@ export default function SettingsPage() {
                   footer={
                     <div className="flex justify-end py-4 pr-4">
                       <Button
-                        variant="outline"
                         className="cursor-pointer text-destructive hover:bg-destructive/10"
                         onClick={removeAllOtherSessions}
                       >
@@ -368,14 +365,14 @@ export default function SettingsPage() {
                       {sessions.map((session) => (
                         <div
                           key={session.id}
-                          className="flex items-center justify-between bg-gray-200 rounded-lg border p-4"
+                          className="flex items-center justify-between bg-gray-200 dark:bg-dark-border rounded-lg border p-4"
                         >
                           <div className="flex items-start gap-4">
                             <div className="rounded-full bg-muted p-2">
                               {session.isCurrent ? (
                                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                               ) : (
-                                <AlertCircle className="h-5 w-5 text-amber-600" />
+                                <AlertCircle className="h-5 w-5 text-amber-700" />
                               )}
                             </div>
                             <div>
@@ -412,7 +409,7 @@ export default function SettingsPage() {
             {/* ── PRIVACY TAB ── */}
             <TabsContent value="privacy">
               <Card
-                className="text-black border-t-0 rounded-b-md"
+                className="text-black border-t-0 rounded-b-md  dark:bg-dark-surface border-x-dark-border dark:text-dark-accent-hover dark:border-b-dark-border"
                 header={
                   <div className="flex flex-col gap-2 pt-4">
                     <h3>Privacy Settings</h3>
@@ -425,7 +422,6 @@ export default function SettingsPage() {
                   <div className="flex justify-end py-4 pr-4">
                     <Button
                       type="submit"
-                      variant="outline"
                       className="cursor-pointer"
                       disabled={isUpdating}
                       onClick={privacyForm.handleSubmit(onPrivacySubmit)}

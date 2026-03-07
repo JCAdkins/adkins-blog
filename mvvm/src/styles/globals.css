@@ -2,8 +2,10 @@
 
 :root {
   /* --background: #fcf5e5; */
-  --background: #e4e1f9;
-  --foreground: #171717;
+  /* --background: #e4e1f9;
+  --foreground: #171717; */
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 html.dark {
