@@ -3,7 +3,6 @@
 
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-
 import { cn } from "@/lib/utils"; // assuming you have cn from tailwind-merge/clsx
 
 const Tabs = TabsPrimitive.Root;
@@ -15,7 +14,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center text-muted-foreground",
+      "inline-flex h-10 items-center justify-center text-muted-foregroun",
       className,
     )}
     {...props}
@@ -30,7 +29,9 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap h-full px-3 py-1.5 text-sm border font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:border-b-0",
+      "inline-flex items-center justify-center whitespace-nowrap h-full px-3 py-1.5 text-sm border font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+      "data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:border-b-0",
+      "dark:bg-dark-muted dark:border-dark-border dark:text-black dark:data-[state=active]:bg-dark-surface dark:data-[state=active]:text-dark-accent-hover",
       className,
     )}
     {...props}

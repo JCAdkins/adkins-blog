@@ -95,7 +95,7 @@ export default function ContactForm({ user }: Props) {
       <div>
         <label
           htmlFor="reason"
-          className="block text-sm font-medium text-gray-800 dark:text-dark-muted/90"
+          className="block text-sm font-medium text-gray-800 dark:text-dark-accent-hover"
         >
           Reason for Contact
         </label>
@@ -121,7 +121,7 @@ export default function ContactForm({ user }: Props) {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-gray-800 dark:text-dark-muted/90"
+          className="block text-sm font-medium text-gray-800 dark:text-dark-accent-hover"
         >
           Message
         </label>

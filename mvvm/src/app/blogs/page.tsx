@@ -62,7 +62,7 @@ export default async function BlogsPage() {
             }}
           >
             <h2 className="text-4xl font-extrabold text-shadow-glow text-center text-nowrap flex flex-row items-center space-x-2 mb-12">
-              <div className="w-full border border-black h-1 bg-header" />
+              <div className="w-full border border-black h-1 bg-header text-black" />
               <Link href={`/blogs/${genre}`}>
                 {capitalizeFirstLetter(genre)}
               </Link>
@@ -101,7 +101,7 @@ export default async function BlogsPage() {
         }}
       >
         <h2 className="text-4xl font-extrabold text-shadow-glow text-center text-nowrap space-x-2 mb-12 flex flex-row items-center">
-          <div className="w-full border border-black h-1 bg-header" />
+          <div className="w-full border border-black h-1 bg-header text-black" />
           <Link href="blogs/all">All Blog Posts</Link>
           <div className="w-full border border-black h-1 bg-header" />
         </h2>
