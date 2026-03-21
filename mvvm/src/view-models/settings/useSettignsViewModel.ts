@@ -27,7 +27,7 @@ import {
 import { getImmichAsset } from "@/lib/services/immich-service";
 
 export function useSettingsViewModel() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [user, setUser] = useState<User | null>(null);
   const [sessions, setSessions] = useState<UserSession[]>([]);
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>(
@@ -130,7 +130,12 @@ export function useSettingsViewModel() {
     });
     toast.promise(
       Promise.all([
-        avatarFile ? uploadAvatar(avatarFile) : Promise.resolve(),
+        avatarFile
+          ? uploadAvatar(avatarFile).then(async (res) => {
+              await update({ image: res.image });
+            })
+          : Promise.resolve(),
+        ,
         updateUserProfile(validated),
       ]).finally(() => setIsUpdating(false)),
       {
