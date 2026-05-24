@@ -60,17 +60,19 @@ export const login = async (
 
     return { status: "success" };
   } catch (error: any) {
-    if (error?.name !== "CredentialsSignin") {
-      console.log("Login error:", error);
-    }
     if (error instanceof z.ZodError) {
       return { status: "invalid_data" };
     }
-    if (error?.name === "CredentialsSignin") {
-      return { status: "failed" };
+    // Auth.js throws CredentialsSignin on bad credentials — check all possible
+    // shapes it might come in, log anything that isn't a credentials error
+    const isCredentialsError =
+      error?.type === "CredentialsSignin" ||
+      error?.name === "CredentialsSignin" ||
+      error?.constructor?.name === "CredentialsSignin";
+    if (!isCredentialsError) {
+      console.log("Login error:", error);
     }
-
-    return { status: "idle" };
+    return { status: "failed" };
   }
 };
 
