@@ -37,7 +37,6 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        {/* Success state - show confirmation instead of form */}
         {state.status === "success" ? (
           <div className="rounded-lg border border-green-300 bg-green-50 px-6 py-5 text-center dark:border-green-700 dark:bg-green-950">
             <p className="text-sm font-medium text-green-800 dark:text-green-300">
@@ -71,7 +70,6 @@ export default function ForgotPasswordPage() {
           </Form>
         )}
 
-        {/* Back to login */}
         <p className="text-center text-sm text-white dark:text-amber-200">
           Remember your password?{" "}
           <Link
