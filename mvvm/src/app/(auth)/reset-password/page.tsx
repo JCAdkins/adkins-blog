@@ -108,7 +108,6 @@ export default function ResetPasswordPage() {
   return (
     <div className="bg-login-bg flex h-dvh w-full items-start justify-center pt-12 md:items-center md:pt-0">
       <div className="flex w-full max-w-md flex-col gap-8 overflow-hidden rounded-2xl px-4 sm:px-8">
-
         <div className="flex flex-col items-center gap-2 text-center">
           <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-200">
             Reset your password

@@ -167,7 +167,7 @@ export function AuthForm({
           >,
           {
             disabled: isRegisterPage && !passwordsMatch,
-          }
+          },
         )}
       </div>
       {isRegisterPage ? (
