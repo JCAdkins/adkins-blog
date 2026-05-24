@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function contactAdminEmail({ to, subject, html }: EmailParams) {
   try {
     const data = await resend.emails.send({
-      from: "Your App <onboarding@resend.dev>", // default sender for dev
+      from: "Adkins Ninja Blog <noreply@blog.adkins.ninja>",
       to,
       subject,
       html,
@@ -24,7 +24,7 @@ export async function contactAdminEmail({ to, subject, html }: EmailParams) {
 export async function welcomeNewUserEmail(to: string, username: string) {
   try {
     const data = await resend.emails.send({
-      from: "The Blogging Photographer <onboarding@resend.dev>", // default sender for dev
+      from: "The Blogging Photographer <noreply@blog.adkins.ninja>",
       to,
       subject: "Welcome to Adkins Ninja Blog",
       html: `
@@ -44,19 +44,19 @@ export async function welcomeNewUserEmail(to: string, username: string) {
   <h3>A Few Tips to Get Started:</h3>
   <ul>
     <li><strong>Browse Posts:</strong> Check out our latest blog posts and find articles that catch your interest.</li>
-    <li><strong>Engage:</strong> Don’t hesitate to drop a comment or share your thoughts on any blog post you enjoy.</li>
+    <li><strong>Engage:</strong> Don't hesitate to drop a comment or share your thoughts on any blog post you enjoy.</li>
     <li><strong>Stay Updated:</strong> Be sure to check back for new content regularly, and we also have a newsletter to keep you informed!</li>
   </ul>
 
   <p><strong>Please Note:</strong><br>
   This is an automated email from our system. For any questions, comments, or issues, please do <strong>not reply</strong> to this email. Instead, please visit our <a href="[Contact Page URL]">Contact Page</a> or reach out to our support team.</p>
 
-  <p>We’re happy to have you as part of the community, and we look forward to seeing your contributions!</p>
+  <p>We're happy to have you as part of the community, and we look forward to seeing your contributions!</p>
 
   <p>Best regards,<br>
   The Adkins Ninja Blog Team</p>
 
-  <p><strong>P.S.</strong> Don’t forget to follow us on <a href="[Social Media Links]">Social Media</a> for the latest updates!</p>
+  <p><strong>P.S.</strong> Don't forget to follow us on <a href="[Social Media Links]">Social Media</a> for the latest updates!</p>
 </body>
 </html>
 
