@@ -60,11 +60,12 @@ export const login = async (
 
     return { status: "success" };
   } catch (error: any) {
+    // Zod validation failures on the login form (bad email format, short password)
+    // should surface as invalid credentials, not a validation error — the user
+    // doesn't need to know why their login failed at that level of detail.
     if (error instanceof z.ZodError) {
-      return { status: "invalid_data" };
+      return { status: "failed" };
     }
-    // Auth.js throws CredentialsSignin on bad credentials — check all possible
-    // shapes it might come in, log anything that isn't a credentials error
     const isCredentialsError =
       error?.type === "CredentialsSignin" ||
       error?.name === "CredentialsSignin" ||
