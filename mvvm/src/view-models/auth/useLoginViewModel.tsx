@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useActionState } from "react"; // placeholder for your MVVM action-state helper
+import { useActionState } from "react";
 import { useSession } from "next-auth/react";
 import { login, type LoginActionState } from "@/app/(auth)/actions";
 
@@ -31,7 +31,7 @@ export const useLoginViewModel = () => {
       router.push("/");
       update();
     }
-  }, [state.status, router]);
+  }, [state, router]);
 
   const onSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
