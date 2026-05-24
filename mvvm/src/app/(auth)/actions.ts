@@ -19,19 +19,33 @@ const authRegisterFormSchema = z.object({
   password: z
     .string()
     .min(10, { message: "Password must be at least 10 characters long" })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter",
-    })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-      message: "Password must contain at least one special character",
-    }),
+    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   role: z.string(),
 });
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+});
+
+const resetPasswordSchema = z
+  .object({
+    token: z.string().min(1),
+    password: z
+      .string()
+      .min(10, { message: "Password must be at least 10 characters long" })
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export interface LoginActionState {
   status: "idle" | "success" | "failed" | "in_progress" | "invalid_data";
@@ -60,9 +74,6 @@ export const login = async (
 
     return { status: "success" };
   } catch (error: any) {
-    // Zod validation failures on the login form (bad email format, short password)
-    // should surface as invalid credentials, not a validation error — the user
-    // doesn't need to know why their login failed at that level of detail.
     if (error instanceof z.ZodError) {
       return { status: "failed" };
     }
@@ -121,7 +132,78 @@ export const register = async (
       const err = error.errors.map((err) => err.message);
       return { status: "invalid_data", error: err };
     }
+    return { status: "failed" };
+  }
+};
 
+export interface ForgotPasswordActionState {
+  status: "idle" | "success" | "failed" | "invalid_data";
+  error?: string;
+}
+
+export const forgotPassword = async (
+  _: ForgotPasswordActionState,
+  formData: FormData,
+): Promise<ForgotPasswordActionState> => {
+  try {
+    const { email } = forgotPasswordSchema.parse({
+      email: formData.get("email"),
+    });
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/forgot-password`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      },
+    );
+
+    if (!res.ok) return { status: "failed" };
+    return { status: "success" };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { status: "invalid_data", error: error.errors[0].message };
+    }
+    console.error("Forgot password action error:", error);
+    return { status: "failed" };
+  }
+};
+
+export interface ResetPasswordActionState {
+  status: "idle" | "success" | "failed" | "invalid_data" | "invalid_token";
+  error?: string[];
+}
+
+export const resetPassword = async (
+  _: ResetPasswordActionState,
+  formData: FormData,
+): Promise<ResetPasswordActionState> => {
+  try {
+    const { token, password } = resetPasswordSchema.parse({
+      token: formData.get("token"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirm-password"),
+    });
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/reset-password`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, newPassword: password }),
+      },
+    );
+
+    if (res.status === 400) return { status: "invalid_token" };
+    if (!res.ok) return { status: "failed" };
+    return { status: "success" };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const errs = error.errors.map((e) => e.message);
+      return { status: "invalid_data", error: errs };
+    }
+    console.error("Reset password action error:", error);
     return { status: "failed" };
   }
 };
