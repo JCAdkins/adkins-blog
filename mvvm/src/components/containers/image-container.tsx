@@ -14,6 +14,7 @@ interface ImageGalleryProps {
 export default function ImageGallery({ images }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const showPrev = () =>
     setSelectedIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
@@ -27,6 +28,13 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     setOpen(false);
     setSelectedIndex(null);
   };
+
+  // Reset loading state whenever the selected image changes
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      setIsLoading(true);
+    }
+  }, [selectedIndex]);
 
   // Keyboard support
   useEffect(() => {
@@ -105,15 +113,24 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 </button>
               )}
 
-              {/* Image */}
+              {/* Skeleton shown while image is loading */}
+              {isLoading && (
+                <div className="h-[60vh] w-[80vw] max-w-3xl animate-pulse rounded-lg bg-gray-700" />
+              )}
+
+              {/* Image — always rendered but hidden until loaded so onLoad fires */}
               {images[selectedIndex!] ? (
                 <Image
+                  key={selectedIndex}
                   src={images[selectedIndex!]?.original as string}
                   alt={`Full image ${selectedIndex! + 1}`}
                   width={400}
                   height={300}
                   loading="eager"
-                  className="max-h-[80vh] w-auto rounded-lg object-contain"
+                  className={`max-h-[80vh] w-auto rounded-lg object-contain transition-opacity duration-300 ${
+                    isLoading ? "invisible absolute" : "visible"
+                  }`}
+                  onLoad={() => setIsLoading(false)}
                 />
               ) : null}
 
@@ -127,7 +144,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 </button>
               )}
 
-              {/* Image count indicator (centered in the image) */}
+              {/* Image count indicator */}
               <p className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-2xl font-bold text-white">
                 {selectedIndex! + 1} / {images.length}
               </p>
