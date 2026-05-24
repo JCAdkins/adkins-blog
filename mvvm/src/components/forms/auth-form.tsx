@@ -53,12 +53,22 @@ export function AuthForm({
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label
-          htmlFor="password"
-          className="font-normal text-zinc-600 dark:text-amber-200"
-        >
-          Password
-        </Label>
+        <div className="flex items-center justify-between">
+          <Label
+            htmlFor="password"
+            className="font-normal text-zinc-600 dark:text-amber-200"
+          >
+            Password
+          </Label>
+          {!isRegisterPage && (
+            <Link
+              href="/forgot-password"
+              className="text-xs text-amber-700 hover:underline dark:text-amber-300"
+            >
+              Forgot password?
+            </Link>
+          )}
+        </div>
 
         <Input
           id="password"
@@ -99,7 +109,6 @@ export function AuthForm({
             )}
           </div>
 
-          {/* Username and optional fields */}
           <div className="flex flex-col gap-1">
             <Label
               htmlFor="username"
@@ -151,7 +160,6 @@ export function AuthForm({
         </>
       )}
 
-      {/* You can disable the submit button if the passwords don't match */}
       <div className="mt-2 w-full flex justify-center">
         {React.cloneElement(
           children as React.ReactElement<
