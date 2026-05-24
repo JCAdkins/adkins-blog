@@ -44,8 +44,6 @@ export async function welcomeNewUser({
   username: string;
 }) {
   // Have to use these until the app is up and running on our actual domain.
-  const testEmail = "jordan.adkins111@gmail.com";
-  const testUsername = username || "New User";
   try {
     const tokenRes = await axios.get("/api/auth/token");
     const { token } = tokenRes.data;
@@ -53,8 +51,8 @@ export async function welcomeNewUser({
     const response = await axios.post(
       URL,
       {
-        email: testEmail,
-        username: testUsername,
+        email: email,
+        username: username,
       },
       {
         headers: {
