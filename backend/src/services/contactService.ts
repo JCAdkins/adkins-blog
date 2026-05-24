@@ -49,14 +49,14 @@ export async function welcomeNewUserEmail(to: string, username: string) {
   </ul>
 
   <p><strong>Please Note:</strong><br>
-  This is an automated email from our system. For any questions, comments, or issues, please do <strong>not reply</strong> to this email. Instead, please visit our <a href="[Contact Page URL]">Contact Page</a> or reach out to our support team.</p>
+  This is an automated email from our system. For any questions, comments, or issues, please do <strong>not reply</strong> to this email. Instead, please visit our <a href="https://blog.adkins.ninja/contact">Contact Page</a> or reach out to our support team.</p>
 
   <p>We're happy to have you as part of the community, and we look forward to seeing your contributions!</p>
 
   <p>Best regards,<br>
   The Adkins Ninja Blog Team</p>
 
-  <p><strong>P.S.</strong> Don't forget to follow us on <a href="[Social Media Links]">Social Media</a> for the latest updates!</p>
+  <!-- <p><strong>P.S.</strong> Don't forget to follow us on <a href="[Social Media Links]">Social Media</a> for the latest updates!</p> -->
 </body>
 </html>
 
