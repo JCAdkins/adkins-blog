@@ -10,6 +10,7 @@ import { NewUserInput } from "../models/userModel.js";
 import { UUID } from "crypto";
 import { Prisma } from "../../generated/prisma/index.js";
 import { uploadAvatarToImmich } from "./immichService.js";
+import crypto from "crypto";
 
 export const createUserService = async (userData: NewUserInput) => {
   const hashedPassword = await hash(userData.password, 10);
@@ -51,7 +52,7 @@ export const findUserByEmail = async (email: string, include = false) => {
   return user;
 };
 
-// Find user by email
+// Find user by username
 export const findUserByUsername = async (username: string, include = false) => {
   let user;
   if (include)
@@ -67,6 +68,16 @@ export const findUserByUsername = async (username: string, include = false) => {
     });
   else user = await _findUserInDb({ where: { username } });
   return user;
+};
+
+// Find user by password reset token
+export const findUserByResetToken = async (token: string) => {
+  return await db.user.findFirst({
+    where: {
+      resetToken: token,
+      resetTokenExpiry: { gt: new Date() },
+    },
+  });
 };
 
 // Find user by email
@@ -98,7 +109,7 @@ export const createUserSession = async (
 
   const ip =
     process.env.NODE_ENV === "development"
-      ? "8.8.8.8" // Google's IP, just for testing geo lookup
+      ? "8.8.8.8"
       : rawIp;
 
   const geo = geoip.lookup(ip);
@@ -225,11 +236,9 @@ export const updatePassword = async ({
   hashedPassword: string;
 }) => {
   console.log("Updating user password for user ID:", id);
-  const user = await db.user.update({
+  await db.user.update({
     where: { id: id },
-    data: {
-      password: hashedPassword,
-    },
+    data: { password: hashedPassword },
   });
 };
 
@@ -252,19 +261,16 @@ export const updateVisibility = async (data: UserVisibilityProps) => {
 };
 
 export const updateAvatar = async (id: string, avatar: Express.Multer.File) => {
-  // Upload to Immich
   const binaryData = fs.createReadStream(avatar.path);
   const assetId = await uploadAvatarToImmich(binaryData, avatar);
 
   if (!assetId) throw new Error("Failed to upload avatar to Immich");
 
-  // Save assetId to user record
   const user = await db.user.update({
     where: { id },
     data: { image: assetId },
   });
 
-  // Clean up local temp file
   fs.unlinkSync(avatar.path);
 
   return user;
@@ -275,4 +281,43 @@ export const verifyPassword = async (
   hashedPassword: string,
 ) => {
   return bcrypt.compare(plainPassword, hashedPassword);
+};
+
+// Generate a secure reset token and store it on the user (expires in 1 hour)
+export const createPasswordResetToken = async (email: string) => {
+  const user = await findUserByEmail(email);
+  if (!user) return null; // Don't reveal whether the email exists
+
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+
+  await db.user.update({
+    where: { email },
+    data: {
+      resetToken: token,
+      resetTokenExpiry: expiry,
+    },
+  });
+
+  return token;
+};
+
+// Consume the reset token and update the password
+export const consumePasswordResetToken = async (
+  token: string,
+  newPassword: string,
+) => {
+  const user = await findUserByResetToken(token);
+  if (!user) throw new Error("INVALID_OR_EXPIRED_TOKEN");
+
+  const hashedPassword = await hash(newPassword, 10);
+
+  await db.user.update({
+    where: { id: user.id },
+    data: {
+      password: hashedPassword,
+      resetToken: null,
+      resetTokenExpiry: null,
+    },
+  });
 };

@@ -167,7 +167,7 @@ export function AuthForm({
           >,
           {
             disabled: isRegisterPage && !passwordsMatch,
-          }
+          },
         )}
       </div>
       {isRegisterPage ? (
@@ -182,15 +182,23 @@ export function AuthForm({
           {" instead."}
         </p>
       ) : (
-        <p className="mt-4 text-center text-sm text-white dark:text-amber-200">
-          {"Don't have an account? "}
+        <p className="flex flex-col text-center text-sm text-white dark:text-amber-200">
           <Link
-            href="/register"
-            className="font-semibold text-gray-800 hover:underline dark:text-white"
+            href="/forgot-password"
+            className="text-amber-700 hover:underline dark:text-amber-400"
           >
-            Sign up
+            Forgot password?
           </Link>
-          {" for free."}
+          <div className="mt-2">
+            {"Don't have an account? "}
+            <Link
+              href="/register"
+              className="font-semibold text-gray-800 hover:underline dark:text-white"
+            >
+              Sign up
+            </Link>
+            {" for free."}
+          </div>
         </p>
       )}
     </Form>

@@ -14,6 +14,8 @@ import {
   updateUserAvatar,
   updateUserVisibility,
   getUserSessionsController,
+  forgotPasswordController,
+  resetPasswordController,
 } from "../controllers/usersController.js";
 import { verifyToken } from "../middleware.js";
 import multer from "multer";
@@ -42,14 +44,14 @@ router.patch("/me", verifyToken, updateUserController);
 // Update user password
 router.patch("/me/password", verifyToken, updateUserPassword);
 
-// Update user profile visinility
+// Update user profile visibility
 router.patch("/me/privacy", verifyToken, updateUserVisibility);
 
-// Update useer avatar
+// Update user avatar
 router.patch(
   "/me/avatar",
   verifyToken,
-  upload.single("avatar"), // Multer middleware processes the file
+  upload.single("avatar"),
   updateUserAvatar,
 );
 
@@ -58,6 +60,12 @@ router.post("/login", loginUserController);
 
 // Create new user
 router.post("/register", createNewUserController);
+
+// Request a password reset email
+router.post("/forgot-password", forgotPasswordController);
+
+// Consume reset token and set new password
+router.post("/reset-password", resetPasswordController);
 
 router.delete("/me/session/:sessionId", verifyToken, deleteSessionController);
 router.delete(
