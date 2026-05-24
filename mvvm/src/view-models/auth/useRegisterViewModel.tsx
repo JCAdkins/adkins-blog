@@ -48,7 +48,7 @@ export const useRegisterViewModel = () => {
       update();
       router.push("/");
     }
-  }, [state.status, router]);
+  }, [state, router]);
 
   const onSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);

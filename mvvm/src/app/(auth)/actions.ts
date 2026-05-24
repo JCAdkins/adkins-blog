@@ -7,7 +7,6 @@ import {
   getUserByUsername,
 } from "@/lib/db/queries";
 import { signIn } from "./auth";
-import { capitalizeFirstLetter } from "@/lib/utils";
 
 const authLogInFormSchema = z.object({
   email: z.string().email(),
@@ -15,11 +14,11 @@ const authLogInFormSchema = z.object({
 });
 
 const authRegisterFormSchema = z.object({
-  email: z.string().email(),
-  username: z.string().min(6),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  username: z.string().min(6, { message: "Username must be at least 6 characters long" }),
   password: z
     .string()
-    .min(10)
+    .min(10, { message: "Password must be at least 10 characters long" })
     .regex(/[A-Z]/, {
       message: "Password must contain at least one uppercase letter",
     })
@@ -61,17 +60,19 @@ export const login = async (
 
     return { status: "success" };
   } catch (error: any) {
-    console.log("Login error:", error);
     if (error instanceof z.ZodError) {
       return { status: "invalid_data" };
     }
-    if (error?.name === "CredentialsSignin") {
-      return {
-        status: "failed",
-      };
+    // Auth.js throws CredentialsSignin on bad credentials — check all possible
+    // shapes it might come in, log anything that isn't a credentials error
+    const isCredentialsError =
+      error?.type === "CredentialsSignin" ||
+      error?.name === "CredentialsSignin" ||
+      error?.constructor?.name === "CredentialsSignin";
+    if (!isCredentialsError) {
+      console.log("Login error:", error);
     }
-
-    return { status: "idle" };
+    return { status: "failed" };
   }
 };
 
@@ -116,11 +117,7 @@ export const register = async (
     return { status: "success" };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const err = error.errors.map((err) => {
-        return (
-          '"' + capitalizeFirstLetter(`${err.path.join(".")}" - ${err.message}`)
-        );
-      });
+      const err = error.errors.map((err) => err.message);
       return { status: "invalid_data", error: err };
     }
 
