@@ -71,6 +71,60 @@ export async function welcomeNewUserEmail(to: string, username: string) {
   }
 }
 
+export async function passwordResetEmail(to: string, resetUrl: string) {
+  try {
+    const data = await resend.emails.send({
+      from: "Adkins Ninja Blog <noreply@blog.adkins.ninja>",
+      to,
+      subject: "Reset Your Password",
+      html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Your Password</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 24px;">
+    <h2 style="color: #92400e;">Password Reset Request</h2>
+    <p>Hi there,</p>
+    <p>We received a request to reset the password for your Adkins Ninja Blog account. Click the button below to choose a new password:</p>
+
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="${resetUrl}"
+        style="background-color: #92400e; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+        Reset Password
+      </a>
+    </div>
+
+    <p>This link will expire in <strong>1 hour</strong>. If you did not request a password reset, you can safely ignore this email — your password will not be changed.</p>
+
+    <p>If the button above doesn't work, copy and paste the following link into your browser:</p>
+    <p style="word-break: break-all; color: #92400e;">${resetUrl}</p>
+
+    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;" />
+
+    <p style="font-size: 0.85rem; color: #6b7280;">
+      This is an automated email. Please do not reply. If you need help, visit our
+      <a href="https://blog.adkins.ninja/contact" style="color: #92400e;">Contact Page</a>.
+    </p>
+
+    <p>Best regards,<br>The Adkins Ninja Blog Team</p>
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    console.log("Password reset email sent:", data);
+    return data;
+  } catch (error) {
+    console.error("Password reset email failed:", error);
+    throw error;
+  }
+}
+
 export async function getAdminsList() {
   try {
     const admins = await db.user.findMany({
@@ -97,7 +151,7 @@ export const saveContactMessageToDb = async (data: ContactInput) => {
         email: data.email,
         subject: data.subject,
         message: data.message,
-        userId: data.userId ?? null, // attach if exists, else leave null
+        userId: data.userId ?? null,
       },
     });
 

@@ -154,6 +154,8 @@ exports.Prisma.UserScalarFieldEnum = {
   location: 'location',
   isVerified: 'isVerified',
   twoFactorEnabled: 'twoFactorEnabled',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry',
   profileVisibility: 'profileVisibility',
   activityVisible: 'activityVisible',
   role: 'role',

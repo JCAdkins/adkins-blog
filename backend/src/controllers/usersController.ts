@@ -1,6 +1,8 @@
 import express from "express";
 import {
   createUserService,
+  deleteAllOtherSessions,
+  deleteSession,
   findUserByEmail,
   findUserByUsername,
   getAllUsers,
@@ -10,11 +12,12 @@ import {
   updateUserProfile,
   updateVisibility,
   changeUserPassword,
-  deleteAllOtherSessions,
-  deleteSession,
-  createUserSession,
   deactivateOtherSessions,
+  createUserSession,
+  createPasswordResetToken,
+  consumePasswordResetToken,
 } from "../services/usersService.js";
+import { passwordResetEmail } from "../services/contactService.js";
 import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
 import { UUID } from "crypto";
@@ -109,7 +112,7 @@ export const getUserSessionsController = async (
   req: AuthenticatedRequest,
   res: express.Response,
 ) => {
-  const { id } = req.user; // from verifyToken middleware
+  const { id } = req.user;
   const sessions = await getUserSessions(id);
   res.status(200).json(sessions);
 };
@@ -223,7 +226,6 @@ export const createNewUserController = async (
   } catch (error) {
     console.error("User creation failed:", error);
     if (error instanceof ZodError) {
-      // Handle validation errors
       res.status(400).json({ errors: error.errors });
       return;
     }
@@ -246,6 +248,61 @@ export const loginUserController = async (
   } catch (err) {
     console.error("Error updating users login:", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// POST /api/users/forgot-password
+export const forgotPasswordController = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      res.status(400).json({ message: "Email is required" });
+      return;
+    }
+
+    const token = await createPasswordResetToken(email);
+
+    // Always return 200 regardless of whether the email exists —
+    // this prevents user enumeration attacks
+    if (token) {
+      const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+      await passwordResetEmail(email, resetUrl);
+      console.log(`Password reset email sent to ${email}`);
+    }
+
+    res.status(200).json({
+      message: "If that email is registered, a reset link has been sent.",
+    });
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// POST /api/users/reset-password
+export const resetPasswordController = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword) {
+      res.status(400).json({ message: "Token and new password are required" });
+      return;
+    }
+
+    await consumePasswordResetToken(token, newPassword);
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (err: any) {
+    if (err.message === "INVALID_OR_EXPIRED_TOKEN") {
+      res.status(400).json({ message: "Invalid or expired reset token" });
+    } else {
+      console.error("Reset password error:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 };
 

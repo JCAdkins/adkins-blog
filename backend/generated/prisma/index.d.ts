@@ -5084,6 +5084,8 @@ export namespace Prisma {
     location: string | null
     isVerified: boolean | null
     twoFactorEnabled: boolean | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
     profileVisibility: string | null
     activityVisible: boolean | null
     role: string | null
@@ -5103,6 +5105,8 @@ export namespace Prisma {
     location: string | null
     isVerified: boolean | null
     twoFactorEnabled: boolean | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
     profileVisibility: string | null
     activityVisible: boolean | null
     role: string | null
@@ -5122,6 +5126,8 @@ export namespace Prisma {
     location: number
     isVerified: number
     twoFactorEnabled: number
+    resetToken: number
+    resetTokenExpiry: number
     profileVisibility: number
     activityVisible: number
     role: number
@@ -5143,6 +5149,8 @@ export namespace Prisma {
     location?: true
     isVerified?: true
     twoFactorEnabled?: true
+    resetToken?: true
+    resetTokenExpiry?: true
     profileVisibility?: true
     activityVisible?: true
     role?: true
@@ -5162,6 +5170,8 @@ export namespace Prisma {
     location?: true
     isVerified?: true
     twoFactorEnabled?: true
+    resetToken?: true
+    resetTokenExpiry?: true
     profileVisibility?: true
     activityVisible?: true
     role?: true
@@ -5181,6 +5191,8 @@ export namespace Prisma {
     location?: true
     isVerified?: true
     twoFactorEnabled?: true
+    resetToken?: true
+    resetTokenExpiry?: true
     profileVisibility?: true
     activityVisible?: true
     role?: true
@@ -5273,6 +5285,8 @@ export namespace Prisma {
     location: string | null
     isVerified: boolean
     twoFactorEnabled: boolean
+    resetToken: string | null
+    resetTokenExpiry: Date | null
     profileVisibility: string
     activityVisible: boolean
     role: string
@@ -5309,6 +5323,8 @@ export namespace Prisma {
     location?: boolean
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     profileVisibility?: boolean
     activityVisible?: boolean
     role?: boolean
@@ -5335,6 +5351,8 @@ export namespace Prisma {
     location?: boolean
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     profileVisibility?: boolean
     activityVisible?: boolean
     role?: boolean
@@ -5354,6 +5372,8 @@ export namespace Prisma {
     location?: boolean
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     profileVisibility?: boolean
     activityVisible?: boolean
     role?: boolean
@@ -5373,6 +5393,8 @@ export namespace Prisma {
     location?: boolean
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     profileVisibility?: boolean
     activityVisible?: boolean
     role?: boolean
@@ -5381,7 +5403,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "firstName" | "lastName" | "image" | "location" | "isVerified" | "twoFactorEnabled" | "profileVisibility" | "activityVisible" | "role" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "firstName" | "lastName" | "image" | "location" | "isVerified" | "twoFactorEnabled" | "resetToken" | "resetTokenExpiry" | "profileVisibility" | "activityVisible" | "role" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     contactMessages?: boolean | User$contactMessagesArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
@@ -5415,6 +5437,8 @@ export namespace Prisma {
       location: string | null
       isVerified: boolean
       twoFactorEnabled: boolean
+      resetToken: string | null
+      resetTokenExpiry: Date | null
       profileVisibility: string
       activityVisible: boolean
       role: string
@@ -5860,6 +5884,8 @@ export namespace Prisma {
     readonly location: FieldRef<"User", 'String'>
     readonly isVerified: FieldRef<"User", 'Boolean'>
     readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
+    readonly resetToken: FieldRef<"User", 'String'>
+    readonly resetTokenExpiry: FieldRef<"User", 'DateTime'>
     readonly profileVisibility: FieldRef<"User", 'String'>
     readonly activityVisible: FieldRef<"User", 'Boolean'>
     readonly role: FieldRef<"User", 'String'>
@@ -12239,6 +12265,8 @@ export namespace Prisma {
     location: 'location',
     isVerified: 'isVerified',
     twoFactorEnabled: 'twoFactorEnabled',
+    resetToken: 'resetToken',
+    resetTokenExpiry: 'resetTokenExpiry',
     profileVisibility: 'profileVisibility',
     activityVisible: 'activityVisible',
     role: 'role',
@@ -12597,6 +12625,8 @@ export namespace Prisma {
     location?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolFilter<"User"> | boolean
     twoFactorEnabled?: BoolFilter<"User"> | boolean
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     profileVisibility?: StringFilter<"User"> | string
     activityVisible?: BoolFilter<"User"> | boolean
     role?: StringFilter<"User"> | string
@@ -12622,6 +12652,8 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     isVerified?: SortOrder
     twoFactorEnabled?: SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiry?: SortOrderInput | SortOrder
     profileVisibility?: SortOrder
     activityVisible?: SortOrder
     role?: SortOrder
@@ -12650,6 +12682,8 @@ export namespace Prisma {
     location?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolFilter<"User"> | boolean
     twoFactorEnabled?: BoolFilter<"User"> | boolean
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     profileVisibility?: StringFilter<"User"> | string
     activityVisible?: BoolFilter<"User"> | boolean
     role?: StringFilter<"User"> | string
@@ -12675,6 +12709,8 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     isVerified?: SortOrder
     twoFactorEnabled?: SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiry?: SortOrderInput | SortOrder
     profileVisibility?: SortOrder
     activityVisible?: SortOrder
     role?: SortOrder
@@ -12700,6 +12736,8 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"User"> | string | null
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
     twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
+    resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     profileVisibility?: StringWithAggregatesFilter<"User"> | string
     activityVisible?: BoolWithAggregatesFilter<"User"> | boolean
     role?: StringWithAggregatesFilter<"User"> | string
@@ -13277,6 +13315,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -13302,6 +13342,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -13327,6 +13369,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -13352,6 +13396,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -13377,6 +13423,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -13396,6 +13444,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -13415,6 +13465,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -14087,6 +14139,8 @@ export namespace Prisma {
     location?: SortOrder
     isVerified?: SortOrder
     twoFactorEnabled?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
     profileVisibility?: SortOrder
     activityVisible?: SortOrder
     role?: SortOrder
@@ -14106,6 +14160,8 @@ export namespace Prisma {
     location?: SortOrder
     isVerified?: SortOrder
     twoFactorEnabled?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
     profileVisibility?: SortOrder
     activityVisible?: SortOrder
     role?: SortOrder
@@ -14125,6 +14181,8 @@ export namespace Prisma {
     location?: SortOrder
     isVerified?: SortOrder
     twoFactorEnabled?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
     profileVisibility?: SortOrder
     activityVisible?: SortOrder
     role?: SortOrder
@@ -15897,6 +15955,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -15921,6 +15981,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -15961,6 +16023,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -15985,6 +16049,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16009,6 +16075,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16033,6 +16101,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16073,6 +16143,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16097,6 +16169,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16121,6 +16195,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16145,6 +16221,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16375,6 +16453,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16399,6 +16479,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16598,6 +16680,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16622,6 +16706,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16701,6 +16787,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16725,6 +16813,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16749,6 +16839,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16773,6 +16865,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16868,6 +16962,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16892,6 +16988,8 @@ export namespace Prisma {
     location?: string | null
     isVerified?: boolean
     twoFactorEnabled?: boolean
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     profileVisibility?: string
     activityVisible?: boolean
     role?: string
@@ -16932,6 +17030,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -16956,6 +17056,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -17069,6 +17171,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string
@@ -17093,6 +17197,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profileVisibility?: StringFieldUpdateOperationsInput | string
     activityVisible?: BoolFieldUpdateOperationsInput | boolean
     role?: StringFieldUpdateOperationsInput | string

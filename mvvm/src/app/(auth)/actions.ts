@@ -15,13 +15,21 @@ const authLogInFormSchema = z.object({
 
 const authRegisterFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-  username: z.string().min(6, { message: "Username must be at least 6 characters long" }),
+  username: z
+    .string()
+    .min(6, { message: "Username must be at least 6 characters long" }),
   password: z
     .string()
     .min(10, { message: "Password must be at least 10 characters long" })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter",
+    })
+    .regex(/[a-z]/, {
+      message: "Password must contain at least one lowercase letter",
+    })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+      message: "Password must contain at least one special character",
+    }),
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   role: z.string(),
@@ -37,9 +45,15 @@ const resetPasswordSchema = z
     password: z
       .string()
       .min(10, { message: "Password must be at least 10 characters long" })
-      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter",
+      })
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+        message: "Password must contain at least one special character",
+      }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
