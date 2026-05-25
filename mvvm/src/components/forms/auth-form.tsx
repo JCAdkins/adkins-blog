@@ -60,14 +60,6 @@ export function AuthForm({
           >
             Password
           </Label>
-          {!isRegisterPage && (
-            <Link
-              href="/forgot-password"
-              className="text-xs text-amber-700 hover:underline dark:text-amber-300"
-            >
-              Forgot password?
-            </Link>
-          )}
         </div>
 
         <Input
@@ -182,7 +174,7 @@ export function AuthForm({
           {" instead."}
         </p>
       ) : (
-        <p className="flex flex-col text-center text-sm text-white dark:text-amber-200">
+        <div className="flex flex-col text-center text-sm text-white dark:text-amber-200">
           <Link
             href="/forgot-password"
             className="text-amber-700 hover:underline dark:text-amber-400"
@@ -199,7 +191,7 @@ export function AuthForm({
             </Link>
             {" for free."}
           </div>
-        </p>
+        </div>
       )}
     </Form>
   );
