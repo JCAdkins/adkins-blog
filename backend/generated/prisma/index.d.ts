@@ -5083,6 +5083,8 @@ export namespace Prisma {
     image: string | null
     location: string | null
     isVerified: boolean | null
+    verificationToken: string | null
+    verificationTokenExpiry: Date | null
     twoFactorEnabled: boolean | null
     resetToken: string | null
     resetTokenExpiry: Date | null
@@ -5104,6 +5106,8 @@ export namespace Prisma {
     image: string | null
     location: string | null
     isVerified: boolean | null
+    verificationToken: string | null
+    verificationTokenExpiry: Date | null
     twoFactorEnabled: boolean | null
     resetToken: string | null
     resetTokenExpiry: Date | null
@@ -5125,6 +5129,8 @@ export namespace Prisma {
     image: number
     location: number
     isVerified: number
+    verificationToken: number
+    verificationTokenExpiry: number
     twoFactorEnabled: number
     resetToken: number
     resetTokenExpiry: number
@@ -5148,6 +5154,8 @@ export namespace Prisma {
     image?: true
     location?: true
     isVerified?: true
+    verificationToken?: true
+    verificationTokenExpiry?: true
     twoFactorEnabled?: true
     resetToken?: true
     resetTokenExpiry?: true
@@ -5169,6 +5177,8 @@ export namespace Prisma {
     image?: true
     location?: true
     isVerified?: true
+    verificationToken?: true
+    verificationTokenExpiry?: true
     twoFactorEnabled?: true
     resetToken?: true
     resetTokenExpiry?: true
@@ -5190,6 +5200,8 @@ export namespace Prisma {
     image?: true
     location?: true
     isVerified?: true
+    verificationToken?: true
+    verificationTokenExpiry?: true
     twoFactorEnabled?: true
     resetToken?: true
     resetTokenExpiry?: true
@@ -5284,6 +5296,8 @@ export namespace Prisma {
     image: string | null
     location: string | null
     isVerified: boolean
+    verificationToken: string | null
+    verificationTokenExpiry: Date | null
     twoFactorEnabled: boolean
     resetToken: string | null
     resetTokenExpiry: Date | null
@@ -5322,6 +5336,8 @@ export namespace Prisma {
     image?: boolean
     location?: boolean
     isVerified?: boolean
+    verificationToken?: boolean
+    verificationTokenExpiry?: boolean
     twoFactorEnabled?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
@@ -5350,6 +5366,8 @@ export namespace Prisma {
     image?: boolean
     location?: boolean
     isVerified?: boolean
+    verificationToken?: boolean
+    verificationTokenExpiry?: boolean
     twoFactorEnabled?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
@@ -5371,6 +5389,8 @@ export namespace Prisma {
     image?: boolean
     location?: boolean
     isVerified?: boolean
+    verificationToken?: boolean
+    verificationTokenExpiry?: boolean
     twoFactorEnabled?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
@@ -5392,6 +5412,8 @@ export namespace Prisma {
     image?: boolean
     location?: boolean
     isVerified?: boolean
+    verificationToken?: boolean
+    verificationTokenExpiry?: boolean
     twoFactorEnabled?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
@@ -5403,7 +5425,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "firstName" | "lastName" | "image" | "location" | "isVerified" | "twoFactorEnabled" | "resetToken" | "resetTokenExpiry" | "profileVisibility" | "activityVisible" | "role" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "username" | "firstName" | "lastName" | "image" | "location" | "isVerified" | "verificationToken" | "verificationTokenExpiry" | "twoFactorEnabled" | "resetToken" | "resetTokenExpiry" | "profileVisibility" | "activityVisible" | "role" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     contactMessages?: boolean | User$contactMessagesArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
@@ -5436,6 +5458,8 @@ export namespace Prisma {
       image: string | null
       location: string | null
       isVerified: boolean
+      verificationToken: string | null
+      verificationTokenExpiry: Date | null
       twoFactorEnabled: boolean
       resetToken: string | null
       resetTokenExpiry: Date | null
@@ -5883,6 +5907,8 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly location: FieldRef<"User", 'String'>
     readonly isVerified: FieldRef<"User", 'Boolean'>
+    readonly verificationToken: FieldRef<"User", 'String'>
+    readonly verificationTokenExpiry: FieldRef<"User", 'DateTime'>
     readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
     readonly resetToken: FieldRef<"User", 'String'>
     readonly resetTokenExpiry: FieldRef<"User", 'DateTime'>
@@ -12264,6 +12290,8 @@ export namespace Prisma {
     image: 'image',
     location: 'location',
     isVerified: 'isVerified',
+    verificationToken: 'verificationToken',
+    verificationTokenExpiry: 'verificationTokenExpiry',
     twoFactorEnabled: 'twoFactorEnabled',
     resetToken: 'resetToken',
     resetTokenExpiry: 'resetTokenExpiry',
@@ -12624,6 +12652,8 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     location?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolFilter<"User"> | boolean
+    verificationToken?: StringNullableFilter<"User"> | string | null
+    verificationTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     twoFactorEnabled?: BoolFilter<"User"> | boolean
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -12651,6 +12681,8 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     isVerified?: SortOrder
+    verificationToken?: SortOrderInput | SortOrder
+    verificationTokenExpiry?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiry?: SortOrderInput | SortOrder
@@ -12681,6 +12713,8 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     location?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolFilter<"User"> | boolean
+    verificationToken?: StringNullableFilter<"User"> | string | null
+    verificationTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     twoFactorEnabled?: BoolFilter<"User"> | boolean
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -12708,6 +12742,8 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     isVerified?: SortOrder
+    verificationToken?: SortOrderInput | SortOrder
+    verificationTokenExpiry?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiry?: SortOrderInput | SortOrder
@@ -12735,6 +12771,8 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     location?: StringNullableWithAggregatesFilter<"User"> | string | null
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    verificationTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
     resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -13314,6 +13352,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -13341,6 +13381,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -13368,6 +13410,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13395,6 +13439,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13422,6 +13468,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -13443,6 +13491,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13464,6 +13514,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14138,6 +14190,8 @@ export namespace Prisma {
     image?: SortOrder
     location?: SortOrder
     isVerified?: SortOrder
+    verificationToken?: SortOrder
+    verificationTokenExpiry?: SortOrder
     twoFactorEnabled?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
@@ -14159,6 +14213,8 @@ export namespace Prisma {
     image?: SortOrder
     location?: SortOrder
     isVerified?: SortOrder
+    verificationToken?: SortOrder
+    verificationTokenExpiry?: SortOrder
     twoFactorEnabled?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
@@ -14180,6 +14236,8 @@ export namespace Prisma {
     image?: SortOrder
     location?: SortOrder
     isVerified?: SortOrder
+    verificationToken?: SortOrder
+    verificationTokenExpiry?: SortOrder
     twoFactorEnabled?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
@@ -15954,6 +16012,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -15980,6 +16040,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16022,6 +16084,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16048,6 +16112,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16074,6 +16140,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16100,6 +16168,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16142,6 +16212,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16168,6 +16240,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16194,6 +16268,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16220,6 +16296,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16452,6 +16530,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16478,6 +16558,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16679,6 +16761,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16705,6 +16789,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16786,6 +16872,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16812,6 +16900,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16838,6 +16928,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16864,6 +16956,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16961,6 +17055,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -16987,6 +17083,8 @@ export namespace Prisma {
     image?: string | null
     location?: string | null
     isVerified?: boolean
+    verificationToken?: string | null
+    verificationTokenExpiry?: Date | string | null
     twoFactorEnabled?: boolean
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
@@ -17029,6 +17127,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17055,6 +17155,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17170,6 +17272,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17196,6 +17300,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

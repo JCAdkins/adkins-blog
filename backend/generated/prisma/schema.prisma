@@ -49,6 +49,10 @@ model User {
   location   String?
   isVerified Boolean @default(false)
 
+  // Email verification
+  verificationToken       String?
+  verificationTokenExpiry DateTime?
+
   // Security
   twoFactorEnabled Boolean @default(false)
 
