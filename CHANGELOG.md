@@ -13,6 +13,17 @@ This project follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+## Frontend [0.4.1] — 2026-05-26
+
+### Changed
+- Unverified users who click Like or Reply now see a sonner warning toast
+  ("Please verify your email address...") instead of silently disabled buttons
+- `CommentInput` shows a clear inline message for unverified users instead of
+  rendering the input at all
+- Register success toast updated to instruct user to check email for verification
+
+---
+
 ## Frontend [0.4.0] — 2026-05-26
 
 ### Added
@@ -23,7 +34,6 @@ This project follows [Semantic Versioning](https://semver.org/):
   - `useVerifyEmailViewModel` with toast handling
   - `verifyEmail` server action and `VerifyEmailActionState` in `actions.ts`
   - All states responsive on mobile and desktop, light and dark mode
-- Register success toast updated to inform user to check email for verification link
 - Removed `welcomeNewUser` call from `useRegisterViewModel` — backend now handles both emails
 
 ### Other
@@ -69,6 +79,18 @@ This project follows [Semantic Versioning](https://semver.org/):
 - Register validation error messages rewritten to be user-friendly
   - Removed raw Zod output like `"String must contain at least 6 character(s)"`
   - Removed field path prefix and hyphen from toast output (e.g. `"Username - ..."`)
+
+---
+
+## Backend [1.2.1] — 2026-05-26
+
+### Changed
+- `createNewUserController` now only sends the verification email on registration;
+  welcome email moved to fire after successful email verification
+- `verifyEmailController` now sends the welcome email upon successful verification
+- Added `requireVerifiedUser` middleware that checks `isVerified` on the user record
+- Applied `verifyToken + requireVerifiedUser` to `POST /comments` and `POST /comments/like`
+  routes — unverified users receive a 403 with a clear message
 
 ---
 
