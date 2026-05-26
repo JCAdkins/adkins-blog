@@ -34,7 +34,6 @@ const _findUserInDb = async (args: {
   return user;
 };
 
-// Find user by email
 export const findUserByEmail = async (email: string, include = false) => {
   let user;
   if (include)
@@ -52,7 +51,6 @@ export const findUserByEmail = async (email: string, include = false) => {
   return user;
 };
 
-// Find user by username
 export const findUserByUsername = async (username: string, include = false) => {
   let user;
   if (include)
@@ -70,7 +68,6 @@ export const findUserByUsername = async (username: string, include = false) => {
   return user;
 };
 
-// Find user by password reset token
 export const findUserByResetToken = async (token: string) => {
   return await db.user.findFirst({
     where: {
@@ -80,7 +77,15 @@ export const findUserByResetToken = async (token: string) => {
   });
 };
 
-// Find user by email
+export const findUserByVerificationToken = async (token: string) => {
+  return await db.user.findFirst({
+    where: {
+      verificationToken: token,
+      verificationTokenExpiry: { gt: new Date() },
+    },
+  });
+};
+
 export const getUserPasswordById = async (id: UUID) => {
   const user = await _findUserInDb({ where: { id } });
   return user?.password;
@@ -283,13 +288,12 @@ export const verifyPassword = async (
   return bcrypt.compare(plainPassword, hashedPassword);
 };
 
-// Generate a secure reset token and store it on the user (expires in 1 hour)
 export const createPasswordResetToken = async (email: string) => {
   const user = await findUserByEmail(email);
-  if (!user) return null; // Don't reveal whether the email exists
+  if (!user) return null;
 
   const token = crypto.randomBytes(32).toString("hex");
-  const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+  const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
   await db.user.update({
     where: { email },
@@ -302,7 +306,6 @@ export const createPasswordResetToken = async (email: string) => {
   return token;
 };
 
-// Consume the reset token and update the password
 export const consumePasswordResetToken = async (
   token: string,
   newPassword: string,
@@ -320,4 +323,53 @@ export const consumePasswordResetToken = async (
       resetTokenExpiry: null,
     },
   });
+};
+
+// Generate a verification token for a new user (expires in 48 hours)
+export const createVerificationToken = async (userId: string) => {
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiry = new Date(Date.now() + 48 * 60 * 60 * 1000); // 48 hours
+
+  await db.user.update({
+    where: { id: userId },
+    data: {
+      verificationToken: token,
+      verificationTokenExpiry: expiry,
+    },
+  });
+
+  return token;
+};
+
+// Consume the verification token and mark the user as verified
+export const verifyAccountToken = async (token: string) => {
+  const user = await findUserByVerificationToken(token);
+  if (!user) throw new Error("INVALID_OR_EXPIRED_TOKEN");
+
+  await db.user.update({
+    where: { id: user.id },
+    data: {
+      isVerified: true,
+      verificationToken: null,
+      verificationTokenExpiry: null,
+    },
+  });
+
+  return user;
+};
+
+// Delete all unverified accounts whose verification token has expired (48h cleanup)
+export const deleteExpiredUnverifiedUsers = async () => {
+  const result = await db.user.deleteMany({
+    where: {
+      isVerified: false,
+      verificationTokenExpiry: { lt: new Date() },
+    },
+  });
+
+  if (result.count > 0) {
+    console.log(`Cleanup: deleted ${result.count} expired unverified account(s).`);
+  }
+
+  return result.count;
 };

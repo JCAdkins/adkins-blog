@@ -1,7 +1,6 @@
 "use client";
 
 import { register, RegisterActionState } from "@/app/(auth)/actions";
-import { welcomeNewUser } from "@/lib/services/contact-service";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -42,9 +41,8 @@ export const useRegisterViewModel = () => {
         description: toastee,
       });
     } else if (state.status === "success") {
-      toast.success("Account created successfully");
+      toast.success("Account created! Please check your email to verify your account.");
       setIsSuccessful(true);
-      welcomeNewUser({ email, username });
       update();
       router.push("/");
     }

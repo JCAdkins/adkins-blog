@@ -50,6 +50,10 @@ model User {
   location    String?
   isVerified  Boolean @default(false)
 
+  // Email verification
+  verificationToken       String?
+  verificationTokenExpiry DateTime?
+
   // Security
   twoFactorEnabled  Boolean @default(false)
 
@@ -73,7 +77,7 @@ model User {
   likes                  Like[]
   receivedNotifications Notification[] @relation("NotificationRecipient")
   sentNotifications     Notification[] @relation("NotificationActor")
-  sessions              UserSession[] 
+  sessions              UserSession[]
 }
 
 
