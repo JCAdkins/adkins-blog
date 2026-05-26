@@ -10,6 +10,7 @@ const config = {
         token.role = user.role;
         token.username = user.username;
         token.image = user.image;
+        token.isVerified = user.isVerified;
       }
       if (trigger === "update" && session?.image) {
         token.image = session.image;
@@ -23,6 +24,7 @@ const config = {
         session.user.role = token.role as string;
         session.user.username = token.username as string;
         session.user.image = token.image as string;
+        session.user.isVerified = token.isVerified as boolean;
       }
       return session;
     },

@@ -241,15 +241,13 @@ export const createNewUserController = async (
 
     const newUser = await createUserService(validatedData);
 
-    // Generate verification token and send verification + welcome emails
+    // Generate verification token and send the verification email.
     const token = await createVerificationToken(newUser.id);
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
 
-    // Fire both emails concurrently — don't block the response
-    Promise.all([
-      verificationEmail(newUser.email, newUser.username, verifyUrl),
-      welcomeNewUserEmail(newUser.email, newUser.username),
-    ]).catch((err) => console.error("Error sending registration emails:", err));
+    verificationEmail(newUser.email, newUser.username, verifyUrl).catch((err) =>
+      console.error("Error sending verification email:", err),
+    );
 
     res.status(201).json(newUser);
   } catch (error) {
@@ -342,7 +340,12 @@ export const verifyEmailController = async (
       return;
     }
 
-    await verifyAccountToken(token);
+    const user = await verifyAccountToken(token);
+
+    welcomeNewUserEmail(user.email, user.username).catch((err) =>
+      console.error("Error sending welcome email:", err),
+    );
+
     res.status(200).json({ message: "Email verified successfully" });
   } catch (err: any) {
     if (err.message === "INVALID_OR_EXPIRED_TOKEN") {

@@ -12,6 +12,7 @@ import config from "./auth.config";
 // Extend NextAuth's User and Session interfaces to include the role field
 interface ExtendedUser extends User {
   role: string; // Add the 'role' field to the user
+  isVerified: boolean;
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -57,6 +58,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           lastName: user.lastName,
           email: user.email,
           image: user.image,
+          isVerified: user.isVerified,
         } as ExtendedUser;
       },
     }),

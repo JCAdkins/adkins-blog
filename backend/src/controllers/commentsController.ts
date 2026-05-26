@@ -9,6 +9,7 @@ import {
   fetchCommentByIdWithAncestors,
 } from "../services/commentsService.js";
 import express from "express";
+import { AuthenticatedRequest } from "../middleware.js";
 
 export async function fetchBlogCommentsPaginated(
   req: express.Request,
@@ -49,10 +50,13 @@ export async function fetchCommentReplies(
 }
 
 export async function postNewComment(
-  req: express.Request,
+  req: AuthenticatedRequest,
   res: express.Response,
 ) {
-  const data = req.body;
+  const data = {
+    ...req.body,
+    authorId: req.user!.id,
+  };
   try {
     const result = await postNewCommentService(data);
     res.status(200).json(result);
@@ -80,11 +84,14 @@ export async function deleteComment(
   }
 }
 
-export async function likeComment(req: express.Request, res: express.Response) {
+export async function likeComment(
+  req: AuthenticatedRequest,
+  res: express.Response,
+) {
   console.log("Liking comment");
-  const { commentId, userId } = req.body;
+  const { commentId } = req.body;
   try {
-    const result = await likeCommentService(commentId, userId);
+    const result = await likeCommentService(commentId, req.user!.id);
     res.status(200).json(result);
   } catch (error) {
     console.error("Error creating new comment: ", error);

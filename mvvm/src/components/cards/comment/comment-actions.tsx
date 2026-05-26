@@ -13,6 +13,7 @@ export function CommentActions({
   onReplyClick,
   onDelete,
   onReport,
+  canInteract = false,
 }: {
   comment: any;
   sessionUserId?: string;
@@ -22,6 +23,7 @@ export function CommentActions({
   onReplyClick: () => void;
   onDelete: () => void;
   onReport: (id: string) => void;
+  canInteract?: boolean;
 }) {
   return (
     <div className="flex gap-2">
@@ -29,7 +31,7 @@ export function CommentActions({
         className="bg-transparent hover:bg-transparent dark:hover:bg-login-hover"
         size="xs"
         onClick={onLike}
-        disabled={comment.isDeleted || !sessionUserId}
+        disabled={comment.isDeleted || !sessionUserId || !canInteract}
       >
         {userLiked ? (
           <>👍 {likes}</>
@@ -45,6 +47,7 @@ export function CommentActions({
           className="bg-transparent hover:bg-transparent dark:hover:bg-login-hover"
           size="xs"
           onClick={onReplyClick}
+          disabled={!canInteract}
         >
           Reply
         </Button>

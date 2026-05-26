@@ -17,7 +17,9 @@ export function useCommentLikes(comment: BlogComment, userId?: string) {
     if (!userId) return;
     try {
       const res = await likeComment(comment.id, comment.authorId, userId);
-      if (comment.authorId !== userId)
+      if (res.error) return;
+
+      if (res.liked && comment.authorId !== userId)
         await createLikeNotification({
           commentId: comment.id,
           authorName: comment.author?.username as string,

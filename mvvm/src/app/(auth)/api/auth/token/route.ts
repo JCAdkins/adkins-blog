@@ -14,6 +14,7 @@ export async function GET() {
       role: session.token.role,
       username: session.token.username,
       email: session.token.email,
+      isVerified: session.token.isVerified,
     },
     process.env.NEXTAUTH_SECRET!,
     { expiresIn: "1h" },

@@ -23,6 +23,7 @@ export const CommentCard = memo<CommentCardProps>(
     const { open: openReport } = useReportModal();
     const { open: openConfirm } = useConfirmModal();
     const { deleteComment, loadMoreReplies, commentsById } = useComments();
+    const canInteract = Boolean(session?.user?.isVerified);
 
     const { likes, userLiked, handleLike } = useCommentLikes(
       comment,
@@ -30,7 +31,10 @@ export const CommentCard = memo<CommentCardProps>(
     );
 
     const [replyOpen, setReplyOpen] = useState(false);
-    const toggleReply = () => setReplyOpen((prev) => !prev);
+    const toggleReply = () => {
+      if (!canInteract) return;
+      setReplyOpen((prev) => !prev);
+    };
 
     const handleDelete = () => {
       openConfirm({
@@ -73,6 +77,7 @@ export const CommentCard = memo<CommentCardProps>(
           onReplyClick={toggleReply}
           onDelete={handleDelete}
           onReport={() => openReport(comment.id)}
+          canInteract={canInteract}
         />
 
         {replyOpen && (

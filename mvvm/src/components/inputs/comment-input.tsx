@@ -22,9 +22,10 @@ export const CommentInput = ({
   const { data: session } = useSession();
   const [content, setContent] = useState("");
   const { addComment } = useComments();
+  const isVerified = session?.user?.isVerified;
 
   const handleSubmit = async () => {
-    if (!session?.user?.id || !content.trim()) return;
+    if (!session?.user?.id || !isVerified || !content.trim()) return;
 
     try {
       const newComment = await postNewComment({
@@ -52,7 +53,21 @@ export const CommentInput = ({
     }
   };
 
-  return session ? (
+  if (!session) {
+    return (
+      <p className="text-sm text-gray-600">You must be signed in to comment.</p>
+    );
+  }
+
+  if (!isVerified) {
+    return (
+      <p className="text-sm text-amber-700 dark:text-amber-300">
+        Please verify your email before commenting or replying.
+      </p>
+    );
+  }
+
+  return (
     <div className="flex flex-col items-end w-full gap-2 mb-1">
       <Input
         type="text"
@@ -69,7 +84,5 @@ export const CommentInput = ({
         Submit
       </Button>
     </div>
-  ) : (
-    <p className="text-sm text-gray-600">You must be signed in to comment.</p>
   );
 };

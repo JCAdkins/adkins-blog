@@ -1,4 +1,4 @@
-import { verifyToken } from "../middleware.js";
+import { requireVerifiedUser, verifyToken } from "../middleware.js";
 import {
   fetchBlogCommentsPaginated,
   fetchCommentReplies,
@@ -16,9 +16,9 @@ router.get("/:commentId", getCommentById);
 
 router.get("/:commentId/replies", fetchCommentReplies);
 
-router.post("/", verifyToken, postNewComment);
+router.post("/", verifyToken, requireVerifiedUser, postNewComment);
 
-router.post("/like", verifyToken, likeComment);
+router.post("/like", verifyToken, requireVerifiedUser, likeComment);
 
 router.delete("/:commentId", verifyToken, deleteComment);
 

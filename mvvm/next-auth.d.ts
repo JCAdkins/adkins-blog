@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface User {
@@ -11,6 +11,7 @@ declare module "next-auth" {
     email: string;
     image?: string;
     location?: string;
+    isVerified: boolean;
 
     profileVisibility: "public" | "users" | "private";
     activityVisible: boolean;
@@ -22,6 +23,7 @@ declare module "next-auth" {
       id: string;
       role: string;
       username: string;
+      isVerified: boolean;
     } & DefaultSession["user"];
   }
 
@@ -29,5 +31,6 @@ declare module "next-auth" {
     id: string;
     role: string;
     username: string;
+    isVerified: boolean;
   }
 }
