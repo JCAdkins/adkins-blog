@@ -13,6 +13,24 @@ This project follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+## Frontend [0.4.0] — 2026-05-26
+
+### Added
+- Email verification flow on registration
+  - `/verify-email` page that auto-submits token on load with fallback manual button
+  - Clear error states for missing or expired tokens with link to re-register
+  - Success confirmation with redirect to `/login`
+  - `useVerifyEmailViewModel` with toast handling
+  - `verifyEmail` server action and `VerifyEmailActionState` in `actions.ts`
+  - All states responsive on mobile and desktop, light and dark mode
+- Register success toast updated to inform user to check email for verification link
+- Removed `welcomeNewUser` call from `useRegisterViewModel` — backend now handles both emails
+
+### Other
+- `JCA.png` set as browser favicon in `layout.tsx`
+
+---
+
 ## Frontend [0.3.0] — 2026-05-24
 
 ### Added
@@ -51,6 +69,22 @@ This project follows [Semantic Versioning](https://semver.org/):
 - Register validation error messages rewritten to be user-friendly
   - Removed raw Zod output like `"String must contain at least 6 character(s)"`
   - Removed field path prefix and hyphen from toast output (e.g. `"Username - ..."`)
+
+---
+
+## Backend [1.2.0] — 2026-05-26
+
+### Added
+- Email verification flow
+  - `verificationToken` and `verificationTokenExpiry` fields added to `User` model in Prisma schema
+  - `createVerificationToken` — generates a secure 32-byte hex token, expires in 48 hours
+  - `verifyAccountToken` — validates token, sets `isVerified: true`, clears token fields
+  - `findUserByVerificationToken` — looks up user by valid non-expired verification token
+  - `deleteExpiredUnverifiedUsers` — deletes unverified accounts with expired tokens
+  - `verificationEmail` — sends branded verification email via Resend with warm tone and clear 48h expiry warning
+  - `POST /users/verify-email` route and `verifyEmailController`
+  - Hourly cleanup job via `setInterval` that deletes expired unverified accounts; also runs immediately on server start
+  - `createNewUserController` now generates verification token and fires both verification and welcome emails concurrently on registration
 
 ---
 
