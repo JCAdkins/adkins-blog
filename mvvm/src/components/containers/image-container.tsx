@@ -2,8 +2,7 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -11,32 +10,68 @@ interface ImageGalleryProps {
   images: ({ thumbnail: string; original: string } | undefined)[];
 }
 
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 5;
+const DOUBLE_TAP_DELAY = 300;
+
 export default function ImageGallery({ images }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const showPrev = () =>
-    setSelectedIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
 
-  const showNext = () =>
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const dragStart = useRef({ x: 0, y: 0 });
+  const panAtDragStart = useRef({ x: 0, y: 0 });
+  const lastTap = useRef(0);
+  const lastPinchDist = useRef<number | null>(null);
+
+  const resetZoomPan = useCallback(() => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }, []);
+
+  const showPrev = useCallback(() => {
+    setSelectedIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
+    resetZoomPan();
+  }, [resetZoomPan]);
+
+  const showNext = useCallback(() => {
     setSelectedIndex((prev) =>
       prev !== null && prev < images.length - 1 ? prev + 1 : prev,
     );
+    resetZoomPan();
+  }, [images.length, resetZoomPan]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setOpen(false);
     setSelectedIndex(null);
-  };
+    resetZoomPan();
+  }, [resetZoomPan]);
 
-  // Reset loading state whenever the selected image changes
+  const clampPan = useCallback(
+    (x: number, y: number, currentZoom: number) => {
+      const el = containerRef.current;
+      if (!el) return { x, y };
+      const maxPanX = (el.clientWidth * (currentZoom - 1)) / 2;
+      const maxPanY = (el.clientHeight * (currentZoom - 1)) / 2;
+      return {
+        x: Math.min(maxPanX, Math.max(-maxPanX, x)),
+        y: Math.min(maxPanY, Math.max(-maxPanY, y)),
+      };
+    },
+    [],
+  );
+
   useEffect(() => {
     if (selectedIndex !== null) {
       setIsLoading(true);
     }
   }, [selectedIndex]);
 
-  // Keyboard support
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!open || selectedIndex === null) return;
@@ -46,7 +81,114 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [selectedIndex, open]);
+  }, [selectedIndex, open, showPrev, showNext, closeModal]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      setZoom((prev) => {
+        const next = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev - e.deltaY * 0.001));
+        if (next === MIN_ZOOM) setPan({ x: 0, y: 0 });
+        return next;
+      });
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [open]);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "touch") return;
+    if (zoom <= 1) return;
+    isDragging.current = true;
+    dragStart.current = { x: e.clientX, y: e.clientY };
+    panAtDragStart.current = pan;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    const clamped = clampPan(
+      panAtDragStart.current.x + dx,
+      panAtDragStart.current.y + dy,
+      zoom,
+    );
+    setPan(clamped);
+  };
+
+  const onPointerUp = () => {
+    isDragging.current = false;
+  };
+
+  const onDoubleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (zoom > 1) {
+      resetZoomPan();
+    } else {
+      setZoom(2.5);
+    }
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      lastPinchDist.current = Math.hypot(dx, dy);
+    } else if (e.touches.length === 1) {
+      const now = Date.now();
+      if (now - lastTap.current < DOUBLE_TAP_DELAY) {
+        if (zoom > 1) {
+          resetZoomPan();
+        } else {
+          setZoom(2.5);
+        }
+        lastTap.current = 0;
+        return;
+      }
+      lastTap.current = now;
+      if (zoom > 1) {
+        isDragging.current = true;
+        dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        panAtDragStart.current = pan;
+      }
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (e.touches.length === 2 && lastPinchDist.current !== null) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const delta = dist - lastPinchDist.current;
+      lastPinchDist.current = dist;
+      setZoom((prev) => {
+        const next = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev + delta * 0.01));
+        if (next <= MIN_ZOOM) setPan({ x: 0, y: 0 });
+        return next;
+      });
+    } else if (e.touches.length === 1 && isDragging.current) {
+      const dx = e.touches[0].clientX - dragStart.current.x;
+      const dy = e.touches[0].clientY - dragStart.current.y;
+      const clamped = clampPan(
+        panAtDragStart.current.x + dx,
+        panAtDragStart.current.y + dy,
+        zoom,
+      );
+      setPan(clamped);
+    }
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (e.touches.length < 2) lastPinchDist.current = null;
+    if (e.touches.length === 0) isDragging.current = false;
+  };
+
+  const imageTransform = `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`;
+  const imageCursor = zoom > 1 ? (isDragging.current ? "grabbing" : "grab") : "default";
 
   return (
     <>
@@ -77,17 +219,19 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         })}
       </div>
 
-      {/* Shared Dialog */}
       <Dialog.Root
         open={open}
         onOpenChange={(isOpen: boolean) => {
           setOpen(isOpen);
-          if (!isOpen) setSelectedIndex(null);
+          if (!isOpen) {
+            setSelectedIndex(null);
+            resetZoomPan();
+          }
         }}
       >
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-50 bg-black/80" />
-          <Dialog.Content className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-black/90" />
+          <Dialog.Content className="fixed inset-0 z-50 flex flex-col items-center justify-center">
             <VisuallyHidden>
               <Dialog.Description>
                 This is an image viewer to view blog photos.
@@ -97,58 +241,80 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               <VisuallyHidden>Image viewer</VisuallyHidden>
             </Dialog.Title>
 
-            <div className="relative max-h-[90vh]">
-              {/* Close */}
-              <Dialog.Close className="absolute top-4 right-4 z-50 rounded-full bg-black/60 p-2 text-white hover:cursor-pointer hover:bg-black/80">
+            <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3">
+              <p className="text-sm font-semibold text-white">
+                {selectedIndex !== null ? `${selectedIndex + 1} / ${images.length}` : ""}
+              </p>
+              <Dialog.Close
+                onClick={closeModal}
+                className="rounded-full bg-black/60 p-2 text-white hover:cursor-pointer hover:bg-black/80"
+              >
                 <X className="h-6 w-6" />
               </Dialog.Close>
+            </div>
 
-              {/* Prev */}
-              {selectedIndex! > 0 && (
-                <button
-                  onClick={showPrev}
-                  className="absolute top-1/2 left-4 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-              )}
-
-              {/* Skeleton shown while image is loading */}
+            <div
+              ref={containerRef}
+              className="relative flex h-full w-full items-center justify-center overflow-hidden"
+              style={{ touchAction: "none" }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onDoubleClick={onDoubleClick}
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               {isLoading && (
-                <div className="h-[60vh] w-[80vw] max-w-3xl animate-pulse rounded-lg bg-gray-700" />
+                <div className="h-[70vh] w-[85vw] max-w-5xl animate-pulse rounded-lg bg-gray-700" />
               )}
 
-              {/* Image — always rendered but hidden until loaded so onLoad fires */}
-              {images[selectedIndex!] ? (
+              {images[selectedIndex!] && (
                 <Image
                   key={selectedIndex}
                   src={images[selectedIndex!]?.original as string}
                   alt={`Full image ${selectedIndex! + 1}`}
-                  width={400}
-                  height={300}
+                  fill
                   loading="eager"
-                  className={`max-h-[80vh] w-auto rounded-lg object-contain transition-opacity duration-300 ${
-                    isLoading ? "invisible absolute" : "visible"
-                  }`}
+                  sizes="100vw"
+                  className="rounded-lg object-contain transition-opacity duration-300 select-none"
+                  style={{
+                    opacity: isLoading ? 0 : 1,
+                    transform: imageTransform,
+                    cursor: imageCursor,
+                    transition: isDragging.current
+                      ? "none"
+                      : "transform 0.15s ease, opacity 0.3s",
+                  }}
                   onLoad={() => setIsLoading(false)}
+                  draggable={false}
                 />
-              ) : null}
-
-              {/* Next */}
-              {selectedIndex! < images.length - 1 && (
-                <button
-                  onClick={showNext}
-                  className="absolute top-1/2 right-4 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
               )}
-
-              {/* Image count indicator */}
-              <p className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-2xl font-bold text-white">
-                {selectedIndex! + 1} / {images.length}
-              </p>
             </div>
+
+            {selectedIndex !== null && selectedIndex > 0 && (
+              <button
+                onClick={showPrev}
+                className="absolute left-3 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 md:left-6"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+            )}
+
+            {selectedIndex !== null && selectedIndex < images.length - 1 && (
+              <button
+                onClick={showNext}
+                className="absolute right-3 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 md:right-6"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            )}
+
+            {!isLoading && zoom === 1 && (
+              <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/50 select-none pointer-events-none">
+                Scroll or pinch to zoom · Double-tap to zoom in
+              </p>
+            )}
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
