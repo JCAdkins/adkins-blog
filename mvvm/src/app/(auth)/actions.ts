@@ -15,21 +15,13 @@ const authLogInFormSchema = z.object({
 
 const authRegisterFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-  username: z
-    .string()
-    .min(6, { message: "Username must be at least 6 characters long" }),
+  username: z.string().min(6, { message: "Username must be at least 6 characters long" }),
   password: z
     .string()
     .min(10, { message: "Password must be at least 10 characters long" })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter",
-    })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-      message: "Password must contain at least one special character",
-    }),
+    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   role: z.string(),
@@ -45,15 +37,9 @@ const resetPasswordSchema = z
     password: z
       .string()
       .min(10, { message: "Password must be at least 10 characters long" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-        message: "Password must contain at least one special character",
-      }),
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -218,6 +204,36 @@ export const resetPassword = async (
       return { status: "invalid_data", error: errs };
     }
     console.error("Reset password action error:", error);
+    return { status: "failed" };
+  }
+};
+
+export interface VerifyEmailActionState {
+  status: "idle" | "success" | "failed" | "invalid_token";
+}
+
+export const verifyEmail = async (
+  _: VerifyEmailActionState,
+  formData: FormData,
+): Promise<VerifyEmailActionState> => {
+  try {
+    const token = formData.get("token") as string;
+    if (!token) return { status: "invalid_token" };
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/verify-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      },
+    );
+
+    if (res.status === 400) return { status: "invalid_token" };
+    if (!res.ok) return { status: "failed" };
+    return { status: "success" };
+  } catch (error) {
+    console.error("Verify email action error:", error);
     return { status: "failed" };
   }
 };

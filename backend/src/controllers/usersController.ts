@@ -16,8 +16,15 @@ import {
   createUserSession,
   createPasswordResetToken,
   consumePasswordResetToken,
+  createVerificationToken,
+  verifyAccountToken,
+  deleteExpiredUnverifiedUsers,
 } from "../services/usersService.js";
-import { passwordResetEmail } from "../services/contactService.js";
+import {
+  passwordResetEmail,
+  verificationEmail,
+  welcomeNewUserEmail,
+} from "../services/contactService.js";
 import { userSchema } from "../schemas/validation.js";
 import { ZodError } from "zod";
 import { UUID } from "crypto";
@@ -29,6 +36,21 @@ const JWT_SECRET = process.env.NEXT_AUTH_SECRET;
 if (!JWT_SECRET) {
   throw new Error("NEXTAUTH_SECRET is not defined in environment variables");
 }
+
+// ── Cleanup job: runs every hour, deletes expired unverified accounts ──────────
+const CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+setInterval(async () => {
+  try {
+    await deleteExpiredUnverifiedUsers();
+  } catch (err) {
+    console.error("Cleanup job error:", err);
+  }
+}, CLEANUP_INTERVAL_MS);
+
+// Run once immediately on server start
+deleteExpiredUnverifiedUsers().catch((err) =>
+  console.error("Initial cleanup error:", err),
+);
 
 // ================= GET =======================
 
@@ -47,7 +69,6 @@ export const getMeController = async (
   }
 };
 
-// GET /api/users/
 export const getAllUsersController = async (
   req: express.Request,
   res: express.Response,
@@ -61,7 +82,6 @@ export const getAllUsersController = async (
   }
 };
 
-// GET /api/users/email/:email
 export const getUserByEmailController = async (
   req: express.Request,
   res: express.Response,
@@ -84,7 +104,6 @@ export const getUserByEmailController = async (
   }
 };
 
-// GET /api/users/user/:username
 export const getUserByUsernameController = async (
   req: express.Request,
   res: express.Response,
@@ -222,6 +241,16 @@ export const createNewUserController = async (
 
     const newUser = await createUserService(validatedData);
 
+    // Generate verification token and send verification + welcome emails
+    const token = await createVerificationToken(newUser.id);
+    const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+
+    // Fire both emails concurrently — don't block the response
+    Promise.all([
+      verificationEmail(newUser.email, newUser.username, verifyUrl),
+      welcomeNewUserEmail(newUser.email, newUser.username),
+    ]).catch((err) => console.error("Error sending registration emails:", err));
+
     res.status(201).json(newUser);
   } catch (error) {
     console.error("User creation failed:", error);
@@ -251,7 +280,6 @@ export const loginUserController = async (
   }
 };
 
-// POST /api/users/forgot-password
 export const forgotPasswordController = async (
   req: express.Request,
   res: express.Response,
@@ -265,8 +293,6 @@ export const forgotPasswordController = async (
 
     const token = await createPasswordResetToken(email);
 
-    // Always return 200 regardless of whether the email exists —
-    // this prevents user enumeration attacks
     if (token) {
       const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
       await passwordResetEmail(email, resetUrl);
@@ -282,7 +308,6 @@ export const forgotPasswordController = async (
   }
 };
 
-// POST /api/users/reset-password
 export const resetPasswordController = async (
   req: express.Request,
   res: express.Response,
@@ -306,7 +331,28 @@ export const resetPasswordController = async (
   }
 };
 
-// ============================== DELETE ==================================
+export const verifyEmailController = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      res.status(400).json({ message: "Token is required" });
+      return;
+    }
+
+    await verifyAccountToken(token);
+    res.status(200).json({ message: "Email verified successfully" });
+  } catch (err: any) {
+    if (err.message === "INVALID_OR_EXPIRED_TOKEN") {
+      res.status(400).json({ message: "Invalid or expired verification token" });
+    } else {
+      console.error("Verify email error:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
 
 export const deleteSessionController = async (
   req: AuthenticatedRequest,

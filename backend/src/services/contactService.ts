@@ -21,6 +21,74 @@ export async function contactAdminEmail({ to, subject, html }: EmailParams) {
   }
 }
 
+export async function verificationEmail(
+  to: string,
+  username: string,
+  verifyUrl: string,
+) {
+  try {
+    const data = await resend.emails.send({
+      from: "The Blogging Photographer <noreply@blog.adkins.ninja>",
+      to,
+      subject: "Please verify your email — Adkins Ninja Blog",
+      html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Your Email</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 24px;">
+
+    <h2 style="color: #92400e;">Welcome, ${username}! One small step to go 🎉</h2>
+
+    <p>We're so excited to have you join the Adkins Ninja Blog community! Before you dive in, we just need to confirm that this email address belongs to you.</p>
+
+    <p>Click the button below to verify your email and activate your account:</p>
+
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="${verifyUrl}"
+        style="background-color: #92400e; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; font-size: 1rem;">
+        Verify My Email
+      </a>
+    </div>
+
+    <p>If the button above doesn't work, copy and paste this link into your browser:</p>
+    <p style="word-break: break-all; color: #92400e;">${verifyUrl}</p>
+
+    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;" />
+
+    <p style="color: #b45309;">
+      ⏳ <strong>Heads up:</strong> This verification link expires in <strong>48 hours</strong>.
+      If your account isn't verified within that time, it will be removed from our system and
+      you'll need to sign up again. We do this to keep our community safe and spam-free.
+    </p>
+
+    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;" />
+
+    <p style="font-size: 0.85rem; color: #6b7280;">
+      If you didn't create an account, you can safely ignore this email — nothing will happen.
+      If you need help, visit our <a href="https://blog.adkins.ninja/contact" style="color: #92400e;">Contact Page</a>.
+    </p>
+
+    <p>We can't wait to see you around!<br>
+    <strong>The Adkins Ninja Blog Team</strong></p>
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    console.log("Verification email sent:", data);
+    return data;
+  } catch (error) {
+    console.error("Verification email failed:", error);
+    throw error;
+  }
+}
+
 export async function welcomeNewUserEmail(to: string, username: string) {
   try {
     const data = await resend.emails.send({
@@ -28,7 +96,7 @@ export async function welcomeNewUserEmail(to: string, username: string) {
       to,
       subject: "Welcome to Adkins Ninja Blog",
       html: `
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -59,8 +127,7 @@ export async function welcomeNewUserEmail(to: string, username: string) {
   <!-- <p><strong>P.S.</strong> Don't forget to follow us on <a href="[Social Media Links]">Social Media</a> for the latest updates!</p> -->
 </body>
 </html>
-
-  `,
+      `,
     });
 
     console.log("Email sent:", data);
