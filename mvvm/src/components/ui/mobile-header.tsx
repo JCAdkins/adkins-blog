@@ -50,7 +50,7 @@ export default function MobileHeader({
                 <DropdownMenuItem key={link.href} asChild>
                   <Link
                     href={link.href}
-                    className="flex w-full items-center justify-center gap-2 px-4 py-2 text-base hover:bg-gray-100 dark:text-dark-muted dark:hover:bg-dark-card"
+                    className="flex w-full items-center justify-center gap-2 px-4 py-2 text-base hover:bg-gray-100 dark:text-login dark:hover:bg-dark-card"
                   >
                     {link.icon}
                     {link.label}
