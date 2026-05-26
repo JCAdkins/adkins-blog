@@ -1,5 +1,6 @@
 // frontend/auth.config.ts
 import type { NextAuthConfig } from "next-auth";
+import type { UUID } from "crypto";
 
 const config = {
   providers: [],
@@ -20,7 +21,7 @@ const config = {
     async session({ session, token }) {
       if (session.user) {
         session.token = token;
-        session.user.id = token.id as string;
+        session.user.id = token.id as UUID;
         session.user.role = token.role as string;
         session.user.username = token.username as string;
         session.user.image = token.image as string;

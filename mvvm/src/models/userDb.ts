@@ -14,6 +14,7 @@ export type UserDb = {
   email: string;
   image?: string;
   location?: string;
+  isVerified: boolean;
 
   profileVisibility?: "public" | "friends" | "private";
   activityVisible?: boolean;

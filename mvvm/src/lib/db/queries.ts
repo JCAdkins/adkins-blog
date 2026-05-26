@@ -173,6 +173,7 @@ export async function getMe(): Promise<User | { error: string }> {
       email: data.email,
       image: data.image,
       location: data.location,
+      isVerified: data.isVerified,
       profileVisibility: data.profileVisibility,
       activityVisible: data.activityVisible,
       sessions: data.sessions.map((session) => {
