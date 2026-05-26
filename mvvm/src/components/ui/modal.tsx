@@ -33,7 +33,7 @@ export function BaseModal({
             </DialogTitle>
           )}
           {description && (
-            <Description className="text-sm text-muted-foreground dark:text-[#a89bc2]">
+            <Description className="text-sm text-muted-foreground dark:text-login">
               {description}
             </Description>
           )}

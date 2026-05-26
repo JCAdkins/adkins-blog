@@ -48,7 +48,7 @@ export default async function HomePage() {
           ))}
         </div>
       </main>
-      <footer className="row-start-2 flex flex-wrap items-center justify-center gap-6 text-gray-600 dark:text-dark-muted">
+      <footer className="row-start-2 flex flex-wrap items-center justify-center gap-6 text-gray-600 dark:text-login">
         © {new Date().getFullYear()} Adkins Ninja Blog
       </footer>
     </div>

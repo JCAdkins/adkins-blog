@@ -39,7 +39,7 @@ export default function BlogCard({
           </div>
           <div className="p-2">
             <h2 className="text-lg font-bold">{blog.title}</h2>
-            <p className="text-sm text-gray-600 dark:text-dark-muted">
+            <p className="text-sm text-gray-600 dark:text-login">
               {blog.description}
             </p>
           </div>
