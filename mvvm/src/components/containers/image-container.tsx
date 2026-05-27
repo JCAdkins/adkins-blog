@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
 
 interface ImageGalleryProps {
   images: ({ thumbnail: string; original: string } | undefined)[];
@@ -12,13 +12,13 @@ interface ImageGalleryProps {
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 5;
+const ZOOM_STEP = 0.5;
 const DOUBLE_TAP_DELAY = 300;
 
 export default function ImageGallery({ images }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
 
@@ -28,6 +28,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   const panAtDragStart = useRef({ x: 0, y: 0 });
   const lastTap = useRef(0);
   const lastPinchDist = useRef<number | null>(null);
+  const prevIndexRef = useRef<number | null>(null);
 
   const zoomRef = useRef(zoom);
   const panRef = useRef(pan);
@@ -38,6 +39,13 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     setZoom(1);
     setPan({ x: 0, y: 0 });
   }, []);
+
+  useEffect(() => {
+    if (selectedIndex !== null && selectedIndex !== prevIndexRef.current) {
+      setIsLoading(true);
+      prevIndexRef.current = selectedIndex;
+    }
+  }, [selectedIndex]);
 
   const showPrev = useCallback(() => {
     setSelectedIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
@@ -68,9 +76,17 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     };
   }, []);
 
-  useEffect(() => {
-    if (selectedIndex !== null) setIsLoading(true);
-  }, [selectedIndex]);
+  const zoomIn = useCallback(() => {
+    setZoom((prev) => Math.min(MAX_ZOOM, parseFloat((prev + ZOOM_STEP).toFixed(1))));
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    setZoom((prev) => {
+      const next = Math.max(MIN_ZOOM, parseFloat((prev - ZOOM_STEP).toFixed(1)));
+      if (next === MIN_ZOOM) setPan({ x: 0, y: 0 });
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -89,7 +105,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       setZoom((prev) => {
-        const next = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev - e.deltaY * 0.001));
+        const next = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev - e.deltaY * 0.005));
         if (next === MIN_ZOOM) setPan({ x: 0, y: 0 });
         return next;
       });
@@ -107,6 +123,10 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         lastPinchDist.current = Math.hypot(dx, dy);
+        const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        dragStart.current = { x: midX, y: midY };
+        panAtDragStart.current = panRef.current;
       } else if (e.touches.length === 1) {
         const now = Date.now();
         if (now - lastTap.current < DOUBLE_TAP_DELAY) {
@@ -116,11 +136,9 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
           return;
         }
         lastTap.current = now;
-        if (zoomRef.current > 1) {
-          isDragging.current = true;
-          dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-          panAtDragStart.current = panRef.current;
-        }
+        isDragging.current = true;
+        dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        panAtDragStart.current = panRef.current;
       }
     };
 
@@ -137,7 +155,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
           if (next <= MIN_ZOOM) setPan({ x: 0, y: 0 });
           return next;
         });
-      } else if (e.touches.length === 1 && isDragging.current) {
+      } else if (e.touches.length === 1 && isDragging.current && zoomRef.current > 1) {
         const dx = e.touches[0].clientX - dragStart.current.x;
         const dy = e.touches[0].clientY - dragStart.current.y;
         const clamped = clampPan(
@@ -152,6 +170,11 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     const onTouchEnd = (e: TouchEvent) => {
       if (e.touches.length < 2) lastPinchDist.current = null;
       if (e.touches.length === 0) isDragging.current = false;
+      if (e.touches.length === 1) {
+        dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        panAtDragStart.current = panRef.current;
+        isDragging.current = true;
+      }
     };
 
     el.addEventListener("touchstart", onTouchStart, { passive: false });
@@ -166,7 +189,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.pointerType === "touch") return;
-    if (zoom <= 1) return;
+    if (zoomRef.current <= 1) return;
     isDragging.current = true;
     dragStart.current = { x: e.clientX, y: e.clientY };
     panAtDragStart.current = pan;
@@ -189,7 +212,10 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   };
 
   const imageTransform = `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`;
-  const imageCursor = zoom > 1 ? (isDragging.current ? "grabbing" : "grab") : "default";
+  const imageCursor =
+    zoom > 1
+      ? isDragging.current ? "grabbing" : "grab"
+      : "zoom-in";
 
   return (
     <>
@@ -235,7 +261,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
             </Dialog.Title>
 
             <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3">
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold text-white drop-shadow">
                 {selectedIndex !== null ? `${selectedIndex + 1} / ${images.length}` : ""}
               </p>
               <Dialog.Close
@@ -258,11 +284,10 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 <div className="h-[70vh] w-[85vw] max-w-5xl animate-pulse rounded-lg bg-gray-700" />
               )}
 
-              {images[selectedIndex!] && (
+              {selectedIndex !== null && images[selectedIndex] && (
                 <Image
-                  key={selectedIndex}
-                  src={images[selectedIndex!]?.original as string}
-                  alt={`Full image ${selectedIndex! + 1}`}
+                  src={images[selectedIndex]!.original}
+                  alt={`Full image ${selectedIndex + 1}`}
                   fill
                   loading="eager"
                   sizes="100vw"
@@ -299,9 +324,30 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               </button>
             )}
 
+            {!isLoading && (
+              <div className="absolute bottom-10 right-4 z-50 flex flex-col overflow-hidden rounded-lg shadow-lg md:bottom-8 md:right-6">
+                <button
+                  onClick={zoomIn}
+                  disabled={zoom >= MAX_ZOOM}
+                  className="flex items-center justify-center bg-black/60 px-3 py-2 text-white hover:bg-black/80 disabled:opacity-30 border-b border-white/20"
+                  aria-label="Zoom in"
+                >
+                  <ZoomIn className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={zoomOut}
+                  disabled={zoom <= MIN_ZOOM}
+                  className="flex items-center justify-center bg-black/60 px-3 py-2 text-white hover:bg-black/80 disabled:opacity-30"
+                  aria-label="Zoom out"
+                >
+                  <ZoomOut className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+
             {!isLoading && zoom === 1 && (
-              <p className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none select-none text-xs text-white/50">
-                Scroll or pinch to zoom · Double-tap to zoom in
+              <p className="absolute bottom-10 left-1/2 -translate-x-1/2 pointer-events-none select-none whitespace-nowrap rounded-full bg-black/50 px-3 py-1 text-xs text-white shadow-[0_2px_8px_rgba(0,0,0,0.6)] md:bottom-8">
+                Double-click to zoom · scroll or pinch to zoom
               </p>
             )}
           </Dialog.Content>
