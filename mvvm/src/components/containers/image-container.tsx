@@ -14,6 +14,7 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 5;
 const ZOOM_STEP = 0.5;
 const DOUBLE_TAP_DELAY = 300;
+const CLICK_MOVE_THRESHOLD = 5;
 
 export default function ImageGallery({ images }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -23,7 +24,9 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   const [pan, setPan] = useState({ x: 0, y: 0 });
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
+  const hasDragged = useRef(false);
   const dragStart = useRef({ x: 0, y: 0 });
   const panAtDragStart = useRef({ x: 0, y: 0 });
   const lastTap = useRef(0);
@@ -158,12 +161,11 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
       } else if (e.touches.length === 1 && isDragging.current && zoomRef.current > 1) {
         const dx = e.touches[0].clientX - dragStart.current.x;
         const dy = e.touches[0].clientY - dragStart.current.y;
-        const clamped = clampPan(
+        setPan(clampPan(
           panAtDragStart.current.x + dx,
           panAtDragStart.current.y + dy,
           zoomRef.current,
-        );
-        setPan(clamped);
+        ));
       }
     };
 
@@ -190,6 +192,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.pointerType === "touch") return;
     if (zoomRef.current <= 1) return;
+    hasDragged.current = false;
     isDragging.current = true;
     dragStart.current = { x: e.clientX, y: e.clientY };
     panAtDragStart.current = pan;
@@ -200,22 +203,24 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     if (!isDragging.current) return;
     const dx = e.clientX - dragStart.current.x;
     const dy = e.clientY - dragStart.current.y;
+    if (Math.hypot(dx, dy) > CLICK_MOVE_THRESHOLD) hasDragged.current = true;
     setPan(clampPan(panAtDragStart.current.x + dx, panAtDragStart.current.y + dy, zoom));
   };
 
   const onPointerUp = () => { isDragging.current = false; };
 
-  const onDoubleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (zoom > 1) resetZoomPan();
+  const onImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (hasDragged.current) return;
+    if (zoomRef.current > 1) resetZoomPan();
     else setZoom(2.5);
   };
 
+  const imageCursor = zoom > 1
+    ? isDragging.current ? "grabbing" : "grab"
+    : "zoom-in";
+
   const imageTransform = `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`;
-  const imageCursor =
-    zoom > 1
-      ? isDragging.current ? "grabbing" : "grab"
-      : "zoom-in";
 
   return (
     <>
@@ -252,7 +257,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
       >
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 z-50 bg-black/90" />
-          <Dialog.Content className="fixed inset-0 z-50 flex flex-col items-center justify-center">
+          <Dialog.Content className="fixed inset-0 z-50 flex flex-col items-center justify-center cursor-default">
             <VisuallyHidden>
               <Dialog.Description>Image viewer for blog photos.</Dialog.Description>
             </VisuallyHidden>
@@ -266,7 +271,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               </p>
               <Dialog.Close
                 onClick={closeModal}
-                className="rounded-full bg-black/60 p-2 text-white hover:cursor-pointer hover:bg-black/80"
+                className="rounded-full bg-black/60 p-2 text-white cursor-pointer hover:bg-black/80"
               >
                 <X className="h-6 w-6" />
               </Dialog.Close>
@@ -278,38 +283,43 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerUp}
-              onDoubleClick={onDoubleClick}
             >
               {isLoading && (
                 <div className="h-[70vh] w-[85vw] max-w-5xl animate-pulse rounded-lg bg-gray-700" />
               )}
 
               {selectedIndex !== null && images[selectedIndex] && (
-                <Image
-                  src={images[selectedIndex]!.original}
-                  alt={`Full image ${selectedIndex + 1}`}
-                  fill
-                  loading="eager"
-                  sizes="100vw"
-                  className="rounded-lg object-contain select-none"
-                  style={{
-                    opacity: isLoading ? 0 : 1,
-                    transform: imageTransform,
-                    cursor: imageCursor,
-                    transition: isDragging.current
-                      ? "none"
-                      : "transform 0.15s ease, opacity 0.3s",
-                  }}
-                  onLoad={() => setIsLoading(false)}
-                  draggable={false}
-                />
+                <div
+                  ref={imageWrapRef}
+                  className="absolute inset-0"
+                  style={{ cursor: imageCursor }}
+                  onClick={onImageClick}
+                >
+                  <Image
+                    src={images[selectedIndex]!.original}
+                    alt={`Full image ${selectedIndex + 1}`}
+                    fill
+                    loading="eager"
+                    sizes="100vw"
+                    className="rounded-lg object-contain select-none pointer-events-none"
+                    style={{
+                      opacity: isLoading ? 0 : 1,
+                      transform: imageTransform,
+                      transition: isDragging.current
+                        ? "none"
+                        : "transform 0.15s ease, opacity 0.3s",
+                    }}
+                    onLoad={() => setIsLoading(false)}
+                    draggable={false}
+                  />
+                </div>
               )}
             </div>
 
             {selectedIndex !== null && selectedIndex > 0 && (
               <button
                 onClick={showPrev}
-                className="absolute left-3 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 md:left-6"
+                className="absolute left-3 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white cursor-pointer hover:bg-black/80 md:left-6"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -318,7 +328,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
             {selectedIndex !== null && selectedIndex < images.length - 1 && (
               <button
                 onClick={showNext}
-                className="absolute right-3 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 md:right-6"
+                className="absolute right-3 top-1/2 z-50 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white cursor-pointer hover:bg-black/80 md:right-6"
               >
                 <ChevronRight className="h-6 w-6" />
               </button>
@@ -329,7 +339,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 <button
                   onClick={zoomIn}
                   disabled={zoom >= MAX_ZOOM}
-                  className="flex items-center justify-center bg-black/60 px-3 py-2 text-white hover:bg-black/80 disabled:opacity-30 border-b border-white/20"
+                  className="flex items-center justify-center bg-black/60 px-3 py-2 text-white hover:bg-black/80 disabled:opacity-30 border-b border-white/20 cursor-pointer disabled:cursor-default"
                   aria-label="Zoom in"
                 >
                   <ZoomIn className="h-4 w-4" />
@@ -337,18 +347,12 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                 <button
                   onClick={zoomOut}
                   disabled={zoom <= MIN_ZOOM}
-                  className="flex items-center justify-center bg-black/60 px-3 py-2 text-white hover:bg-black/80 disabled:opacity-30"
+                  className="flex items-center justify-center bg-black/60 px-3 py-2 text-white hover:bg-black/80 disabled:opacity-30 cursor-pointer disabled:cursor-default"
                   aria-label="Zoom out"
                 >
                   <ZoomOut className="h-4 w-4" />
                 </button>
               </div>
-            )}
-
-            {!isLoading && zoom === 1 && (
-              <p className="absolute bottom-10 left-1/2 -translate-x-1/2 pointer-events-none select-none whitespace-nowrap rounded-full bg-black/50 px-3 py-1 text-xs text-white shadow-[0_2px_8px_rgba(0,0,0,0.6)] md:bottom-8">
-                Double-click to zoom · scroll or pinch to zoom
-              </p>
             )}
           </Dialog.Content>
         </Dialog.Portal>
