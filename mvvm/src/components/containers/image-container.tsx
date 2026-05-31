@@ -14,8 +14,34 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 5;
 const ZOOM_STEP = 0.5;
 const DOUBLE_TAP_DELAY = 300;
-// If mouse moves more than this during a click, treat it as a drag not a click
 const CLICK_MOVE_THRESHOLD = 5;
+
+function getContainRect(
+  containerW: number,
+  containerH: number,
+  imgW: number,
+  imgH: number,
+  zoom: number,
+) {
+  const containerRatio = containerW / containerH;
+  const imgRatio = imgW / imgH;
+  let baseWidth: number, baseHeight: number;
+  if (imgRatio > containerRatio) {
+    baseWidth = containerW;
+    baseHeight = containerW / imgRatio;
+  } else {
+    baseHeight = containerH;
+    baseWidth = containerH * imgRatio;
+  }
+  const width = Math.min(containerW, baseWidth * zoom);
+  const height = Math.min(containerH, baseHeight * zoom);
+  return {
+    left: (containerW - width) / 2,
+    top: (containerH - height) / 2,
+    width,
+    height,
+  };
+}
 
 export default function ImageGallery({ images }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -27,9 +53,9 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   const [containerSize, setContainerSize] = useState<{ w: number; h: number } | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageWrapRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const hasDragged = useRef(false);
+  const mouseDownPos = useRef({ x: 0, y: 0 });
   const dragStart = useRef({ x: 0, y: 0 });
   const panAtDragStart = useRef({ x: 0, y: 0 });
   const lastTap = useRef(0);
@@ -38,8 +64,10 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   const zoomRef = useRef(zoom);
   const panRef = useRef(pan);
+  const openRef = useRef(open);
   useEffect(() => { zoomRef.current = zoom; }, [zoom]);
   useEffect(() => { panRef.current = pan; }, [pan]);
+  useEffect(() => { openRef.current = open; }, [open]);
 
   const resetZoomPan = useCallback(() => {
     setZoom(1);
@@ -47,14 +75,30 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   }, []);
 
   useEffect(() => {
+    if (!open) return;
+    const measure = () => {
+      const el = containerRef.current;
+      if (el) setContainerSize({ w: el.clientWidth, h: el.clientHeight });
+    };
+    const t = setTimeout(measure, 50);
+    window.addEventListener("resize", measure);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", measure);
+    };
+  }, [open]);
+
+  useEffect(() => {
     if (selectedIndex !== null && selectedIndex !== prevIndexRef.current) {
       setIsLoading(true);
+      setNaturalSize(null);
       prevIndexRef.current = selectedIndex;
     }
   }, [selectedIndex]);
 
   const showPrev = useCallback(() => {
     setSelectedIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
+    hasDragged.current = false;
     resetZoomPan();
   }, [resetZoomPan]);
 
@@ -62,25 +106,16 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     setSelectedIndex((prev) =>
       prev !== null && prev < images.length - 1 ? prev + 1 : prev,
     );
+    hasDragged.current = false;
     resetZoomPan();
   }, [images.length, resetZoomPan]);
 
   const closeModal = useCallback(() => {
     setOpen(false);
     setSelectedIndex(null);
+    hasDragged.current = false;
     resetZoomPan();
   }, [resetZoomPan]);
-
-  const clampPan = useCallback((x: number, y: number, currentZoom: number) => {
-    const el = containerRef.current;
-    if (!el) return { x, y };
-    const maxPanX = (el.clientWidth * (currentZoom - 1)) / 2;
-    const maxPanY = (el.clientHeight * (currentZoom - 1)) / 2;
-    return {
-      x: Math.min(maxPanX, Math.max(-maxPanX, x)),
-      y: Math.min(maxPanY, Math.max(-maxPanY, y)),
-    };
-  }, []);
 
   const zoomIn = useCallback(() => {
     setZoom((prev) => Math.min(MAX_ZOOM, parseFloat((prev + ZOOM_STEP).toFixed(1))));
@@ -94,24 +129,22 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
     });
   }, []);
 
-  // Keyboard support
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (!open || selectedIndex === null) return;
+      if (!openRef.current || selectedIndex === null) return;
       if (e.key === "ArrowLeft") showPrev();
       if (e.key === "ArrowRight") showNext();
       if (e.key === "Escape") closeModal();
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [selectedIndex, open, showPrev, showNext, closeModal]);
+  }, [selectedIndex, showPrev, showNext, closeModal]);
 
-  // Mouse wheel zoom
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el || !open) return;
-
     const onWheel = (e: WheelEvent) => {
+      if (!openRef.current) return;
+      const el = containerRef.current;
+      if (!el || !el.contains(e.target as Node)) return;
       e.preventDefault();
       setZoom((prev) => {
         const next = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev - e.deltaY * 0.005));
@@ -120,20 +153,51 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
       });
     };
 
-  // Touch events
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || !open) return;
+    const onMouseDown = (e: MouseEvent) => {
+      if (!openRef.current) return;
+      const el = containerRef.current;
+      if (!el || !el.contains(e.target as Node)) return;
+      if (zoomRef.current <= 1) return;
+      hasDragged.current = false;
+      isDragging.current = true;
+      mouseDownPos.current = { x: e.clientX, y: e.clientY };
+      dragStart.current = { x: e.clientX, y: e.clientY };
+      panAtDragStart.current = panRef.current;
+      e.preventDefault();
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return;
+      const dx = e.clientX - dragStart.current.x;
+      const dy = e.clientY - dragStart.current.y;
+      if (Math.hypot(e.clientX - mouseDownPos.current.x, e.clientY - mouseDownPos.current.y) > CLICK_MOVE_THRESHOLD) {
+        hasDragged.current = true;
+      }
+      const el = containerRef.current;
+      if (!el) return;
+      const maxPanX = (el.clientWidth * (zoomRef.current - 1)) / 2;
+      const maxPanY = (el.clientHeight * (zoomRef.current - 1)) / 2;
+      setPan({
+        x: Math.min(maxPanX, Math.max(-maxPanX, panAtDragStart.current.x + dx)),
+        y: Math.min(maxPanY, Math.max(-maxPanY, panAtDragStart.current.y + dy)),
+      });
+    };
+
+    const onMouseUp = () => { isDragging.current = false; };
 
     const onTouchStart = (e: TouchEvent) => {
+      if (!openRef.current) return;
+      const el = containerRef.current;
+      if (!el) return;
       if (e.touches.length === 2) {
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         lastPinchDist.current = Math.hypot(dx, dy);
-        const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-        const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-        dragStart.current = { x: midX, y: midY };
         panAtDragStart.current = panRef.current;
+        dragStart.current = {
+          x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+          y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        };
       } else if (e.touches.length === 1) {
         const now = Date.now();
         const isDoubleTap = now - lastTap.current < DOUBLE_TAP_DELAY && lastTap.current !== 0;
@@ -147,13 +211,17 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         }
         lastTap.current = now;
         isDragging.current = true;
+        hasDragged.current = false;
         dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         panAtDragStart.current = panRef.current;
       }
     };
 
     const onTouchMove = (e: TouchEvent) => {
+      if (!openRef.current) return;
       e.preventDefault();
+      const el = containerRef.current;
+      if (!el) return;
       if (e.touches.length === 2 && lastPinchDist.current !== null) {
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
@@ -168,11 +236,13 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
       } else if (e.touches.length === 1 && isDragging.current && zoomRef.current > 1) {
         const dx = e.touches[0].clientX - dragStart.current.x;
         const dy = e.touches[0].clientY - dragStart.current.y;
-        setPan(clampPan(
-          panAtDragStart.current.x + dx,
-          panAtDragStart.current.y + dy,
-          zoomRef.current,
-        ));
+        if (Math.hypot(dx, dy) > CLICK_MOVE_THRESHOLD) hasDragged.current = true;
+        const maxPanX = (el.clientWidth * (zoomRef.current - 1)) / 2;
+        const maxPanY = (el.clientHeight * (zoomRef.current - 1)) / 2;
+        setPan({
+          x: Math.min(maxPanX, Math.max(-maxPanX, panAtDragStart.current.x + dx)),
+          y: Math.min(maxPanY, Math.max(-maxPanY, panAtDragStart.current.y + dy)),
+        });
       }
     };
 
@@ -183,62 +253,44 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         panAtDragStart.current = panRef.current;
         isDragging.current = true;
+        hasDragged.current = false;
       }
     };
 
-    el.addEventListener("wheel", onWheel, { passive: false });
-    el.addEventListener("mousedown", onMouseDown);
-    el.addEventListener("mousemove", onMouseMove);
-    el.addEventListener("mouseup", onMouseUp);
-    el.addEventListener("touchstart", onTouchStart, { passive: false });
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    el.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("touchstart", onTouchStart, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd);
 
     return () => {
-      el.removeEventListener("wheel", onWheel);
-      el.removeEventListener("mousedown", onMouseDown);
-      el.removeEventListener("mousemove", onMouseMove);
-      el.removeEventListener("mouseup", onMouseUp);
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove", onTouchMove);
-      el.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [open, clampPan]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // ── Mouse drag-to-pan on the container (captures pointer even off-image) ──
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType === "touch") return;
-    if (zoomRef.current <= 1) return;
-    hasDragged.current = false;
-    isDragging.current = true;
-    dragStart.current = { x: e.clientX, y: e.clientY };
-    panAtDragStart.current = pan;
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  };
-
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!isDragging.current) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
-    if (Math.hypot(dx, dy) > CLICK_MOVE_THRESHOLD) hasDragged.current = true;
-    setPan(clampPan(panAtDragStart.current.x + dx, panAtDragStart.current.y + dy, zoom));
-  };
-
-  const onPointerUp = () => { isDragging.current = false; };
-
-  // ── Single click on the IMAGE WRAPPER toggles zoom ────────────────────────
-  const onImageClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (hasDragged.current) return; // was a drag, not a click
-    if (zoomRef.current > 1) resetZoomPan();
+  const onImageOverlayClick = useCallback((e: React.MouseEvent) => {
+    if (e.nativeEvent.pointerType === "touch") return;
+    if (hasDragged.current) return;
+    if (zoomRef.current > 1) { setZoom(1); setPan({ x: 0, y: 0 }); }
     else setZoom(2.5);
   }, []);
 
-  const imageCursor = zoom > 1
-    ? isDragging.current ? "grabbing" : "grab"
-    : "zoom-in";
-
+  const imageCursor = zoom > 1 ? "grab" : "zoom-in";
   const imageTransform = `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`;
+
+  const containRect =
+    containerSize && naturalSize
+      ? getContainRect(containerSize.w, containerSize.h, naturalSize.w, naturalSize.h, zoom)
+      : null;
 
   return (
     <>
@@ -270,7 +322,11 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         open={open}
         onOpenChange={(isOpen: boolean) => {
           setOpen(isOpen);
-          if (!isOpen) { setSelectedIndex(null); resetZoomPan(); }
+          if (!isOpen) {
+            setSelectedIndex(null);
+            hasDragged.current = false;
+            resetZoomPan();
+          }
         }}
       >
         <Dialog.Portal>
@@ -283,57 +339,51 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               <VisuallyHidden>Image viewer</VisuallyHidden>
             </Dialog.Title>
 
-            {/* ── Top bar ── */}
-            <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3">
+            <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 pointer-events-none">
               <p className="text-sm font-semibold text-white drop-shadow">
                 {selectedIndex !== null ? `${selectedIndex + 1} / ${images.length}` : ""}
               </p>
               <Dialog.Close
                 onClick={closeModal}
-                className="rounded-full bg-black/60 p-2 text-white cursor-pointer hover:bg-black/80"
+                className="rounded-full bg-black/60 p-2 text-white cursor-pointer hover:bg-black/80 pointer-events-auto"
               >
                 <X className="h-6 w-6" />
               </Dialog.Close>
             </div>
 
-            {/* ── Image area — default cursor, drag captured here ── */}
             <div
               ref={containerRef}
               className="relative flex h-full w-full items-center justify-center overflow-hidden"
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={onPointerUp}
             >
               {isLoading && (
                 <div className="h-[70vh] w-[85vw] max-w-5xl animate-pulse rounded-lg bg-gray-700" />
               )}
 
-              {/* Image wrapper — zoom cursor + single-click zoom only on the actual photo */}
               {selectedIndex !== null && images[selectedIndex] && (
-                <div
-                  ref={imageWrapRef}
-                  className="absolute inset-0"
-                  style={{ cursor: imageCursor }}
-                  onClick={onImageClick}
-                >
-                  <Image
-                    src={images[selectedIndex]!.original}
-                    alt={`Full image ${selectedIndex + 1}`}
-                    fill
-                    loading="eager"
-                    sizes="100vw"
-                    className="rounded-lg object-contain select-none pointer-events-none"
-                    style={{
-                      opacity: isLoading ? 0 : 1,
-                      transform: imageTransform,
-                      transition: isDragging.current
-                        ? "none"
-                        : "transform 0.15s ease, opacity 0.3s",
-                    }}
-                    onLoad={() => setIsLoading(false)}
-                    draggable={false}
-                  />
-                </div>
+                <Image
+                  src={images[selectedIndex]!.original}
+                  alt={`Full image ${selectedIndex + 1}`}
+                  fill
+                  loading="eager"
+                  sizes="100vw"
+                  className="rounded-lg object-contain select-none"
+                  style={{
+                    opacity: isLoading ? 0 : 1,
+                    transform: imageTransform,
+                    transition: isDragging.current
+                      ? "none"
+                      : "transform 0.15s ease, opacity 0.3s",
+                    pointerEvents: "none",
+                  }}
+                  onLoad={(e) => {
+                    setIsLoading(false);
+                    const img = e.currentTarget as HTMLImageElement;
+                    setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
+                    const el = containerRef.current;
+                    if (el) setContainerSize({ w: el.clientWidth, h: el.clientHeight });
+                  }}
+                  draggable={false}
+                />
               )}
 
               {containRect && !isLoading && (
@@ -351,7 +401,6 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               )}
             </div>
 
-            {/* ── Prev arrow ── */}
             {selectedIndex !== null && selectedIndex > 0 && (
               <button
                 onClick={showPrev}
@@ -361,7 +410,6 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               </button>
             )}
 
-            {/* ── Next arrow ── */}
             {selectedIndex !== null && selectedIndex < images.length - 1 && (
               <button
                 onClick={showNext}
@@ -371,7 +419,6 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               </button>
             )}
 
-            {/* ── Zoom controls ── */}
             {!isLoading && (
               <div className="absolute bottom-10 right-4 z-50 flex flex-col overflow-hidden rounded-lg shadow-lg md:bottom-8 md:right-6">
                 <button
