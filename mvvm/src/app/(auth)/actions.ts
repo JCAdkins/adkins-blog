@@ -7,6 +7,7 @@ import {
   getUserByUsername,
 } from "@/lib/db/queries";
 import { signIn } from "./auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const authLogInFormSchema = z.object({
   email: z.string().email(),
@@ -61,29 +62,31 @@ export const login = async (
       password: formData.get("password"),
     });
 
-    const result = await signIn("credentials", {
+    await signIn("credentials", {
       email: validatedData.email,
       password: validatedData.password,
       userAgent: formData.get("userAgent") ?? "",
       redirect: false,
     });
 
-    if (result?.error) {
-      return { status: "failed" };
-    }
-
     return { status: "success" };
   } catch (error: any) {
+    // NEXT_REDIRECT is thrown by Next.js internals and must not be swallowed
+    if (isRedirectError(error)) throw error;
+
     if (error instanceof z.ZodError) {
-      return { status: "failed" };
+      return { status: "invalid_data" };
     }
+
     const isCredentialsError =
       error?.type === "CredentialsSignin" ||
       error?.name === "CredentialsSignin" ||
       error?.constructor?.name === "CredentialsSignin";
+
     if (!isCredentialsError) {
       console.log("Login error:", error);
     }
+
     return { status: "failed" };
   }
 };
@@ -128,6 +131,9 @@ export const register = async (
     });
     return { status: "success" };
   } catch (error) {
+    // NEXT_REDIRECT must not be swallowed
+    if (isRedirectError(error)) throw error;
+
     if (error instanceof z.ZodError) {
       const err = error.errors.map((err) => err.message);
       return { status: "invalid_data", error: err };
@@ -162,6 +168,7 @@ export const forgotPassword = async (
     if (!res.ok) return { status: "failed" };
     return { status: "success" };
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     if (error instanceof z.ZodError) {
       return { status: "invalid_data", error: error.errors[0].message };
     }
@@ -199,6 +206,7 @@ export const resetPassword = async (
     if (!res.ok) return { status: "failed" };
     return { status: "success" };
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     if (error instanceof z.ZodError) {
       const errs = error.errors.map((e) => e.message);
       return { status: "invalid_data", error: errs };
@@ -233,6 +241,7 @@ export const verifyEmail = async (
     if (!res.ok) return { status: "failed" };
     return { status: "success" };
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     console.error("Verify email action error:", error);
     return { status: "failed" };
   }
