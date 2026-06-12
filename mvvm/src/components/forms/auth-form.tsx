@@ -34,7 +34,7 @@ export function AuthForm({
       <div className="flex flex-col gap-1">
         <Label
           htmlFor="email"
-          className="font-normal text-zinc-600 dark:text-amber-200"
+          className="font-normal dark:text-zinc-600 text-amber-200"
         >
           Email Address
         </Label>
@@ -56,7 +56,7 @@ export function AuthForm({
         <div className="flex items-center justify-between">
           <Label
             htmlFor="password"
-            className="font-normal text-zinc-600 dark:text-amber-200"
+            className="font-normal dark:text-zinc-600 text-amber-200"
           >
             Password
           </Label>
@@ -79,7 +79,7 @@ export function AuthForm({
           <div className="flex flex-col gap-1">
             <Label
               htmlFor="confirm-password"
-              className="font-normal text-zinc-600 dark:text-amber-200"
+              className="font-normal dark:text-zinc-600 text-amber-200"
             >
               Confirm Password
             </Label>
@@ -104,7 +104,7 @@ export function AuthForm({
           <div className="flex flex-col gap-1">
             <Label
               htmlFor="username"
-              className="font-normal text-zinc-600 dark:text-amber-200"
+              className="font-normal dark:text-zinc-600 text-amber-200"
             >
               Username
             </Label>
@@ -121,7 +121,7 @@ export function AuthForm({
           <div className="flex flex-col gap-1">
             <Label
               htmlFor="first_name"
-              className="font-normal text-zinc-600 dark:text-amber-200"
+              className="font-normal dark:text-zinc-600 text-amber-200"
             >
               First Name (Optional)
             </Label>
@@ -137,7 +137,7 @@ export function AuthForm({
           <div className="flex flex-col gap-1">
             <Label
               htmlFor="last_name"
-              className="font-normal text-zinc-600 dark:text-amber-200"
+              className="font-normal dark:text-zinc-600 text-amber-200"
             >
               Last Name (Optional)
             </Label>
@@ -163,21 +163,21 @@ export function AuthForm({
         )}
       </div>
       {isRegisterPage ? (
-        <p className="mt-4 text-center text-sm text-white dark:text-amber-200">
+        <p className="mt-4 text-center text-sm text-amber-200">
           {"Already have an account? "}
           <Link
             href="/login"
-            className="font-semibold text-white hover:underline dark:text-white"
+            className="font-semibold text-amber-400 hover:underline "
           >
             Sign in
           </Link>
           {" instead."}
         </p>
       ) : (
-        <div className="flex flex-col text-center text-sm text-white dark:text-amber-200">
+        <div className="flex flex-col text-center text-sm text-amber-200">
           <Link
             href="/forgot-password"
-            className="text-amber-700 hover:underline dark:text-amber-400"
+            className="hover:underline text-amber-400"
           >
             Forgot password?
           </Link>
@@ -185,7 +185,7 @@ export function AuthForm({
             {"Don't have an account? "}
             <Link
               href="/register"
-              className="font-semibold text-gray-800 hover:underline dark:text-white"
+              className="font-semibold  hover:underline text-amber-400"
             >
               Sign up
             </Link>
