@@ -3,7 +3,7 @@
 import { useVerifyEmailViewModel } from "@/view-models/auth/useVerifyEmailViewModel";
 import Form from "next/form";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { Suspense, useEffect } from "react";
 
@@ -24,6 +24,14 @@ function VerifyEmailForm() {
   const { state, formAction } = useVerifyEmailViewModel();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.status === "success") {
+      const timer = setTimeout(() => router.push("/login"), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.status, router]);
 
   useEffect(() => {
     if (token) {
@@ -31,16 +39,20 @@ function VerifyEmailForm() {
       formData.append("token", token);
       formAction(formData);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!token) {
     return (
       <div className="rounded-lg border border-red-300 bg-red-50 px-6 py-5 text-center dark:border-red-700 dark:bg-red-950">
         <p className="text-sm font-medium text-red-800 dark:text-red-300">
-          This verification link is missing a token. Please check your email for the correct link.
+          This verification link is missing a token. Please check your email for
+          the correct link.
         </p>
-        <Link href="/login" className="mt-3 inline-block text-sm font-semibold text-amber-800 hover:underline dark:text-amber-300">
+        <Link
+          href="/login"
+          className="mt-3 inline-block text-sm font-semibold text-amber-800 hover:underline dark:text-amber-300"
+        >
           Back to sign in
         </Link>
       </div>
@@ -56,7 +68,10 @@ function VerifyEmailForm() {
         <p className="mt-2 text-xs text-red-600 dark:text-red-400">
           Unverified accounts are removed after 48 hours. Please sign up again.
         </p>
-        <Link href="/register" className="mt-3 inline-block text-sm font-semibold text-amber-800 hover:underline dark:text-amber-300">
+        <Link
+          href="/register"
+          className="mt-3 inline-block text-sm font-semibold text-amber-800 hover:underline dark:text-amber-300"
+        >
           Create a new account
         </Link>
       </div>
@@ -67,7 +82,10 @@ function VerifyEmailForm() {
     return (
       <div className="rounded-lg border border-green-300 bg-green-50 px-6 py-5 text-center dark:border-green-700 dark:bg-green-950">
         <p className="text-sm font-medium text-green-800 dark:text-green-300">
-          🎉 Your email has been verified! Redirecting you to sign in...
+          Your email has been verified!
+        </p>
+        <p className="text-xs text-green-600 dark:text-green-400">
+          Redirecting you to sign in...
         </p>
       </div>
     );
@@ -96,12 +114,21 @@ export default function VerifyEmailPage() {
             Hang tight, this only takes a moment.
           </p>
         </div>
-        <Suspense fallback={<div className="text-center text-sm text-amber-200 animate-pulse">Loading...</div>}>
+        <Suspense
+          fallback={
+            <div className="text-center text-sm text-amber-200 animate-pulse">
+              Loading...
+            </div>
+          }
+        >
           <VerifyEmailForm />
         </Suspense>
         <p className="text-center text-sm text-white dark:text-amber-200">
           Need help?{" "}
-          <Link href="/contact" className="font-semibold text-gray-800 hover:underline dark:text-white">
+          <Link
+            href="/contact"
+            className="font-semibold text-gray-800 hover:underline dark:text-white"
+          >
             Contact us
           </Link>
         </p>

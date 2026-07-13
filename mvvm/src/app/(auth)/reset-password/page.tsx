@@ -22,22 +22,27 @@ function ResetPasswordForm() {
         <p className="text-sm font-medium text-red-800">
           This reset link is missing a token. Please request a new one.
         </p>
-        <a href="/forgot-password" className="flex w-full justify-center">
+        <Link href="/forgot-password" className="flex w-full justify-center">
           <Button className="w-fit border border-black shadow-md hover:shadow-amber-700 rounded-lg px-6 py-5 text-center text-sm font-semibold">
             Request a new link
           </Button>
-        </a>
+        </Link>
       </div>
     );
   }
 
   if (state.status === "invalid_token") {
     return (
-      <a href="/forgot-password" className="flex w-full justify-center">
-        <Button className="w-fit border border-black shadow-md hover:shadow-amber-700 rounded-lg px-6 py-5 text-center text-sm font-semibold">
-          Request a new link
-        </Button>
-      </a>
+      <div className="flex flex-col h-full items-end justify-center gap-4 rounded-lg border px-6 py-5 text-center">
+        <p className="text-sm font-medium text-red-800 ">
+          This reset link is invalid or has expired. Please request a new one.
+        </p>
+        <Link href="/forgot-password" className="flex w-full justify-center">
+          <Button className="w-fit border border-black shadow-md hover:shadow-amber-700 rounded-lg px-6 py-5 text-center text-sm font-semibold">
+            Request a new link
+          </Button>
+        </Link>
+      </div>
     );
   }
 
